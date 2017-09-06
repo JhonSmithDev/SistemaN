@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html ng-app="sistema_contable">
+	<head>
+		<title>SISTEMA CONTABLE</title>
+
+		<link rel="shortcut icon" type="image/x-icon" href="img/icon.ico" />
+		<meta charset="utf-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1">
+  		<link rel="icon" type="image/png" href="/img/icon.png" />
+
+  		<!-- css -->
+  		<link rel="stylesheet" media="screen" href="../css/style.css">
+		<link rel="stylesheet" type="text/css" href="../bootstrap3/css/bootstrap.min.css">	
+		<link rel="stylesheet" media="screen" href="../css/style.custom.css">
+		<link rel="stylesheet" type="text/css" href="../css/jquery-ui.theme.css">
+  		<link rel="stylesheet" type="text/css" href="../css/jquery-ui.structure.css"> 
+  		<link rel="stylesheet" type="text/css" href="../css/jquery-ui.css">
+		<link rel="stylesheet" type="text/css" href="../css/css_ng-grid.css">
+		<!-- scripts -->
+		<!-- scripts -->
+  		<script src="../js/jquery-3.1.1.min.js"></script>
+  		<script src="../bootstrap3/js/bootstrap.min.js"></script>
+  		<script type="text/javascript" src="../js/angularjs.min.js"></script>
+  		<script type="text/javascript" src="../js/jquery-ui.min.datapicker.js"></script>
+  		<script type="text/javascript" src="../js/program.controller.js"></script>
+  		<script type="text/javascript" src="../js/ng-grid.js"></script>
+  		<script type="text/javascript" src="../js/angular-route.js"></script>
+  		<script src="../js/redondeo.decimal.js "></script>
+	</head>
+
+	<body class="contenido">
+	<div class="container">
+		
+	<!-- MENU -->
+
+
+<nav class="navbar navbar-blue" role="navigation">
+  <!-- El logotipo y el icono que despliega el menú se agrupan
+       para mostrarlos mejor en los dispositivos móviles -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle letter-white button-blue" data-toggle="collapse"
+            data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Desplegar navegación</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="">SCI-MEGA</a>
+  </div>
+ 
+  <!-- Agrupar los enlaces de navegación, los formularios y cualquier
+       otro elemento que se pueda ocultar al minimizar la barra -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    
+ 
+    <ul class="nav nav-blue navbar-nav navbar-right">
+      <li><a href="">Gestion contable: </a></li>
+      <li><a href="">Fecha: </a></li>
+      <li><a href="">Ayuda</a></li>
+      <li><a href=""><span class="glyphicon glyphicon-user"></span> Usuario: xxxx</a></li>
+    </ul>
+
+
+    <ul class="nav nav-blue navbar-nav">
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          General <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Empresa</a></li>
+          <li><a href="">Ciclo Contable</a></li>
+          <li><a href="">Moneda</a></li>
+          <li><a href="">Tipo de Cambio</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          Usuario <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Usuarios</a></li>
+          <li><a href="">Grupo de suarios</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          Plan de cuentas <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Clase Cuentas</a></li>
+          <li><a href="#/cuentas">Cuentas</a></li>
+        </ul>
+      </li>
+
+
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          Comprobantes <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Ingreso</a></li>
+          <li><a href="">Egreso</a></li>
+          <li><a href="">Traspaso</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          Libro<b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Diario</a></li>
+          <li><a href="">Mayor</a></li>
+          <li><a href="">Compras IVA</a></li>
+          <li><a href="">Ventas IVA</a></li>
+          <li><a href="">Sumas y saldos</a></li>
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+          Reporte <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-fondo-blanco">
+          <li><a href="">Balance de apertura</a></li>
+          <li><a href="">Balance general</a></li>
+          <li><a href="">Estado de Resultado</a></li>
+          <li><a href="">Ingresos</a></li>
+          <li><a href="">Egresos</a></li>
+          <li><a href="">Bancos</a></li>
+          
+        </ul>
+      </li>
+
+ 	</ul>
+  </div>
+</nav>
+
+
+		<!-- END MENU -->
+		
+    <div class="ng-view"></div> 
+       
+
+	</div>
+	<footer class="container">
+	<div class="col-md-12 text-right letter-blue"> v. 1.2</div>
+	</footer>
+	</body>
+
+	</html>
+	</html>
