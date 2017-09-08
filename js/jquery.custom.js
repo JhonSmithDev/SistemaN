@@ -28,7 +28,7 @@ $(document).ready(function(){
 			$("#myModalProgram").modal("hide");
 			sessionStorage.setItem("user", "0");
             sessionStorage.setItem("activo", "0");                    
-            location.href = 'index.html';
+            location.href = '../index.html';
 		});
     }else{
     	$(".contenido").css("display","none");

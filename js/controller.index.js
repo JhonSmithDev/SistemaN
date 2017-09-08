@@ -1,4 +1,4 @@
-var app = angular.module('visualsoft_administra', []);
+var app = angular.module('administra', []);
 app.controller("Ctrl_administra", function($scope, $http) {
   $scope.formData = {};
    sessionStorage.setItem("activo", "0"); 
@@ -20,7 +20,7 @@ app.controller("Ctrl_administra", function($scope, $http) {
       //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : 'php/user.visualsoft.php',
+                url : 'php/user.php',
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
@@ -43,7 +43,7 @@ app.controller("Ctrl_administra", function($scope, $http) {
                     sessionStorage.setItem("id_user", data[0].id_usuario);
                     sessionStorage.setItem("activo", "1");
                     sessionStorage.setItem("rol", data[0].rol);                    
-                    location.href = 'program.html';  
+                    location.href = 'template/program.html';  
                   }
                   if(datos == "0"){
                     $("#myModalUser").modal('show');

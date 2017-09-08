@@ -25,6 +25,7 @@
   		<script type="text/javascript" src="../js/program.controller.js"></script>
   		<script type="text/javascript" src="../js/ng-grid.js"></script>
   		<script type="text/javascript" src="../js/angular-route.js"></script>
+      <script type="text/javascript" src="../js/jquery.custom.js"></script>
   		<script src="../js/redondeo.decimal.js "></script>
 	</head>
 
@@ -57,7 +58,7 @@
       <li><a href="">Gestion contable: </a></li>
       <li><a href="">Fecha: </a></li>
       <li><a href="">Ayuda</a></li>
-      <li><a href=""><span class="glyphicon glyphicon-user"></span> Usuario: xxxx</a></li>
+      <li><a href="" title="Salir del sistema"><span class="glyphicon glyphicon-user"></span><span class="nombre_usuario_head"></span></a></li>
     </ul>
 
 
@@ -148,6 +149,28 @@
 	<footer class="container">
 	<div class="col-md-12 text-right letter-blue"> v. 1.2</div>
 	</footer>
+
+  <!-- Modal -->
+<div id="myModalProgram" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h4 class="modal-title">Advertencia</h4>
+      </div>
+      <div class="modal-body">
+        <p>¿Desea salir del sistema?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn_afirmativo salir_sesion" ">Aceptar</button>
+        <button type="button" class="btn btn_afirmativo" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 	</body>
 
 	</html>

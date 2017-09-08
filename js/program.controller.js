@@ -156,6 +156,182 @@ app.controller("cuentaListarCtrl", function($scope, $http) {
 
 //      LISTAR EMPRESA
 
+app.controller("listarCuentaCtrl", function($scope, $http, $location) {
+    
+    // Dato para el titulo interfaz
+    $scope.titulo = "CUENTA";
+    var opcion = "cuenta";
+
+    //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
+    //algoritmo para editar las variables de busqueda y filtrado de datos
+    $scope.datoElimina = "";
+     $scope.filterOptions = {
+        filterText: "",
+        useExternalFilter: true
+    };
+    $scope.totalServerItems = 0;
+    //dimension de json
+    //$http.get('largeLoad.json').success(function (largeLoad) {      
+      //  $scope.total=largeLoad.length; 
+        //console.log($scope.total);
+    //});  
+
+
+    // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
+    $scope.pagingOptions = {
+        pageSize: 20,
+        currentPage: 1
+    };  
+
+    // paginador
+    $scope.setPagingData = function(data, page, pageSize){  
+        var pagedData = data.slice((page - 1) * pageSize, page * pageSize);
+        $scope.myData = pagedData;
+        $scope.totalServerItems = data.length;
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
+    };
+
+    // consulta para acceder a los informacion de la base de datos mediante AJAX
+    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+        //$(".carga-info").css("display", "block");
+        setTimeout(function () {
+            var data;
+            if (searchText) {
+                var ft = searchText.toLowerCase();
+                //////////////////////////////////////////////////////////////////////
+                $.ajax({
+                // la URL para la petición
+                url : '../php/main.php',
+ 
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : {opcion: opcion},
+ 
+                // especifica si será una petición POST o GET
+                type : 'POST',
+ 
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+ 
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(largeLoad) {
+                data = largeLoad.filter(function(item) {
+                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                    });
+                    $scope.setPagingData(data,page,pageSize);
+                    //$(".carga-info").css("display", "none");
+                },
+ 
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },  
+ 
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                }
+            });
+
+                /////////////////////////////////////////////////////////////////////
+
+                //$http.post('../php/producto.listar.php').success(function (largeLoad) {      
+                  //  data = largeLoad.filter(function(item) {
+                    //    return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                    //});
+                    //$scope.setPagingData(data,page,pageSize);
+               // });        
+            } else {
+                $.ajax({
+                // la URL para la petición
+                url : '../php/main.php',
+ 
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : {opcion: opcion},
+ 
+                // especifica si será una petición POST o GET
+                type : 'POST',
+ 
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+ 
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(largeLoad) {
+                    console.log(largeLoad);
+                    $scope.setPagingData(largeLoad,page,pageSize);
+                    $(".carga-info").css("display", "none");
+                },
+ 
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },  
+ 
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                }
+                });
+                /*$http.post('php/listar_grid.php').success(function (largeLoad) {
+                    console.log(largeLoad);
+                    $scope.setPagingData(largeLoad,page,pageSize);
+                    $(".carga-info").css("display", "none");
+                });*/
+            }
+        }, 100);
+    };
+    
+    // consulta de form asincrona
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    
+    // lo que mostrara
+    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+          //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+
+    // funcion de buscador para que cargue cada busqueda.
+    $scope.$watch('filterOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+    
+    // gestion de los datos, lo que se vera en la interaz.
+    // En esta parte se puede modificar los datos de lo que se muestra en la tabla de la interfaz
+    $scope.gridOptions = {
+        i18n:'es',
+        data: 'myData',
+        enablePaging: true,
+        enableRowSelection: false,
+        enableColumnResize:true,
+        showFooter: true,
+        totalServerItems:'totalServerItems',
+        pagingOptions: $scope.pagingOptions,
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.cod_cuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.cod_cuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'cod_cuenta', displayName: 'CÓDIGO', width:150}, 
+                     {field: 'nom_cuenta', displayName: 'NOMBRE', width:250},
+                     ]
+
+    };
+
+});
+//      LISTAR EMPRESA
+
 app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
     
     // Dato para el titulo interfaz
@@ -321,8 +497,8 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idEmpresa)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idEmpresa)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idEmpresa)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idEmpresa)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idEmpresa', displayName: 'CÓDIGO', width:100}, 
                      {field: 'nit_empresa', displayName: 'NIT', width:150},
                      {field:'nom_empresa', displayName:'NOMBRE', width: 150}, 
@@ -500,8 +676,8 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idCicloContable)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idCicloContable)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idCicloContable)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idCicloContable)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idCicloContable', displayName: 'CÓDIGO', width:100}, 
                      {field: 'gestion_ccontable', displayName: 'GESTIÓN CONTABLE', width:200},
                      {field:'obs_ccontable', displayName:'OBSEVACIÓN', width: 150}, 
@@ -679,8 +855,8 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idMoneda)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idMoneda)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idMoneda)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idMoneda)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idMoneda', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tipo_moneda', displayName: 'TIPO MONEDA', width:200},
                      {field: 'obs_moneda', displayName:'OBSEVACIÓN', width: 150}, 
@@ -857,8 +1033,8 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idtipocambio)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idtipocambio)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idtipocambio)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idtipocambio)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idtipocambio', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tc_fecha', displayName: 'TIPO CAMBIO FECHA', width:200},
                      {field: 'tc_compra', displayName:'TC. COMPRA', width: 150},
@@ -1037,19 +1213,19 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idUsuario)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idUsuario)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idUsuario)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idUsuario)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idUsuario', displayName: 'CÓDIGO', width:100}, 
-                     {field: 'ci_usuario', displayName: 'TIPO CAMBIO FECHA', width:200},
-                     {field: 'login_usu', displayName:'TC. COMPRA', width: 150},
-                     {field: 'pass_usu', displayName:'TC. VENTA', width: 150},
-                     {field: 'apellidos_usu', displayName:'CÓDIGO MONEDA', width: 150},
-                     {field: 'nombres_usu', displayName:'CÓDIGO MONEDA', width: 150},
-                     {field: 'telef_usu', displayName:'CÓDIGO MONEDA', width: 150},
-                     {field: 'dir_usu', displayName:'CÓDIGO MONEDA', width: 150},
-                     {field: 'correo_usu', displayName:'CÓDIGO MONEDA', width: 150},
-                     {field: 'cargo_usu', displayName:'CÓDIGO MONEDA', width: 150}, 
-                     {field: 'GrupoUsu_idGrupoUsu', displayName:'CÓDIGO MONEDA', width: 150}, 
+                     {field: 'ci_usuario', displayName: 'C.I.', width:200},
+                     {field: 'login_usu', displayName:'LOGIN', width: 150},
+                     {field: 'pass_usu', displayName:'PASSWORD', width: 150},
+                     {field: 'apellidos_usu', displayName:'APELLIDO', width: 150},
+                     {field: 'nombres_usu', displayName:'NOMBRE', width: 150},
+                     {field: 'telef_usu', displayName:'TELÉFONO', width: 150},
+                     {field: 'dir_usu', displayName:'DIRECCIÓN', width: 150},
+                     {field: 'correo_usu', displayName:'CORREO', width: 150},
+                     {field: 'cargo_usu', displayName:'CARGO', width: 150}, 
+                     {field: 'GrupoUsu_idGrupoUsu', displayName:'GRUPO USUARIO', width: 150}, 
                      ]
 
     };
@@ -1223,8 +1399,8 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idGrupoUsu)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idGrupoUsu)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idGrupoUsu)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idGrupoUsu)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idGrupoUsu', displayName: 'CÓDIGO', width:100}, 
                      {field: 'nom_gu', displayName: 'NOMBRE', width:200},
                      
@@ -1401,8 +1577,8 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="producto_modificar(row.entity.idClaseCuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="producto_eliminar(row.entity.idClaseCuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idClaseCuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idClaseCuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
                      {field: 'idClaseCuenta', displayName: 'ID', width:100}, 
                      {field: 'cod_ccuenta', displayName: 'CÓDIGO', width:200},
                      {field: 'nom_ccuenta', displayName: 'NOMBRE', width:200},
@@ -1433,8 +1609,8 @@ app.config(function($routeProvider) {
         
     })
     .when("/cuentas", {
-        templateUrl : "../template/cuenta.html",
-        controller : "cuentaListarCtrl"
+        templateUrl : "../template/listar.html",
+        controller : "listarCuentaCtrl"
     })
     .when("/empresa", {
         templateUrl : "../template/listar.html",
