@@ -1612,6 +1612,10 @@ app.config(function($routeProvider) {
         templateUrl : "../template/listar.html",
         controller : "listarCuentaCtrl"
     })
+    .when("/cuentas2", {
+        templateUrl : "../template/cuenta.html",
+        controller : "cuentaListarCtrl"
+    })
     .when("/empresa", {
         templateUrl : "../template/listar.html",
         controller : "listarEmpresaCtrl"
