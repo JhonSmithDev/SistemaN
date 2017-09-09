@@ -1,3 +1,4 @@
+// BY: NELY M CH M
 //Instancia del objeto modulo - para conectar con el html
 var app = angular.module('sistema_contable', ['ngGrid' , 'ngRoute']);
 
@@ -154,7 +155,7 @@ app.controller("cuentaListarCtrl", function($scope, $http) {
      
 });
 
-//      LISTAR EMPRESA
+//      LISTAR CUENTA
 
 app.controller("listarCuentaCtrl", function($scope, $http, $location) {
     
@@ -207,7 +208,7 @@ app.controller("listarCuentaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -253,7 +254,7 @@ app.controller("listarCuentaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -320,14 +321,118 @@ app.controller("listarCuentaCtrl", function($scope, $http, $location) {
         totalServerItems:'totalServerItems',
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
+        enableSorting: false,
         columnDefs: [
-                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.cod_cuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.cod_cuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'cod_cuenta', displayName: 'CÓDIGO', width:150}, 
-                     {field: 'nom_cuenta', displayName: 'NOMBRE', width:250},
+                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.cod_cuenta,1,row.entity.nom_cuenta)""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.cod_cuenta,2,row.entity.nom_cuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'cod_cuenta', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.cod_cuenta,3,row.entity.nom_cuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'cod_cuenta', displayName: 'CÓDIGO', width:150, cellClass: 'align_left'}, 
+                     {field: 'nom_cuenta', displayName: 'NOMBRE', width:250, cellClass: 'align_left'}
                      ]
 
     };
+
+    //Funcion para AGREGAR, MODIFICAR Y ELIMINAR
+    $scope.action = function(id,run,nombre){
+        $scope.run =run;
+        switch(run) {
+            case 1:
+                $scope.accion = "AGREGAR" 
+                $scope.titulo_1 = "Nombre de nueva cuenta: ";
+                $scope.contenido_1="Se adicionara dentro de ";
+                $scope.nombreCuenta=nombre;
+                $scope.contenido_2="la cuenta: ";
+                $scope.hide ="";
+                break;
+            case 2:
+                $scope.accion = "MODIFICAR" 
+                $scope.titulo_1 = "Nuevo nombre de cuenta: ";
+                $scope.contenido_1="Se modificara el nombre de cuenta ";
+                $scope.nombreCuenta=nombre;
+                $scope.contenido_2="por: ";
+                $scope.nom_cuenta ="";
+                $scope.hide ="";
+                break;
+            case 3:
+                $scope.accion = "ELIMINAR" 
+                $scope.titulo_1 = "";
+                $scope.contenido_1="Se eliminara la cuenta ";
+                $scope.nombreCuenta=nombre;
+                $scope.contenido_2="";
+                $scope.nom_cuenta ="";
+                $scope.hide ="hide";
+                break;
+            default:
+            
+        }
+        
+        $("#myModal").modal();
+        localStorage.setItem('id',id);
+    }
+    $scope.cancelar = function(){
+        $("#myModal").modal("hide");
+        $scope.accion = "" 
+        $scope.titulo_1 = "";
+        $scope.contenido_1="";
+        $scope.nombreCuenta="";
+        $scope.contenido_2="";
+        $scope.nom_cuenta ="";
+        $scope.hide ="";   
+    }
+    $scope.actualizaGrid = function(run){
+        $("#myModal").modal('hide'); 
+        var des = run; 
+        var id = localStorage.getItem("id");
+        
+        var nombre_cuenta = $(".input_valor").val();
+
+        $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion: opcion, run: des, cod_cuenta : id, nom_cuenta : nombre_cuenta
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+
+                $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/user_listar';
+                $scope.accion = "" 
+                $scope.titulo_1 = "";
+                $scope.contenido_1="";
+                $scope.nombreCuenta="";
+                $scope.contenido_2="";
+                $scope.nom_cuenta ="";
+                $scope.hide =""; 
+                $scope.filterOptions.filterText = "";  
+            }
+        });
+        //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    }
 
 });
 //      LISTAR EMPRESA
@@ -383,7 +488,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -429,7 +534,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -497,8 +602,8 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idEmpresa)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idEmpresa', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idEmpresa)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idEmpresa', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idEmpresa)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idEmpresa', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idEmpresa)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idEmpresa', displayName: 'CÓDIGO', width:100}, 
                      {field: 'nit_empresa', displayName: 'NIT', width:150},
                      {field:'nom_empresa', displayName:'NOMBRE', width: 150}, 
@@ -562,7 +667,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -608,7 +713,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -676,8 +781,8 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idCicloContable)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idCicloContable', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idCicloContable)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idCicloContable', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idCicloContable)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idCicloContable', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idCicloContable)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idCicloContable', displayName: 'CÓDIGO', width:100}, 
                      {field: 'gestion_ccontable', displayName: 'GESTIÓN CONTABLE', width:200},
                      {field:'obs_ccontable', displayName:'OBSEVACIÓN', width: 150}, 
@@ -741,7 +846,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -787,7 +892,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -855,8 +960,8 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idMoneda)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idMoneda', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idMoneda)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idMoneda', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idMoneda)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idMoneda', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idMoneda)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idMoneda', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tipo_moneda', displayName: 'TIPO MONEDA', width:200},
                      {field: 'obs_moneda', displayName:'OBSEVACIÓN', width: 150}, 
@@ -919,7 +1024,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -965,7 +1070,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1033,8 +1138,8 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idtipocambio)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idtipocambio', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idtipocambio)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idtipocambio', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idtipocambio)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idtipocambio', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idtipocambio)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idtipocambio', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tc_fecha', displayName: 'TIPO CAMBIO FECHA', width:200},
                      {field: 'tc_compra', displayName:'TC. COMPRA', width: 150},
@@ -1099,7 +1204,7 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1145,7 +1250,7 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1213,8 +1318,8 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idUsuario)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idUsuario)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idUsuario)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idUsuario)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idUsuario', displayName: 'CÓDIGO', width:100}, 
                      {field: 'ci_usuario', displayName: 'C.I.', width:200},
                      {field: 'login_usu', displayName:'LOGIN', width: 150},
@@ -1285,7 +1390,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1331,7 +1436,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1399,8 +1504,8 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idGrupoUsu)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idGrupoUsu)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idGrupoUsu)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idGrupoUsu)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idGrupoUsu', displayName: 'CÓDIGO', width:100}, 
                      {field: 'nom_gu', displayName: 'NOMBRE', width:200},
                      
@@ -1463,7 +1568,7 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1509,7 +1614,7 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion},
+                data : {opcion: opcion, run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -1577,8 +1682,8 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="modificar(row.entity.idClaseCuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></div>',width:30},
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<div ng-click="eliminar(row.entity.idClaseCuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></div>',width:30},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idClaseCuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idClaseCuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idClaseCuenta', displayName: 'ID', width:100}, 
                      {field: 'cod_ccuenta', displayName: 'CÓDIGO', width:200},
                      {field: 'nom_ccuenta', displayName: 'NOMBRE', width:200},
