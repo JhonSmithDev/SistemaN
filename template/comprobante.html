@@ -1,0 +1,244 @@
+<div class="col-md-12">
+	<div class="border-1 col-md-12">
+	<form class="form-group">
+	<div class="col-md-12 text-center letter-big letter-blue"> COMPROBANTE </div>
+	<div class="col-md-2">Asiento: <br><input type="text" name="asiento" class="form-control"></div>
+	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control"></div>
+	<div class="col-md-2">Dec. contable: <br> 
+		<select class="form-control">
+			<option>Traspaso</option>
+			<option>Ingreso</option>
+			<option>Egreso</option>
+			<option>Ajuste</option>
+		</select>
+	</div>
+	<div class="col-md-2">Fecha: <br> 
+	<div class='' ng-click="fecha_desde()">
+  					<!--<p>{{datePicker || "00/00/0000"}}</p>-->
+  					<input class="form-control fecha_comprobante" type="text" ng-model="ng_date_desde" placeholder="Presione" />
+				</div></div>
+	<div class="col-md-2">Tipo Cambio: <br> <input type="text" name="tipo_cambio" class="form-control"></div>
+	<div class="col-md-2">Moneda: <br> 
+		<select class="form-control">
+			<option ng-repeat="item in dataMoneda" key="{{item.idMoneda}}">{{item.tipo_moneda}}</option>
+		</select>
+	</div>
+
+	<div class="col-md-12"></div>
+
+	<div class="col-md-2">Recibido por: <br> <input type="text" name="titular" class="form-control"></div>
+	<div class="col-md-2">NIT/CI: <br> <input type="text" name="nit_ci" class="form-control"></div>
+	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control"></div>
+	<div class="col-md-6">Glosa: <br> <input type="text" name="" class="form-control"></div>
+	</form>
+	</div>
+
+
+	<div class="clear"></div>
+
+
+	<div class="table-container">
+   		<div class="table-container-header">
+      		<table class="table table-striped table-hover table-condensed table-bordered">
+         		<thead>
+            		<tr>
+            			<th style="width: 50px;" class="background-blue letter-white text-center"></th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Código</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Nombre de cuenta</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Debe (Bs.)</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Haber (Bs.)</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Debe ($us.)</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">haber ($us.)</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Banco</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Nro. Cheque</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">IVA</th>
+            		</tr>
+         		</thead>
+      		</table>
+   		</div>
+   	<div class="table-container-body">
+      <table class="table table-striped table-hover table-condensed table-bordered">
+         <colgroup>
+         	<col style="width: 50px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+         </colgroup>
+         <tbody>
+            <tr ng-repeat="item in dataRegistroComprobante">
+            	<td style="width: 50px;"><a href="" ng-click="eliminarFila()""><span class="glyphicon glyphicon-minus edita_css" aria-hidden="true"></span></a></td>
+               <td style="width: 200px;"><a href="" ng-click="buscarFila(item.id)""><span class="glyphicon glyphicon-search edita_css" aria-hidden="true"></span></a><input type="text" name=""></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
+               <td style="width: 200px;"><input type="checkbox" name=""></td>
+            </tr>
+            <tr>
+               <td style="width: 50px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+               <td style="width: 200px;"></td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   <div class="table-container-footer">
+      <table class="table table-striped table-hover table-condensed table-bordered">
+         <tfoot>
+            <tr>
+            	<th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white">Totales</th>
+               <th class="border-1-white">Debe (Bs.)</th>
+               <th class="border-1-white">Haber (Bs.)</th>
+               <th class="border-1-white">Debe ($us.)</th>
+               <th class="border-1-white">haber ($us.)</th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+            </tr>
+            <tr>
+            	<th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white">Diferencia</th>
+               <th class="border-1-white">Debe (Bs.)</th>
+               <th class="border-1-white">Haber (Bs.)</th>
+               <th class="border-1-white">Debe ($us.)</th>
+               <th class="border-1-white">haber ($us.)</th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+            </tr>
+         </tfoot>
+      </table>
+   </div>
+</div>
+</div>
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h4 class="modal-title">{{titulo_0}}</h4>
+      </div>
+      <div class="modal-body">
+      <div class="col-md-12 padding-20 padding-0-xy">Buscar: <input type="search" ng-model="buscar" placeholder="Escriba para buscar" aria-label="Escriba para buscar..." title="Escriba..."/></div>
+      	<div class="table-container">
+   		<div class="table-container-header">
+      		<table class="table table-striped table-hover table-condensed table-bordered">
+         		<thead>
+            		<tr>
+            			<th style="width: 50px;" class="background-blue letter-white text-center"></th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Código</th>
+               			<th style="width: 200px;" class="background-blue letter-white text-center">Nombre de cuenta</th>
+            		</tr>
+         		</thead>
+      		</table>
+   		</div>
+   	<div class="table-container-body">
+      <table class="table table-striped table-hover table-condensed table-bordered">
+         <colgroup>
+         	<col style="width: 50px;"></col>
+            <col style="width: 200px;"></col>
+            <col style="width: 200px;"></col>
+         </colgroup>
+         <tbody>
+            <tr ng-repeat="item in dataCuenta | filter:buscar as results">
+            	<td style="width: 50px;"><a href="" ng-click="pushCuenta(item.cod_cuenta, item.nom_cuenta)""><span class="glyphicon glyphicon-ok edita_css" aria-hidden="true"></span></a></td>
+               <td style="width: 200px;">{{item.cod_cuenta}}</td>
+               <td style="width: 200px;">{{item.nom_cuenta}}</td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   <div class="table-container-footer">
+      <table class="table table-striped table-hover table-condensed table-bordered">
+         <tfoot>
+            <tr>
+            	<th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+               <th class="border-1-white"></th>
+            </tr>
+         </tfoot>
+      </table>
+   </div>
+</div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" ng-click="actualizaGrid(run)">SI</button>
+
+        <button type="button" class="btn btn-danger" ng-click="cancelar()">NO</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+	var $body = $(".table-container-body"),
+    $header = $(".table-container-header"),
+    $footer = $(".table-container-footer");
+
+// Get ScrollBar width(From: http://bootstrap-table.wenzhixin.net.cn/)
+var scrollBarWidth = (function () {
+        var inner = $('<p/>').addClass('fixed-table-scroll-inner'),
+            outer = $('<div/>').addClass('fixed-table-scroll-outer'),
+            w1, w2;
+        outer.append(inner);
+        $('body').append(outer);
+        w1 = inner[0].offsetWidth;
+        outer.css('overflow', 'scroll');
+        w2 = inner[0].offsetWidth;
+        if (w1 === w2) {
+            w2 = outer[0].clientWidth;
+        }
+        outer.remove();
+        return w1 - w2;
+})();
+
+// Scroll horizontal
+$body.on('scroll', function () {
+    $header.scrollLeft($(this).scrollLeft());
+    $footer.scrollLeft($(this).scrollLeft());
+});
+
+// Redraw Header/Footer
+var redraw = function() {
+    var tds = $body.find("> table > tbody > tr:first-child > td");
+    tds.each(function (i) {
+        var width = $(this).innerWidth(),
+            lastPadding = (tds.length -1 == i ? scrollBarWidth : 0);
+        lastHeader = $header.find("th:eq("+i+")").innerWidth(width + lastPadding);
+        lastFooter = $footer.find("th:eq("+i+")").innerWidth(width + lastPadding);
+    });
+};
+
+// Selection
+$body.find("> table > tbody > tr > td").click(function(e) {
+    $body.find("> table > tbody > tr").removeClass("info");
+    $(e.target).parent().addClass('info');
+});
+
+// Listen to Resize Window
+$(window).resize(redraw);
+redraw();
+</script>

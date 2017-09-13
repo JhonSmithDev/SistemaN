@@ -1698,6 +1698,287 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
 });
 
 
+//      LISTAR, AGREGAR, MODIFICAR  COMPROBANTE
+
+app.controller("comprobanteCtrl", function($scope, $http) {
+    //fecha de comprobante
+    $( ".fecha_comprobante" ).datepicker({
+        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+        dateFormat: "dd/mm/yy"
+    });
+
+    // llenado de cuenta, moneda, tipo de cmbio
+
+    // ajax de llenado de cuenta
+    $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "cuenta", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("cuenta"+data.length);
+
+                $scope.dataCuenta = data;
+
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+                // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+               //location.href='#/producto';
+            }
+        });
+
+    // ajax de llenado de tipo de moneda
+    $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "moneda", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("moneda"+data.length);
+
+                $scope.dataMoneda = data;
+
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+                // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+               //location.href='#/producto';
+            }
+        });
+
+    // ajax de llenado de tipo de cambio
+    $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "tipocambio", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("tipo cambio"+data.length);
+
+                $scope.dataTipoCambio = data;
+
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+                // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+               //location.href='#/producto';
+            }
+        });
+    
+    $scope.dataRegistroComprobante = [];
+    
+    //funcion para adicionar una fila registro comprobante
+    $scope.agregarFila = function() {
+
+        $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "tipocambio", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
+                var cuenta = $scope.dataRegistroComprobante.length;
+                cuenta = cuenta + 1;
+                $scope.dataRegistroComprobante.push({id:cuenta , cod_cuenta: "", nom_cuenta: ""});  
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/user_listar';
+            }
+        });
+
+    };
+
+    //funcion para eliminar una fila registro comprobante
+    $scope.eliminarFila = function() {
+
+        $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "tipocambio", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
+                $scope.dataRegistroComprobante.pop();  
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/user_listar';
+            }
+        });
+
+    };
+
+    //funcion para adicionar una fila registro comprobante
+    $scope.buscarFila = function(id_fila) {
+        localStorage.setItem("id_fila",id_fila);
+        $("#myModal").modal();
+        $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "cuenta", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("Cuenta"+ data.length);
+                $scope.dataCuenta = data;  
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/user_listar';
+            }
+        });
+    }
+
+
+    // push a cuenta
+    $scope.pushCuenta = function (cod_cuenta, nom_cuenta){
+        $("#myModal").modal("hide");
+        var item = localStorage.getItem("id_fila");
+        console.log("push: " + item);
+    }
+
+     
+});
+
+
 //////----=============++++++++++++++++FIN de controladores
 
 
@@ -1748,6 +2029,10 @@ app.config(function($routeProvider) {
     .when("/clase_cuenta", {
         templateUrl : "../template/listar.html",
         controller : "listarClaseCuentaCtrl"
+    })
+    .when("/comprobante", {
+        templateUrl : "../template/comprobante.html",
+        controller : "comprobanteCtrl"
     })
     ;
 });
