@@ -29,6 +29,10 @@
 	border: 1px solid #337AB7;
 	padding: 10px;
 }
+.border-1-white{
+  border: 1px solid #FFF;
+  padding: 10px;
+}
 .hover-fila:hover, focus, active{
 	background: #D5E3F0;
 	color: #fff;
@@ -132,7 +136,9 @@
 .letter-white{
 	color: #fff;
 }
-
+.margin-bottom-10{
+  margin-bottom: 10px;
+}
 
 /*tabla head block*/
 p.fixed-table-scroll-inner {
