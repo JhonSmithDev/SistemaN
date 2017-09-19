@@ -17,7 +17,11 @@
   					<!--<p>{{datePicker || "00/00/0000"}}</p>-->
   					<input class="form-control fecha_comprobante" type="text" ng-model="ng_date_desde" placeholder="Presione" />
 				</div></div>
-	<div class="col-md-2">Tipo Cambio: <br> <input type="text" name="tipo_cambio" class="form-control"></div>
+	<div class="col-md-2">Tipo Cambio (tc_compra): <br> 
+    <select class="form-control">
+      <option ng-repeat="item in dataTipoCambio" key="{{item.idtipocambio}}">{{item.tc_compra}}</option>
+    </select>
+  </div>
 	<div class="col-md-2">Moneda: <br> 
 		<select class="form-control">
 			<option ng-repeat="item in dataMoneda" key="{{item.idMoneda}}">{{item.tipo_moneda}}</option>
@@ -81,7 +85,7 @@
                <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
                <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
                <td style="width: 200px;"><input type="text" name="" value="{{item.id}}"></td>
-               <td style="width: 200px;"><input type="checkbox" name=""></td>
+               <td style="width: 200px;" class="text-center"><input type="checkbox" name=""></td>
             </tr>
             <tr>
                <td style="width: 50px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>

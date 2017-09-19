@@ -14,7 +14,6 @@
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 			return $retorna;
 		}//End function getTable
-
 		public function insertTable($id, $data, $table, $tipo){
 			switch ($table) {
 				case 'cuenta':
@@ -500,7 +499,111 @@
 					}
 					
 					break;
+				case 'proveedor':
+					switch ($tipo) {
+						case 'campo':
 
+							$result = $this->_db->query('SELECT * FROM '.$table.' WHERE '.$nom_id.' = '.$id.'');
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							//creacion de arrays de campos
+							$outp = array();
+
+							// Creacion de campos para empresa
+
+							$outp[] = array('label'=> "ID",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "idProveedor",
+								            'name'=> "idProveedor",
+								        	'value'=> "".$retorna[0]['idProveedor']."");
+
+							$outp[] = array('label'=> "CÓDIGO PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "cod_prov",
+								            'name'=> "cod_prov",
+								        	'value'=> "".$retorna[0]['cod_prov']."");
+
+							$outp[] = array('label'=> "NOMBRE PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "nom_prov",
+								            'name'=> "nom_prov",
+								        	'value'=> "".$retorna[0]['nom_prov']."");
+
+							$outp[] = array('label'=> "DIRECCIÓN PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "dir_prov",
+								            'name'=> "dir_prov",
+								        	'value'=> "".$retorna[0]['dir_prov']."");
+
+							$outp[] = array('label'=> "TELÉFONO PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "telef_prov",
+								            'name'=> "telef_prov",
+								        	'value'=> "".$retorna[0]['telef_prov']."");
+
+							$outp[] = array('label'=> "FAX PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "fax_prov",
+								            'name'=> "fax_prov",
+								        	'value'=> "".$retorna[0]['fax_prov']."");
+
+							$outp[] = array('label'=> "CELULAR PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "cel_prov",
+								            'name'=> "cel_prov",
+								        	'value'=> "".$retorna[0]['cel_prov']."");
+
+							$outp[] = array('label'=> "CORREO ELECTRÓNICO PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "email_prov",
+								            'name'=> "email_prov",
+								        	'value'=> "".$retorna[0]['email_prov']."");
+
+							$outp[] = array('label'=> "PAÍS PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "pais_prov",
+								            'name'=> "pais_prov",
+								        	'value'=> "".$retorna[0]['pais_prov']."");
+
+							$outp[] = array('label'=> "CIUDAD PROVEEDOR",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "ciudad_prov",
+								            'name'=> "ciudad_prov",
+								        	'value'=> "".$retorna[0]['ciudad_prov']."");
+
+							
+							return $outp;
+							break;
+
+						case 'modificar':
+
+							//insertar en tabla empresa los campos requeridos
+							if (!$this->_db->query("UPDATE ".$table." SET cod_prov = " .$data[1]['value'].", nom_prov = '".$data[2]['value']."', dir_prov = '".$data[3]['value']."', telef_prov = '".$data[4]['value']."', fax_prov = '".$data[5]['value']."', cel_prov = '".$data[6]['value']."', email_prov = '".$data[7]['value']."', pais_prov = '".$data[8]['value']."', ciudad_prov = '".$data[9]['value']."' WHERE idProveedor = ".$id."")) {
+								//en casso de error muestra el problema en consola
+		    					return "Falló UPDATE: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								// en caso de exito muestra el mensaje en consola
+								$outp[] = array('mensaje'=> "Update ok");
+								            
+								return $outp;
+							}
+							break;
+						
+						default:
+						
+							break;
+					}
+					
+					break;
 				default:
 					# code...
 					break;
@@ -555,6 +658,210 @@
 								            'for'=> "tipo_empresa",
 								            'name'=> "tipo_empresa",
 								        	'value'=> "".$retorna[0]['tipo_empresa']."");
+							return $outp;
+							break;
+
+						case 'eliminar':
+
+							//eliminar en tabla empresa los campos requeridos
+							if (!$this->_db->query('DELETE FROM '.$table.' WHERE '.$nom_id.' = '.$id.'')) {
+				    			return "Falló DELETE: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								// en caso de exito muestra el mensaje en consola
+								$outp[] = array('mensaje'=> "Delete ok");
+								            
+								return $outp;
+							}
+							break;
+						
+						default:
+						
+							break;
+					}
+					break;
+				case 'cliente':
+
+					switch ($tipo) {
+						case 'campo':
+
+							$result = $this->_db->query('SELECT * FROM '.$table.' WHERE '.$nom_id.' = '.$id.'');
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							//creacion de arrays de campos
+							$outp = array();
+
+							// Creacion de campos para empresa
+
+							// Creacion de campos para empresa
+							$outp[] = array('label'=> "ID CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "idCliente",
+								            'name'=> "idCliente",
+								        	'value'=> "".$retorna[0]['idCliente']."");
+
+							$outp[] = array('label'=> "CÓDIGO CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "cod_cliente",
+								            'name'=> "cod_cliente",
+								        	'value'=> "".$retorna[0]['cod_cliente']."");
+
+							$outp[] = array('label'=> "TIPO DE CÓDIGO CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "tipo_codcliente",
+								            'name'=> "tipo_codcliente",
+								        	'value'=> "".$retorna[0]['tipo_codcliente']."");
+
+							$outp[] = array('label'=> "NOMBRE CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "nom_cliente ",
+								            'name'=> "nom_cliente ",
+								        	'value'=> "".$retorna[0]['nom_cliente']."");
+
+							$outp[] = array('label'=> "DIRECCIÓN CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "dir_cliente",
+								            'name'=> "dir_cliente",
+								        	'value'=> "".$retorna[0]['dir_cliente']."");
+
+							$outp[] = array('label'=> "TELÉFONO CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "telef_cliente",
+								            'name'=> "telef_cliente",
+								        	'value'=> "".$retorna[0]['telef_cliente']."");
+
+							$outp[] = array('label'=> "FAX CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "fax_cliente",
+								            'name'=> "fax_cliente",
+								        	'value'=> "".$retorna[0]['fax_cliente']."");
+
+							$outp[] = array('label'=> "CELULAR CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "cel_cliente",
+								            'name'=> "cel_cliente",
+								        	'value'=> "".$retorna[0]['cel_cliente']."");
+
+							$outp[] = array('label'=> "PAÍS CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "pais_cliente",
+								            'name'=> "pais_cliente",
+								        	'value'=> "".$retorna[0]['pais_cliente']."");
+
+							$outp[] = array('label'=> "CIUDAD CLIENTE",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "ciudad_cliente",
+								            'name'=> "ciudad_cliente",
+								        	'value'=> "".$retorna[0]['ciudad_cliente']."");
+							return $outp;
+							break;
+
+						case 'eliminar':
+
+							//eliminar en tabla empresa los campos requeridos
+							if (!$this->_db->query('DELETE FROM '.$table.' WHERE '.$nom_id.' = '.$id.'')) {
+				    			return "Falló DELETE: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								// en caso de exito muestra el mensaje en consola
+								$outp[] = array('mensaje'=> "Delete ok");
+								            
+								return $outp;
+							}
+							break;
+						
+						default:
+						
+							break;
+					}
+					break;
+				case 'proveedor':
+
+					switch ($tipo) {
+						case 'campo':
+
+							$result = $this->_db->query('SELECT * FROM '.$table.' WHERE '.$nom_id.' = '.$id.'');
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							//creacion de arrays de campos
+							$outp = array();
+
+							// Creacion de campos
+							$outp[] = array('label'=> "ID",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "idProveedor",
+								            'name'=> "idProveedor",
+								        	'value'=> "".$retorna[0]['idProveedor']."");
+
+							$outp[] = array('label'=> "CÓDIGO PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "cod_prov",
+								            'name'=> "cod_prov",
+								        	'value'=> "".$retorna[0]['cod_prov']."");
+
+							$outp[] = array('label'=> "NOMBRE PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "nom_prov",
+								            'name'=> "nom_prov",
+								        	'value'=> "".$retorna[0]['nom_prov']."");
+
+							$outp[] = array('label'=> "DIRECCIÓN PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "dir_prov",
+								            'name'=> "dir_prov",
+								        	'value'=> "".$retorna[0]['dir_prov']."");
+
+							$outp[] = array('label'=> "TELÉFONO PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "telef_prov",
+								            'name'=> "telef_prov",
+								        	'value'=> "".$retorna[0]['telef_prov']."");
+
+							$outp[] = array('label'=> "FAX PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "fax_prov",
+								            'name'=> "fax_prov",
+								        	'value'=> "".$retorna[0]['fax_prov']."");
+
+							$outp[] = array('label'=> "CELULAR PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "cel_prov",
+								            'name'=> "cel_prov",
+								        	'value'=> "".$retorna[0]['cel_prov']."");
+
+							$outp[] = array('label'=> "CORREO ELECTRÓNICO PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "email_prov",
+								            'name'=> "email_prov",
+								        	'value'=> "".$retorna[0]['email_prov']."");
+
+							$outp[] = array('label'=> "PAÍS PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "pais_prov",
+								            'name'=> "pais_prov",
+								        	'value'=> "".$retorna[0]['pais_prov']."");
+
+							$outp[] = array('label'=> "CIUDAD PROVEEDOR",
+								            'input'=> "block",
+								            'class'=> "",
+								            'for'=> "ciudad_prov",
+								            'name'=> "ciudad_prov",
+								        	'value'=> "".$retorna[0]['ciudad_prov']."");
 							return $outp;
 							break;
 

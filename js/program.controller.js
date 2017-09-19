@@ -2942,8 +2942,8 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idProveedor', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idProveedor)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
-                     {field: 'idProveedor', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idProveedor)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idProveedor', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idProveedor,2)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idProveedor', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idProveedor,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idProveedor', displayName: 'CÓDIGO', width:100}, 
                      {field: 'cod_prov', displayName: 'CÓDIGO PROVEEDOR', width:200},
                      {field: 'nom_prov', displayName: 'NOMBRE', width:200},

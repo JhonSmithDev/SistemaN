@@ -3,7 +3,7 @@
 	//BY NELY M CH M
 
 	switch ($_POST['run']) {// tipo de accion a realizar como 0: listar, 1: insertar, 2: modificar y 3: eliminar
-		case '0':
+		case '0': // listar las tablas
 
 			//instanciar objeto listar 
 			$listarObject = new databaseModel();
@@ -22,7 +22,7 @@
 					$outp = $listarObject->getTable("moneda","idMoneda");
 					echo json_encode($outp);
 					break;
-				case 'tipoCambio':
+				case 'tipocambio':
 					$outp = $listarObject->getTable("tipocambio","idtipocambio");
 					echo json_encode($outp);
 					break;
@@ -452,6 +452,66 @@
 					$outp = $eliminarObject->deleteTable("cuenta","cod_cuenta","'".$_POST['cod_cuenta']."'", "null");
 					echo json_encode($outp);
 					break;
+				case 'cliente':
+					switch ($_POST['tipo']) {
+						case 'campo':	
+							//prepara todos los campos a adiocionar						
+							$outp = $eliminarObject->deleteTable("cliente",
+																 "idCliente",
+																 "'".$_POST['id']."'",
+																 "campo"
+																);
+							
+							break;
+						case 'eliminar':
+							// prepara comunicacion con bd para la agregar nueva empresa
+			
+							//prepara todos los campos a adiocionar						
+							$outp = $eliminarObject->deleteTable("cliente",
+																 "idCliente",
+																 "'".$_POST['id']."'",
+																 "eliminar"
+																);	
+																							
+							break;
+						
+						default:
+							$outp = "Error en el tipo";
+							break;
+					}
+					//envia json con lo necesario para proceder.
+					echo json_encode($outp);
+					break;
+				case 'proveedor':
+					switch ($_POST['tipo']) {
+						case 'campo':	
+							//prepara todos los campos a adiocionar						
+							$outp = $eliminarObject->deleteTable("proveedor",
+																 "idProveedor",
+																 "'".$_POST['id']."'",
+																 "campo"
+																);
+							
+							break;
+						case 'eliminar':
+							// prepara comunicacion con bd para la agregar nueva empresa
+			
+							//prepara todos los campos a adiocionar						
+							$outp = $eliminarObject->deleteTable("proveedor",
+																 "idProveedor",
+																 "'".$_POST['id']."'",
+																 "eliminar"
+																);	
+																							
+							break;
+						
+						default:
+							$outp = "Error en el tipo";
+							break;
+					}
+					//envia json con lo necesario para proceder.
+					echo json_encode($outp);
+					break;
 				default:
 					$outp = "Error en la opcion";
 					echo json_encode($outp);
@@ -463,7 +523,6 @@
 			
 			$outp = "Error en run";
 			echo json_encode($outp);
-			break;
 			break;
 	}
 
