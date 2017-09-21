@@ -3258,15 +3258,41 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
 //      LISTAR, AGREGAR, MODIFICAR  COMPROBANTE
 
 app.controller("libroDiarioCtrl", function($scope, $http) {
-    //fecha de comprobante
+
+    //Creacion de las variables a usar
+    $scope.selectDecContable = [
+                                    {
+                                        id: "1",
+                                        value: "Traspaso"
+                                    },
+                                    {
+                                        id: "2",
+                                        value: "Ingreso"
+                                    },
+                                    {
+                                        id: "3",
+                                        value: "Egreso"
+                                    }
+
+                                ];
+        //variable para ocultar cuando se escoge traspaso
+        $scope.hide_traspaso = "";
+        $scope.dataRegistroComprobante = [];
+        $scope.selectedMoneda = [];
+        $scope.formData = [];   
+
+    // fecha del sistema del lado del cliente
+    var f=new Date();
+    $scope.fechaUsuario = f.getDate() + "/" + (f.getMonth()+1) + "/" + f.getFullYear();
+    console.log($scope.fechaUsuario);
+    //Permite crear pequena ventan de fecha
     $( ".fecha_comprobante" ).datepicker({
+        //configura lo que debe mostrarse en la ventana de fecha
         monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
         dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
-        dateFormat: "dd/mm/yy"
+        dateFormat: "d/m/yy"
     });
-
-    // llenado de cuenta, moneda, tipo de cmbio
 
     // ajax de llenado de cuenta
     $.ajax({
@@ -3309,7 +3335,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             }
         });
 
-    // ajax de llenado de tipo de moneda
+    // ajax de llenado de moneda
     $.ajax({
             // la URL para la petición
             url : '../php/main.php',
@@ -3333,6 +3359,13 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
                 $scope.dataMoneda = data;
 
+                angular.forEach($scope.dataMoneda, function(value, key) {
+                  if ($scope.dataMoneda[key].idMoneda == "2") {
+                    $scope.selectedMoneda = $scope.dataMoneda[key];
+                  }
+                });
+                
+
                 $scope.$apply();
             },
  
@@ -3349,49 +3382,47 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                //location.href='#/producto';
             }
         });
-
-    // ajax de llenado de tipo de cambio
+    // ajax de llenado de tipo de cambio por defecto $us
     $.ajax({
             // la URL para la petición
             url : '../php/main.php',
- 
+     
             // la información a enviar
             // (también es posible utilizar una cadena de datos)
             data : { 
-                opcion : "tipocambio", run : "0"
+                opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : "2", order: "idtipocambio DESC"
             },
- 
+     
             // especifica si será una petición POST o GET
             type : 'POST',
- 
+     
             // el tipo de información que se espera de respuesta
             dataType : 'json',
- 
+     
             // código a ejecutar si la petición es satisfactoria;
             // la respuesta es pasada como argumento a la función
             success : function(data) {
-                console.log("tipo cambio"+data.length);
+                console.log("tipo cambio llenado: "+data.length);
 
                 $scope.dataTipoCambio = data;
-
+                $scope.selectedTipoCambio = data;
                 $scope.$apply();
             },
- 
+     
             // código a ejecutar si la petición falla;
             // son pasados como argumentos a la función
             // el objeto de la petición en crudo y código de estatus de la petición
             error : function(xhr, status) {
                 console.log('Disculpe, existió un problema');
             },
- 
-                // código a ejecutar sin importar si la petición falló o no
+     
+            // código a ejecutar sin importar si la petición falló o no
             complete : function(xhr, status) {
                 //console.log('Petición realizada');
-               //location.href='#/producto';
+                //location.href='#/producto';
             }
         });
     
-    $scope.dataRegistroComprobante = [];
     
     //funcion para adicionar una fila registro comprobante
     $scope.agregarFila = function() {
@@ -3528,9 +3559,194 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     // push a cuenta
     $scope.pushCuenta = function (cod_cuenta, nom_cuenta){
         $("#myModal").modal("hide");
-        var item = localStorage.getItem("id_fila");
-        console.log("push: " + item);
+        console.log("cod_cuenta: "+cod_cuenta);
+        if ($scope.dataRegistroComprobante[0].id == "1") {
+            $scope.dataRegistroComprobante[0].cod_cuenta = cod_cuenta;
+            $scope.dataRegistroComprobante[0].nom_cuenta = nom_cuenta;
+        }
+        
     }
+
+    //funcion cuando se selecciona un tipo de cambio diferente
+    $scope.hasChangedTipoCambio = function(){
+
+    }
+
+    //funcion cuando se selecciona una moneda diferente
+    $scope.hasChangedMoneda = function(){
+        console.log("id: "+$scope.selectedMoneda.idMoneda); 
+        // ajax de llenado de tipo de cambio
+        $.ajax({
+                // la URL para la petición
+                url : '../php/main.php',
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                    opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : $scope.selectedMoneda.idMoneda, order: "idtipocambio DESC"
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    console.log("tipo cambio llenado: "+data.length);
+
+                    $scope.dataTipoCambio = data;
+                    $scope.selectedTipoCambio = data;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    }
+
+    //funcion para habilitar campo para adicionar nuevo tipo de cambio de moneda
+    $scope.adicionarTipoCambio = function(){
+        $("#adicionarTipoCambio_1").addClass("hide");
+        $("#adicionarTipoCambio_2").removeClass("hide");
+    }
+
+    //funcion para habilitar campo para adicionar nuevo tipo de cambio de moneda
+    $scope.cancelarAdicionarTipoCambio = function(){
+        $("#adicionarTipoCambio_2").addClass("hide");
+        $("#adicionarTipoCambio_1").removeClass("hide");
+    }
+
+    //funcion para adicionar un nuevo tipo cambio
+    $scope.actionTipoCambio =function(){
+        $scope.formData = [
+                            {"id": "tc_venta", "value": $scope.fechaUsuario}, 
+                            {"id": "tc_compra" , "value": ""}, 
+                            {"id": "tc_venta" , "value": $scope.valorTipoCambio}, 
+                            {"id": "Moneda_idMoneda", "value" : $scope.selectedMoneda.idMoneda}
+                            ];
+        var myJsonString = JSON.stringify($scope.formData);
+        $.ajax({
+                // la URL para la petición
+                url : '../php/main.php',
+             
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                    opcion: "tipocambio", 
+                    run: "1", 
+                    data : myJsonString, 
+                    tipo: "insertar"
+                },
+             
+                // especifica si será una petición POST o GET
+                type : 'POST',
+             
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+             
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    console.log("tipo cambio llenado: "+data.length);
+
+                    // ajax de llenado de tipo de cambio
+                    $.ajax({
+                            // la URL para la petición
+                            url : '../php/main.php',
+                 
+                            // la información a enviar
+                            // (también es posible utilizar una cadena de datos)
+                            data : { 
+                                opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : $scope.selectedMoneda.idMoneda, order: "idtipocambio DESC"
+                            },
+                 
+                            // especifica si será una petición POST o GET
+                            type : 'POST',
+                 
+                            // el tipo de información que se espera de respuesta
+                            dataType : 'json',
+                 
+                            // código a ejecutar si la petición es satisfactoria;
+                            // la respuesta es pasada como argumento a la función
+                            success : function(data) {
+                                console.log("tipo cambio llenado: "+data.length);
+
+                                $scope.dataTipoCambio = data;
+                                $scope.selectedTipoCambio = data;
+                                $scope.valorTipoCambio = "";
+                                $("#adicionarTipoCambio_2").addClass("hide");
+                                $("#adicionarTipoCambio_1").removeClass("hide");
+                                $scope.$apply();
+                            },
+                 
+                            // código a ejecutar si la petición falla;
+                            // son pasados como argumentos a la función
+                            // el objeto de la petición en crudo y código de estatus de la petición
+                            error : function(xhr, status) {
+                                console.log('Disculpe, existió un problema');
+                            },
+                 
+                                // código a ejecutar sin importar si la petición falló o no
+                            complete : function(xhr, status) {
+                                //console.log('Petición realizada');
+                               //location.href='#/producto';
+                            }
+                        });
+                            
+                },
+             
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+             
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    //location.href='#/user_listar';
+                }
+            });
+            //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    }
+
+    //funcion para el select de Dec. contable
+    $scope.hasChangedDecContableo = function() {
+      
+        switch($scope.selectedDecContable.id) {
+            case "1":
+                $scope.hide_traspaso = "hide";
+                break;
+            case "2":
+                console.log("escoge 2");
+                break;
+            case "3":
+                console.log("escoge 3");
+                break;
+            default:
+                console.log("error con $scope.selectedDecContable.id");
+        }
+
+
+      
+        
+    };
 
      
 });

@@ -9,6 +9,12 @@
 			parent:: __construct();
 		}
 
+		public function getTableId($table,$order_id, $nom_id, $id){
+			$result = $this->_db->query("SELECT * FROM ".$table." WHERE ".$nom_id." = ".$id." ORDER BY ".$order_id."");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+			return $retorna;
+		}//End function getTable
+
 		public function getTable($table,$order_id){
 			$result = $this->_db->query("SELECT * FROM ".$table." ORDER BY ".$order_id."");
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
@@ -59,6 +65,60 @@
 							//insertar en tabla empresa los campos requeridos
 							if (!$this->_db->query("INSERT INTO empresa (nit_empresa, nom_empresa, tipo_empresa)
 													VALUES ('".$data[0]['value']."', '".$data[1]['value']."', '".$data[2]['value']."')")) {
+								//en casso de error muestra el problema en consola
+		    					return "Falló INSERT INTO: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								// en caso de exito muestra el mensaje en consola
+								$outp[] = array('mensaje'=> "Insert ok");
+								            
+								return $outp;
+							}
+							break;
+
+						default:
+							# code...
+							break;
+					}
+					
+					break;
+
+				case 'tipocambio':
+
+					switch ($tipo) {
+						case 'campo':
+							//creacion de arrays de campos
+							$outp = array();
+
+							// Creacion de campos para empresa
+
+							$outp[] = array('label'=> "NIT EMPRESA",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "nit_empresa",
+								            'name'=> "nit_empresa",
+								        	'value'=> "");
+
+							$outp[] = array('label'=> "NOMBRE DE EMPRESA",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "nom_empresa",
+								            'name'=> "nom_empresa",
+								        	'value'=> "");
+
+							$outp[] = array('label'=> "TIPO EMPRESA",
+								            'input'=> "text",
+								            'class'=> "",
+								            'for'=> "tipo_empresa",
+								            'name'=> "tipo_empresa",
+								        	'value'=> "");
+							return $outp;
+
+							break;
+						case 'insertar':
+
+							//insertar en tabla empresa los campos requeridos
+							if (!$this->_db->query("INSERT INTO tipocambio (tc_fecha, tc_compra, tc_venta, Moneda_idMoneda)
+													VALUES ('".$data[0]['value']."', '".$data[1]['value']."', '".$data[2]['value']."', '".$data[3]['value']."')")) {
 								//en casso de error muestra el problema en consola
 		    					return "Falló INSERT INTO: (" . $this->_db->errno . ") " . $this->_db->error;
 							}else{

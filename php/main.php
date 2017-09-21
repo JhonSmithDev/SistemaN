@@ -3,6 +3,16 @@
 	//BY NELY M CH M
 
 	switch ($_POST['run']) {// tipo de accion a realizar como 0: listar, 1: insertar, 2: modificar y 3: eliminar
+		
+		case '4': // listar las tablas
+
+			//instanciar objeto listar 
+			$listarObject = new databaseModel();
+			$outp = $listarObject->getTableId("".$_POST['opcion']."","".$_POST['order']."","".$_POST['nom_id']."","".$_POST['id']."");
+			echo json_encode($outp);
+			
+			break;
+
 		case '0': // listar las tablas
 
 			//instanciar objeto listar 
@@ -128,8 +138,34 @@
 					$outp = "Error en la opcion";
 					echo json_encode($outp);
 					break;
-				case 'tipoCambio':
-					$outp = "Error en la opcion";
+				case 'tipocambio':
+					switch ($_POST['tipo']) {
+						case 'campo':	
+							//prepara todos los campos a adiocionar						
+							$outp = $agregarObject->insertTable("null",
+																"null",
+																"tipocambio",
+																"campo"
+																);
+							
+							break;
+						case 'insertar':
+							// prepara comunicacion con bd para la agregar nueva empresa
+							$json = $_POST['data'];
+							$obj = json_decode($json, true);
+							$outp = $agregarObject->insertTable("null",
+																$obj,
+																"tipocambio",
+																"insertar"
+																);	
+																							
+							break;
+						
+						default:
+							$outp = "Error en el tipo";
+							break;
+					}
+					//envia json con lo necesario para proceder.
 					echo json_encode($outp);
 					break;
 				case 'usuario':
