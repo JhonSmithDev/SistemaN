@@ -953,6 +953,11 @@
 			
 		}//End function updateTable
 
+		public function getTableMayor($table,$order_id){
+			$result = $this->_db->query("SELECT * FROM ".$table." ORDER BY ".$order_id." DESC LIMIT 1");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+			return $retorna;
+		}//End function getTable
 
 
 	}//END CLASS databaseModel

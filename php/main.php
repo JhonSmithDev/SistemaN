@@ -12,6 +12,14 @@
 			echo json_encode($outp);
 			
 			break;
+		case '5': // el ultimo mayor
+
+			//instanciar objeto listar 
+			$listarObject = new databaseModel();
+			$outp = $listarObject->getTableMayor("".$_POST['opcion']."","".$_POST['order']."");
+			echo json_encode($outp);
+			
+			break;
 
 		case '0': // listar las tablas
 
@@ -34,6 +42,10 @@
 					break;
 				case 'tipocambio':
 					$outp = $listarObject->getTable("tipocambio","idtipocambio");
+					echo json_encode($outp);
+					break;
+				case 'tipopago':
+					$outp = $listarObject->getTable("tipopago","idTipoPago");
 					echo json_encode($outp);
 					break;
 				case 'usuario':

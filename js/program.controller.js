@@ -3279,7 +3279,12 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         $scope.hide_traspaso = "";
         $scope.dataRegistroComprobante = [];
         $scope.selectedMoneda = [];
-        $scope.formData = [];   
+        $scope.formData = []; 
+        $scope.debe_bs = "";
+        $scope.haber_bs = "";
+        $scope.debe_sus = "";
+        $scope.haber_sus = "";  
+        $scope.suma_debe_bs = 0;
 
     // fecha del sistema del lado del cliente
     var f=new Date();
@@ -3293,6 +3298,57 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
         dateFormat: "d/m/yy"
     });
+
+    // Pregunta Nro de asiento y comprobante
+    $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "librodiario", run : "5", order: "nro_ld"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("cuenta tamano: "+data.length);
+
+                switch(data.length){
+                    case 0:
+
+                            $scope.nro_asiento = "1";
+                            $scope.nro_comprobante = "1";
+
+                        break;
+                    default:
+                            $scope.nro_asiento = parseInt(data[0].nro_ld) + 1;
+                            $scope.nro_comprobante = $scope.nro_asiento;
+                }
+
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+                // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+               //location.href='#/producto';
+            }
+        });
 
     // ajax de llenado de cuenta
     $.ajax({
@@ -3423,6 +3479,47 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             }
         });
     
+    // ajax de llenado de tipo pago
+    $.ajax({
+            // la URL para la petición
+            url : '../php/main.php',
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                opcion : "tipopago", run : "0"
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                console.log("cuenta"+data.length);
+
+                $scope.dataTipoPago = data;
+                $scope.selectedTipoPago = data;
+
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+ 
+                // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+               //location.href='#/producto';
+            }
+        });
     
     //funcion para adicionar una fila registro comprobante
     $scope.agregarFila = function() {
@@ -3447,9 +3544,9 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             // la respuesta es pasada como argumento a la función
             success : function(data) {
                 console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
-                var cuenta = $scope.dataRegistroComprobante.length;
-                cuenta = cuenta + 1;
-                $scope.dataRegistroComprobante.push({id:cuenta , cod_cuenta: "", nom_cuenta: ""});  
+                var count = $scope.dataRegistroComprobante.length;
+                count = count + 1;
+                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: "", haber_bs: "", debe_sus: "", haber_sus: "", ng_modal: 0});  
                 $scope.$apply();
             },
  
@@ -3514,7 +3611,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
     //funcion para adicionar una fila registro comprobante
     $scope.buscarFila = function(id_fila) {
-        localStorage.setItem("id_fila",id_fila);
+        //localStorage.setItem("id_fila",id_fila);
+        console.log("id_fila->" +id_fila);
         $("#myModal").modal();
         $.ajax({
             // la URL para la petición
@@ -3536,7 +3634,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             // la respuesta es pasada como argumento a la función
             success : function(data) {
                 console.log("Cuenta"+ data.length);
-                $scope.dataCuenta = data;  
+                $scope.dataCuenta = data; 
+                $scope.id_fila_detalle =  id_fila;
                 $scope.$apply();
             },
  
@@ -3557,12 +3656,13 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
 
     // push a cuenta
-    $scope.pushCuenta = function (cod_cuenta, nom_cuenta){
+    $scope.pushCuenta = function (cod_cuenta, nom_cuenta, id_fila){
+        console.log("(2)id_fila->" +id_fila);
         $("#myModal").modal("hide");
         console.log("cod_cuenta: "+cod_cuenta);
-        if ($scope.dataRegistroComprobante[0].id == "1") {
-            $scope.dataRegistroComprobante[0].cod_cuenta = cod_cuenta;
-            $scope.dataRegistroComprobante[0].nom_cuenta = nom_cuenta;
+        if ($scope.dataRegistroComprobante[id_fila - 1].id == id_fila) {
+            $scope.dataRegistroComprobante[id_fila - 1].cod_cuenta = cod_cuenta;
+            $scope.dataRegistroComprobante[id_fila - 1].nom_cuenta = nom_cuenta;
         }
         
     }
@@ -3747,6 +3847,35 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
       
         
     };
+
+    //funcion para sumar los debe_bs
+    $scope.sumarDebe = function(){
+        console.log("valor de fila"+$scope.dataRegistroComprobante.length);
+
+        
+            
+
+    }
+
+    $scope.suma_debe_bs = function(){
+                var total = 0;
+                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
+                    var product = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+product.debe_bs);
+                    total += parseFloat(product.debe_bs);
+                }
+                return total;
+                
+    }
+    $scope.suma_haber_bs = function(){
+                var total = 0;
+                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
+                    var product = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+product.haber_bs);
+                    total += parseFloat(product.haber_bs);
+                }
+                return total;
+    }
 
      
 });
