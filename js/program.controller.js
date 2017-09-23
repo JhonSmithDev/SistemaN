@@ -3285,11 +3285,15 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         $scope.debe_sus = "";
         $scope.haber_sus = "";  
         $scope.suma_debe_bs = 0;
+        $scope.glosa = "";
+        $scope.nro_asiento = 0;
+        $scope.nro_comprobante = 0;
 
     // fecha del sistema del lado del cliente
     var f=new Date();
     $scope.fechaUsuario = f.getDate() + "/" + (f.getMonth()+1) + "/" + f.getFullYear();
     console.log($scope.fechaUsuario);
+    $scope.fecha_ld = $scope.fechaUsuario;
     //Permite crear pequena ventan de fecha
     $( ".fecha_comprobante" ).datepicker({
         //configura lo que debe mostrarse en la ventana de fecha
@@ -3324,8 +3328,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 switch(data.length){
                     case 0:
 
-                            $scope.nro_asiento = "1";
-                            $scope.nro_comprobante = "1";
+                            $scope.nro_asiento = 1;
+                            $scope.nro_comprobante = 1;
 
                         break;
                     default:
@@ -3546,7 +3550,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
                 var count = $scope.dataRegistroComprobante.length;
                 count = count + 1;
-                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: "", haber_bs: "", debe_sus: "", haber_sus: "", ng_modal: 0});  
+                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, ng_modal: 0});  
                 $scope.$apply();
             },
  
@@ -3669,7 +3673,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
     //funcion cuando se selecciona un tipo de cambio diferente
     $scope.hasChangedTipoCambio = function(){
-
+        console.log("id: "+$scope.selectedTipoCambio.tc_venta); 
     }
 
     //funcion cuando se selecciona una moneda diferente
@@ -3848,34 +3852,105 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         
     };
 
-    //funcion para sumar los debe_bs
-    $scope.sumarDebe = function(){
-        console.log("valor de fila"+$scope.dataRegistroComprobante.length);
-
-        
-            
-
-    }
-
     $scope.suma_debe_bs = function(){
                 var total = 0;
                 for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var product = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+product.debe_bs);
-                    total += parseFloat(product.debe_bs);
+                    var item = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+item.debe_bs);
+                    total += parseFloat(item.debe_bs);
                 }
                 return total;
                 
     }
+
     $scope.suma_haber_bs = function(){
                 var total = 0;
                 for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var product = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+product.haber_bs);
-                    total += parseFloat(product.haber_bs);
+                    var item = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+item.haber_bs);
+                    total += parseFloat(item.haber_bs);
                 }
                 return total;
     }
+
+    $scope.suma_debe_sus = function(){
+                var total = 0;
+                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
+                    var item = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+item.debe_sus);
+                    total += parseFloat(item.debe_sus);
+                }
+                return total;
+    }
+
+    $scope.suma_haber_sus = function(){
+                var total = 0;
+                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
+                    var item = $scope.dataRegistroComprobante[i];
+                    console.log("debe valor: "+item.haber_sus);
+                    total += parseFloat(item.haber_sus);
+                }
+                return total;
+    }
+
+    //guardar registros
+    $scope.guardar = function(){
+        //$scope.nro_asiento
+        //$scope.nro_comprobante
+        //$scope.selectedMoneda
+        //$scope.selectedDecContable
+        //$scope.fecha_ld
+        //$scope.selectedTipoCambio
+        //$scope.selectedTipoPago
+
+        //$scope.glosa
+
+        $.ajax({
+                // la URL para la petición
+                url : '../php/libroDiario.php',
+             
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                    glosa: $scope.glosa, 
+                    fecha: $scope.fecha_ld, 
+                    TipoPago_idTipoPago : $scope.selectedTipoPago.idTipoPago, 
+                    Moneda_idMoneda: $scope.selectedMoneda.idMoneda,
+                    nro_ld: $scope.nro_asiento,
+                    Usuario_idUsuario: 1,
+                    CicloContable_idCicloContable : 1
+                },
+             
+                // especifica si será una petición POST o GET
+                type : 'POST',
+             
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+             
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    console.log(data);
+
+                    location.reload();           
+                },
+             
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+             
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    //location.href='#/user_listar';
+                }
+            });
+    }
+
 
      
 });
