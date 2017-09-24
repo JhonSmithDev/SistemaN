@@ -3660,11 +3660,12 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
 
     // push a cuenta
-    $scope.pushCuenta = function (cod_cuenta, nom_cuenta, id_fila){
+    $scope.pushCuenta = function (idCuenta, cod_cuenta, nom_cuenta, id_fila){
         console.log("(2)id_fila->" +id_fila);
         $("#myModal").modal("hide");
         console.log("cod_cuenta: "+cod_cuenta);
         if ($scope.dataRegistroComprobante[id_fila - 1].id == id_fila) {
+            $scope.dataRegistroComprobante[id_fila - 1].Cuenta_idCuenta = idCuenta;
             $scope.dataRegistroComprobante[id_fila - 1].cod_cuenta = cod_cuenta;
             $scope.dataRegistroComprobante[id_fila - 1].nom_cuenta = nom_cuenta;
         }
@@ -3904,7 +3905,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         //$scope.selectedTipoPago
 
         //$scope.glosa
-
+        $scope.dataRegistroComprobante = JSON.stringify($scope.dataRegistroComprobante);
         $.ajax({
                 // la URL para la petición
                 url : '../php/libroDiario.php',
@@ -3918,7 +3919,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                     Moneda_idMoneda: $scope.selectedMoneda.idMoneda,
                     nro_ld: $scope.nro_asiento,
                     Usuario_idUsuario: 1,
-                    CicloContable_idCicloContable : 1
+                    CicloContable_idCicloContable : 1,
+                    data : $scope.dataRegistroComprobante
                 },
              
                 // especifica si será una petición POST o GET
