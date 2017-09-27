@@ -3278,6 +3278,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         //variable para ocultar cuando se escoge traspaso
         $scope.hide_traspaso = "";
         $scope.dataRegistroComprobante = [];
+        $scope.dato_registro = [];
         $scope.selectedMoneda = [];
         $scope.formData = []; 
         $scope.debe_bs = "";
@@ -3288,6 +3289,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         $scope.glosa = "";
         $scope.nro_asiento = 0;
         $scope.nro_comprobante = 0;
+        
 
     // fecha del sistema del lado del cliente
     var f=new Date();
@@ -3550,7 +3552,18 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
                 var count = $scope.dataRegistroComprobante.length;
                 count = count + 1;
-                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, ng_modal: 0});  
+                $scope.dato_registro.push({label: "Fecha de factura", tipo: "text", name: "fecha_factv" ,value: "" });
+                $scope.dato_registro.push({label: "Nro. de factura", tipo: "text", name: "nro_factv" ,value: "" });
+                $scope.dato_registro.push({label: "Nro. de autirzación", tipo: "text", name: "nro_autorizacionv" ,value: "" });
+                $scope.dato_registro.push({label: "Codigo de control de Venta", tipo: "text", name: "cod_controlv" ,value: "" });
+                $scope.dato_registro.push({label: "Importe de factura", tipo: "text", name: "importe_factv" ,value: "" });
+                $scope.dato_registro.push({label: "Importe ICE", tipo: "text", name: "imorte_ICEv" ,value: "" });
+                $scope.dato_registro.push({label: "Importe excento", tipo: "text", name: "importe_excentov" ,value: "" });
+                $scope.dato_registro.push({label: "Importe Neto", tipo: "text", name: "importe_netov" ,value: "" });
+                $scope.dato_registro.push({label: "D F", tipo: "text", name: "df" ,value: "" });
+
+                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, registro: $scope.dato_registro});  
+                //$("#myModal_registro").modal();
                 $scope.$apply();
             },
  
@@ -3951,6 +3964,10 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                     //location.href='#/user_listar';
                 }
             });
+    }
+
+    $scope.modal_registro_iva = function(){
+        $("#myModal_registro").modal();
     }
 
 
