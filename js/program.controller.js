@@ -3535,7 +3535,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     
     //funcion para adicionar una fila registro comprobante
     $scope.agregarFila = function() {
-
+        $scope.dato_registro = [];
         $.ajax({
             // la URL para la petición
             url : '../php/main.php',
