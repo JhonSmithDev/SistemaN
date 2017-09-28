@@ -3260,6 +3260,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
 app.controller("libroDiarioCtrl", function($scope, $http) {
 
     //Creacion de las variables a usar
+    //creacion de select Dec. contable
     $scope.selectDecContable = [
                                     {
                                         id: "1",
@@ -3275,9 +3276,14 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                                     }
 
                                 ];
+
         //variable para ocultar cuando se escoge traspaso
         $scope.hide_traspaso = "";
+
+        //variable que almacena toda la informacion a enviar
         $scope.dataRegistroComprobante = [];
+
+        //variable que almacena los registros de detalle de libro diario
         $scope.dato_registro = [];
         $scope.selectedMoneda = [];
         $scope.formData = []; 
@@ -3562,7 +3568,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.dato_registro.push({label: "Importe Neto", tipo: "text", name: "importe_netov" ,value: "" });
                 $scope.dato_registro.push({label: "D F", tipo: "text", name: "df" ,value: "" });
 
-                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, registro: $scope.dato_registro});  
+                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, checkboxSelected : false, registro: $scope.dato_registro});  
                 //$("#myModal_registro").modal();
                 $scope.$apply();
             },
@@ -3683,6 +3689,15 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             $scope.dataRegistroComprobante[id_fila - 1].nom_cuenta = nom_cuenta;
         }
         
+    }
+
+    //funcion para el checkbox
+    $scope.hasChangedCheckbox = function(id){
+        if ($scope.dataRegistroComprobante[id-1].checkboxSelected) {
+            $("#myModal_registro").modal();
+        }else{
+            $("#myModal_registro").modal("hide");
+        }
     }
 
     //funcion cuando se selecciona un tipo de cambio diferente
@@ -3866,6 +3881,15 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         
     };
 
+    //funcion para convertir Bs a Sus debe
+    $scope.valorDolar_debe_sus = function(valor1, valor2, id){
+        $scope.dataRegistroComprobante[id-1].debe_sus = parseFloat((valor1 / valor2)).toFixed(2);
+    }
+    //funcion para convertir Bs a Sus haber
+    $scope.valorDolar_haber_sus = function(valor1, valor2, id){
+        $scope.dataRegistroComprobante[id-1].haber_sus = parseFloat((valor1 / valor2)).toFixed(2);
+    }
+
     $scope.suma_debe_bs = function(){
                 var total = 0;
                 for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
@@ -3967,7 +3991,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     }
 
     $scope.modal_registro_iva = function(){
-        $("#myModal_registro").modal();
+        
     }
 
 
@@ -3977,7 +4001,6 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
 
 //////----=============++++++++++++++++FIN de controladores
-
 
 
 

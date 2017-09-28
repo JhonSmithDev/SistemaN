@@ -96,11 +96,11 @@
             	<td style="width: 50px;"><a href="" ng-click="eliminarFila()""><span class="glyphicon glyphicon-minus edita_css" aria-hidden="true"></span></a></td>
                <td style="width: 200px;"><a href="" ng-click="buscarFila(item.id)""><span class="glyphicon glyphicon-search edita_css" aria-hidden="true"></span></a><input type="text" name="" value="{{item.cod_cuenta}}"></td>
                <td style="width: 200px;"><input type="text" name="" value="{{item.nom_cuenta}}"></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs"></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs"></td>
-               <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model=" item.debe_sus = (item.debe_bs / selectedTipoCambio.tc_venta) | number: 2" readonly="readonly"></td>
-               <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="(item.haber_sus = item.haber_bs / selectedTipoCambio.tc_venta) | number: 2" readonly="readonly"></td>
-               <td style="width: 200px;" class="text-center {{hide_traspaso}}"><input type="checkbox" name="" ng-click="modal_registro_iva()"></td>
+               <td style="width: 200px;"><input type="text" name="" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs" ng-keyup = "valorDolar_debe_sus(item.debe_bs, selectedTipoCambio.tc_venta, item.id)"></td>
+               <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, selectedTipoCambio.tc_venta, item.id)"></td>
+               <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly" roundConverterFloat=""></td>
+               <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly" roundConverterFloat=""></td>
+               <td style="width: 200px;" class="text-center {{hide_traspaso}}"><input type="checkbox" name="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id)"></td>
             </tr>
             <tr>
                <td style="width: 50px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>
