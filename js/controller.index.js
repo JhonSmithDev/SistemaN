@@ -1,3 +1,5 @@
+// BY: NELY M CH M
+//Instancia del objeto modulo - para conectar con el html
 var app = angular.module('administra', []);
 app.controller("Ctrl_administra", function($scope, $http) {
   $scope.formData = {};
@@ -12,19 +14,19 @@ app.controller("Ctrl_administra", function($scope, $http) {
 
     $scope.submitForm = function(formData) {
       //$scope.formDataSend.name = $.md5(formData.name);
-      $scope.formDataSend.password = $.md5(formData.password);
+      var password = $.md5(formData.password);
 
-      $scope.formDataSend.name = formData.name;
+      var name = formData.name;
       //$scope.formDataSend.password = formData.password;      
 
       //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : 'php/user.php',
+                url : 'php/index.usuario.php',
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : { user :  $scope.formDataSend.name, psw : $scope.formDataSend.password},
+                data : { name :  name, password : password},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -35,17 +37,18 @@ app.controller("Ctrl_administra", function($scope, $http) {
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
-                  var datos = data[0].nombre;
 
-                  if (datos != "0") {
+                  if (data[0].activo == "1") {
                     console.log("entro");
-                    sessionStorage.setItem("user", datos);
-                    sessionStorage.setItem("id_user", data[0].id_usuario);
-                    sessionStorage.setItem("activo", "1");
-                    sessionStorage.setItem("rol", data[0].rol);                    
+
+                    sessionStorage.setItem("user", data[0].nombres_usu+" "+data[0].apellidos_usu );
+                    sessionStorage.setItem("id_user", data[0].idUsuario);
+                    sessionStorage.setItem("activo", data[0].activo);
+                    sessionStorage.setItem("rol", data[0].GrupoUsu_idGrupoUsu); 
+                    sessionStorage.setItem("id_rol", data[0].GrupoUsu_nombreGrupoUsu);    
+
                     location.href = 'template/program.html';  
-                  }
-                  if(datos == "0"){
+                  }else{
                     $("#myModalUser").modal('show');
                     sessionStorage.setItem("activo", "0"); 
                   } 

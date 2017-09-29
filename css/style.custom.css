@@ -12,11 +12,14 @@
 .letter-blue{
 	color: #337AB7;
 }
+.letter-white{
+  color: #FFF;
+}
 .gridStyle {
     border: 1px solid #0094DC;
     width: 100%; 
     /*height: 400px;*/
-     height: 70vh;
+     height: 60vh;
 }
 .grid-align-left{
 	text-align: right;
@@ -169,7 +172,7 @@ div.fixed-table-scroll-outer {
 }
 
 .table-container-body {
-    height: 40vh;
+    height: 28vh;
     overflow: auto;
     width: 100%;
 }
@@ -244,6 +247,21 @@ div.fixed-table-scroll-outer {
 .clear{
 	clear: both;
 }
+.nav>li>div {
+    position: relative;
+    display: block;
+    padding: 10px 16px;
+    height: 50px;
+}
 
+.navbar-nav>li>div {
+    padding-top: 16px;
+    padding-bottom: 10px;
+    line-height: 20px;
+    height: 50px;
+}
+.navbar-blue div {
+    color: #fff;
+}
 
 

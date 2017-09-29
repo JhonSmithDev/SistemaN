@@ -33,7 +33,7 @@
 	<!-- MENU -->
 
 
-<nav class="navbar navbar-blue" role="navigation">
+<nav ng-controller = "NavBarListarCtrl" class="navbar navbar-blue" role="navigation">
   <!-- El logotipo y el icono que despliega el menú se agrupan
        para mostrarlos mejor en los dispositivos móviles -->
   <div class="navbar-header">
@@ -52,18 +52,16 @@
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     
  
-    <ul class="nav nav-blue navbar-nav navbar-right">
-      <li><a href="">Gestion contable: </a></li>
-      <li><a href="">Fecha: <script>
-    var meses = new Array ("ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE");
-    var f=new Date();
-    document.write(f.getDate() + "/" + (f.getMonth()+1) + "/" + f.getFullYear());
-  </script></a></li>
+    <ul class="nav nav-blue navbar-nav navbar-right"> 
+      <li><div>Gestion contable: {{dataNavbar[0].gestion_contable}}</div></li>
+      <li class="letter-white"><div> Fecha: {{dataNavbar[0].fecha}}</div></li>
       <li><a href="">Ayuda</a></li>
-      <li><a href="" title="Salir del sistema"><span class="glyphicon glyphicon-user"></span><span class="nombre_usuario_head"></span></a></li>
+      <li><a href="" title="Salir del sistema" class="nombre_usuario_head_2"><span class="glyphicon glyphicon-user"></span> {{dataNavbar[0].nombre}}</a></li>
+      
     </ul>
-
-
+</div>
+<div>
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav nav-blue navbar-nav">
       <li class="dropdown">
         <a href="" class="dropdown-toggle" data-toggle="dropdown">
@@ -94,7 +92,6 @@
         <ul class="dropdown-menu dropdown-menu-fondo-blanco">
           <li><a href="#/clase_cuenta">Clase Cuentas</a></li>
           <li><a href="#/cuentas">Cuentas</a></li>
-          <li><a href="#/cuentas2">Cuentas (REALIZADO)</a></li>
         </ul>
       </li>
 
@@ -151,7 +148,7 @@
         </a>
       </li>
 
- 	</ul>
+  </ul>
   </div>
 </nav>
 

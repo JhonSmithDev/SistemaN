@@ -6,7 +6,9 @@
   <div class="col-md-3 text-right">Buscar <input type="text" name="" class="" ng-model="filterOptions.filterText"></div>
 </div>
 <div class="col-xs-12 col-md-12 gridStyle text-center margin-20" ng-grid="gridOptions"></div>
-<!-- Modal -->
+
+
+<!-- Modal para cuenta-->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -46,24 +48,34 @@
       <!-- Modal body-->
       <div class="modal-body col-md-12">
 
-        <div class="col-md-12" ng-repeat="item in formModal">
+        <div class="col-md-12" ng-repeat="item in formModal track by $index">
           <form>
 
-            <div class="form-group" ng-switch="item.input">
-              <div ng-switch-when="block" class="col-md-6">
-                <label for="{{item.for}}">{{item.label}}</label>
-                <input type="text" class="form-control {{item.class}}" ng-model='item.value' readonly="readonly">
+            <div class="form-group" ng-switch="item.tipo">
+              <div ng-switch-when="text-block" class="col-md-12">
+                <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' readonly="readonly"></div>
               </div>
-              <div ng-switch-when="text" class="col-md-6">
-                <label for="{{item.for}}">{{item.label}}</label>
-                <input type="text" class="form-control {{item.class}}" ng-model='item.value'>
+              <div ng-switch-when="text" class="col-md-12">
+                <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div>
               </div>
-              <div ng-switch-when="select" class="col-md-6">
-                <label for="{{item.for}}">{{item.label}}</label>
-                <select class="form-control {{item.class}}">
-                  <option>Test</option>
-                </select>
+
+              <div ng-switch-when="select" class="col-md-12">
+                <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                <div class="col-md-6">
+                  <select class="form-control {{item.class}}" ng-options="option.value for option in item.value track by option.id" ng-model="item.valueSelect" ng-change="hasChanged(item.valueSelect)"></select>
+                </div>
               </div>
+             <div ng-switch-when="select-block" class="col-md-12">
+                <div class="col-md-6"><label for="{{item.for}}">{{item.label}}</label></div>
+                <div class="col-md-6">
+                    <select class="form-control {{item.class}}" ng-options="option.value for option in item.value track by option.id" ng-model="item.valueSelect" ng-change="hasChanged(item.valueSelect)" disabled="disabled"></select>
+                </div>
+            </div>
+
+
+
               <div ng-switch-default>
               </div>
             </div>

@@ -12,6 +12,10 @@
 			parent:: __construct();
 		}
 
+		public function crearInterfaz(){
+			
+		}
+
 		public function insertarLibroDiario($glosa, $fecha, $tipoPagoId, $monedaId , $nro_ld, $Usuario_idUsuario, $CicloContable_idCicloContable, $data){
 			//insertar en tabla empresa los campos requeridos
 			if (!$this->_db->query("INSERT INTO comprobante (glosa_comp, fecha_comp, TipoPago_idTipoPago, Moneda_idMoneda) VALUES ('".$glosa."', '".$fecha."', '".$tipoPagoId."', '". $monedaId."')")) {
