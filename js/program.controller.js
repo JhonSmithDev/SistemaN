@@ -3907,51 +3907,9 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
 //      LISTAR, AGREGAR, MODIFICAR  COMPROBANTE
 
 app.controller("libroDiarioCtrl", function($scope, $http) {
-
-    //Creacion de las variables a usar
-    //creacion de select Dec. contable
-    $scope.selectDecContable = [
-                                    {
-                                        id: "1",
-                                        value: "Traspaso"
-                                    },
-                                    {
-                                        id: "2",
-                                        value: "Ingreso"
-                                    },
-                                    {
-                                        id: "3",
-                                        value: "Egreso"
-                                    }
-
-                                ];
-
-        //variable para ocultar cuando se escoge traspaso
-        $scope.hide_traspaso = "";
-
-        //variable que almacena toda la informacion a enviar
-        $scope.dataRegistroComprobante = [];
-
-        //variable que almacena los registros de detalle de libro diario
-        $scope.dato_registro = [];
-        $scope.selectedMoneda = [];
-        $scope.formData = []; 
-        $scope.debe_bs = "";
-        $scope.haber_bs = "";
-        $scope.debe_sus = "";
-        $scope.haber_sus = "";  
-        $scope.suma_debe_bs = 0;
-        $scope.glosa = "";
-        $scope.nro_asiento = 0;
-        $scope.nro_comprobante = 0;
-        
-
-    // fecha del sistema del lado del cliente
-    var f=new Date();
-    $scope.fechaUsuario = f.getDate() + "/" + (f.getMonth()+1) + "/" + f.getFullYear();
-    console.log($scope.fechaUsuario);
-    $scope.fecha_ld = $scope.fechaUsuario;
-    //Permite crear pequena ventan de fecha
+    //definicion de variables
+    var url = '../php/librodiario.php';
+    //FECHA DATAPICKER
     $( ".fecha_comprobante" ).datepicker({
         //configura lo que debe mostrarse en la ventana de fecha
         monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
@@ -3959,196 +3917,19 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
         dateFormat: "d/m/yy"
     });
-
-    // Pregunta Nro de asiento y comprobante
-    $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "librodiario", run : "5", order: "nro_ld"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("cuenta tamano: "+data.length);
-
-                switch(data.length){
-                    case 0:
-
-                            $scope.nro_asiento = 1;
-                            $scope.nro_comprobante = 1;
-
-                        break;
-                    default:
-                            $scope.nro_asiento = parseInt(data[0].nro_ld) + 1;
-                            $scope.nro_comprobante = $scope.nro_asiento;
-                }
-
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-                // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-               //location.href='#/producto';
-            }
-        });
-
-    // ajax de llenado de cuenta
-    $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "cuenta", run : "0"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("cuenta"+data.length);
-
-                $scope.dataCuenta = data;
-
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-                // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-               //location.href='#/producto';
-            }
-        });
-
-    // ajax de llenado de moneda
-    $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "moneda", run : "0"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("moneda"+data.length);
-
-                $scope.dataMoneda = data;
-
-                angular.forEach($scope.dataMoneda, function(value, key) {
-                  if ($scope.dataMoneda[key].idMoneda == "2") {
-                    $scope.selectedMoneda = $scope.dataMoneda[key];
-                  }
-                });
-                
-
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-                // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-               //location.href='#/producto';
-            }
-        });
-    // ajax de llenado de tipo de cambio por defecto $us
-    $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
-     
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : "2", order: "idtipocambio DESC"
-            },
-     
-            // especifica si será una petición POST o GET
-            type : 'POST',
-     
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
-     
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("tipo cambio llenado: "+data.length);
-
-                $scope.dataTipoCambio = data;
-                $scope.selectedTipoCambio = data;
-                $scope.$apply();
-            },
-     
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
-     
-            // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-                //location.href='#/producto';
-            }
-        });
+    $scope.formDataInterfaz = []; 
+    var formDataDetalle = [];
     
-    // ajax de llenado de tipo pago
+
+    // ajax de llenado de interfaz
     $.ajax({
             // la URL para la petición
-            url : '../php/main.php',
+            url : url,
  
             // la información a enviar
             // (también es posible utilizar una cadena de datos)
             data : { 
-                opcion : "tipopago", run : "0"
+                 run : "listar"
             },
  
             // especifica si será una petición POST o GET
@@ -4160,10 +3941,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             // código a ejecutar si la petición es satisfactoria;
             // la respuesta es pasada como argumento a la función
             success : function(data) {
-                console.log("cuenta"+data.length);
 
-                $scope.dataTipoPago = data;
-                $scope.selectedTipoPago = data;
+                $scope.formDataInterfaz = data;
 
                 $scope.$apply();
             },
@@ -4181,191 +3960,20 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                //location.href='#/producto';
             }
         });
+
     
-    //funcion para adicionar una fila registro comprobante
-    $scope.agregarFila = function() {
-        $scope.dato_registro = [];
-        $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "tipocambio", run : "0"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
-                var count = $scope.dataRegistroComprobante.length;
-                count = count + 1;
-                $scope.dato_registro.push({label: "Fecha de factura", tipo: "text", name: "fecha_factv" ,value: "" });
-                $scope.dato_registro.push({label: "Nro. de factura", tipo: "text", name: "nro_factv" ,value: "" });
-                $scope.dato_registro.push({label: "Nro. de autirzación", tipo: "text", name: "nro_autorizacionv" ,value: "" });
-                $scope.dato_registro.push({label: "Codigo de control de Venta", tipo: "text", name: "cod_controlv" ,value: "" });
-                $scope.dato_registro.push({label: "Importe de factura", tipo: "text", name: "importe_factv" ,value: "" });
-                $scope.dato_registro.push({label: "Importe ICE", tipo: "text", name: "imorte_ICEv" ,value: "" });
-                $scope.dato_registro.push({label: "Importe excento", tipo: "text", name: "importe_excentov" ,value: "" });
-                $scope.dato_registro.push({label: "Importe Neto", tipo: "text", name: "importe_netov" ,value: "" });
-                $scope.dato_registro.push({label: "D F", tipo: "text", name: "df" ,value: "" });
-
-                $scope.dataRegistroComprobante.push({id:count , cod_cuenta: "", nom_cuenta: "", debe_bs: 0, haber_bs: 0, debe_sus: 0, haber_sus: 0, checkboxSelected : false, registro: $scope.dato_registro});  
-                //$("#myModal_registro").modal();
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-            // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-                //location.href='#/user_listar';
-            }
-        });
-
-    };
-
-    //funcion para eliminar una fila registro comprobante
-    $scope.eliminarFila = function() {
-
-        $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "tipocambio", run : "0"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("Registro comprobante "+$scope.dataRegistroComprobante.length);
-                $scope.dataRegistroComprobante.pop();  
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-            // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-                //location.href='#/user_listar';
-            }
-        });
-
-    };
-
-    //funcion para adicionar una fila registro comprobante
-    $scope.buscarFila = function(id_fila) {
-        //localStorage.setItem("id_fila",id_fila);
-        console.log("id_fila->" +id_fila);
-        $("#myModal").modal();
-        $.ajax({
-            // la URL para la petición
-            url : '../php/main.php',
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                opcion : "cuenta", run : "0"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                console.log("Cuenta"+ data.length);
-                $scope.dataCuenta = data; 
-                $scope.id_fila_detalle =  id_fila;
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-            // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-                //location.href='#/user_listar';
-            }
-        });
-    }
-
-
-    // push a cuenta
-    $scope.pushCuenta = function (idCuenta, cod_cuenta, nom_cuenta, id_fila){
-        console.log("(2)id_fila->" +id_fila);
-        $("#myModal").modal("hide");
-        console.log("cod_cuenta: "+cod_cuenta);
-        if ($scope.dataRegistroComprobante[id_fila - 1].id == id_fila) {
-            $scope.dataRegistroComprobante[id_fila - 1].Cuenta_idCuenta = idCuenta;
-            $scope.dataRegistroComprobante[id_fila - 1].cod_cuenta = cod_cuenta;
-            $scope.dataRegistroComprobante[id_fila - 1].nom_cuenta = nom_cuenta;
-        }
-        
-    }
-
-    //funcion para el checkbox
-    $scope.hasChangedCheckbox = function(id){
-        if ($scope.dataRegistroComprobante[id-1].checkboxSelected) {
-            $("#myModal_registro").modal();
-        }else{
-            $("#myModal_registro").modal("hide");
-        }
-    }
-
-    //funcion cuando se selecciona un tipo de cambio diferente
-    $scope.hasChangedTipoCambio = function(){
-        console.log("id: "+$scope.selectedTipoCambio.tc_venta); 
-    }
-
-    //funcion cuando se selecciona una moneda diferente
+    //cambio de moneda hasChangedMoneda()
     $scope.hasChangedMoneda = function(){
-        console.log("id: "+$scope.selectedMoneda.idMoneda); 
-        // ajax de llenado de tipo de cambio
+
+        // ajax de llenado de interfaz
         $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
      
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                    opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : $scope.selectedMoneda.idMoneda, order: "idtipocambio DESC"
+                     run : "moneda", id: $scope.formDataInterfaz[2].valueSelect.id
                 },
      
                 // especifica si será una petición POST o GET
@@ -4377,10 +3985,10 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
-                    console.log("tipo cambio llenado: "+data.length);
 
-                    $scope.dataTipoCambio = data;
-                    $scope.selectedTipoCambio = data;
+                    $scope.formDataInterfaz[5].value = data;
+                    $scope.formDataInterfaz[5].valueSelect = data;
+
                     $scope.$apply();
                 },
      
@@ -4397,253 +4005,382 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                    //location.href='#/producto';
                 }
             });
-
+    }
+    
+    //cambio y adicion de un objeto IVA, mostrar y ocultar objeto recibido por y pagado por hasChangedDecContable
+    $scope.hasChangedDecContable = function(){
+        //console.log($scope.formDataInterfaz[3].valueSelect.id);
+        //selecciona si estraspaso / ingreso / egreso
+        switch($scope.formDataInterfaz[3].valueSelect.id) {
+            case '1'://traspaso
+                //console.log($scope.formDataInterfaz[3].valueSelect.id);
+                $scope.DECCONTABLErecibido_por = "hide";     
+                $scope.DECCONTABLEpagado_por = "hide";     
+                $scope.DECCONTABLEiva = "hide";  
+                $scope.TITULOLIBROIVA = "";   
+                break;
+            case '2'://ingreso
+                $scope.DECCONTABLErecibido_por = "";     
+                $scope.DECCONTABLEpagado_por = "hide";     
+                $scope.DECCONTABLEiva = "";
+                $scope.TITULOLIBROIVA = "Libro Ventas";
+                //console.log($scope.formDataInterfaz[3].valueSelect.id);
+                break;
+            case '3'://egreso
+                $scope.DECCONTABLErecibido_por = "hide";     
+                $scope.DECCONTABLEpagado_por = "";     
+                $scope.DECCONTABLEiva = "";
+                $scope.TITULOLIBROIVA = "Libro Compras";
+                //console.log($scope.formDataInterfaz[3].valueSelect.id);
+                break;
+            default:
+            
+        }
     }
 
-    //funcion para habilitar campo para adicionar nuevo tipo de cambio de moneda
+    //al escoger tipo cambio
+    $scope.hasChangedTipoCambio = function(){
+        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);
+
+        
+        //console.log("no null");
+        for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
+            var item = $scope.formDataInterfaz[12].value[i];
+
+
+            if (item == "") {
+                //console.log("vacio ");
+                    //total += 0;
+                //$scope.formDataInterfaz[12].value[id].debe_sus = 0.00;
+            }else{
+                //console.log("haber sus valor: "+item);
+                $scope.formDataInterfaz[12].value[i].debe_sus = parseFloat((item.debe_bs/valor2)).toFixed(2);
+                $scope.formDataInterfaz[12].value[i].haber_sus = parseFloat((item.haber_bs/valor2)).toFixed(2);
+            }
+                
+        }
+
+
+    }
+    //funcion para adicionar un nuevo tipo de cambio - esconde el select de tipocambio
     $scope.adicionarTipoCambio = function(){
         $("#adicionarTipoCambio_1").addClass("hide");
         $("#adicionarTipoCambio_2").removeClass("hide");
     }
-
-    //funcion para habilitar campo para adicionar nuevo tipo de cambio de moneda
+    //funcion para adicionar un nuevo tipo de cambio - cancela adicion y muestra el select de tipocambio
     $scope.cancelarAdicionarTipoCambio = function(){
         $("#adicionarTipoCambio_2").addClass("hide");
         $("#adicionarTipoCambio_1").removeClass("hide");
     }
-
-    //funcion para adicionar un nuevo tipo cambio
-    $scope.actionTipoCambio =function(){
-        $scope.formData = [
-                            {"id": "tc_venta", "value": $scope.fechaUsuario}, 
-                            {"id": "tc_compra" , "value": ""}, 
-                            {"id": "tc_venta" , "value": $scope.valorTipoCambio}, 
-                            {"id": "Moneda_idMoneda", "value" : $scope.selectedMoneda.idMoneda}
-                            ];
-        var myJsonString = JSON.stringify($scope.formData);
+    
+    $scope.actionTipoCambio = function(){
+        // ajax de adicionar nuevo tipo de cambio
         $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
-             
+                url : url,
+     
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                    opcion: "tipocambio", 
-                    run: "1", 
-                    data : myJsonString, 
-                    tipo: "insertar"
+                     run : "adicionar_tipocambio", value : $scope.valorTipoCambio, Moneda_idMoneda : $scope.formDataInterfaz[2].valueSelect.id
                 },
-             
+     
                 // especifica si será una petición POST o GET
                 type : 'POST',
-             
+     
                 // el tipo de información que se espera de respuesta
                 dataType : 'json',
-             
+     
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
 
-                    console.log("tipo cambio llenado: "+data.length);
+                    $scope.formDataInterfaz[5].value = data[0];
+                    $scope.formDataInterfaz[5].valueSelect = data[1];
 
-                    // ajax de llenado de tipo de cambio
-                    $.ajax({
-                            // la URL para la petición
-                            url : '../php/main.php',
-                 
-                            // la información a enviar
-                            // (también es posible utilizar una cadena de datos)
-                            data : { 
-                                opcion : "tipocambio", run : "4" , nom_id: "Moneda_idMoneda" , id : $scope.selectedMoneda.idMoneda, order: "idtipocambio DESC"
-                            },
-                 
-                            // especifica si será una petición POST o GET
-                            type : 'POST',
-                 
-                            // el tipo de información que se espera de respuesta
-                            dataType : 'json',
-                 
-                            // código a ejecutar si la petición es satisfactoria;
-                            // la respuesta es pasada como argumento a la función
-                            success : function(data) {
-                                console.log("tipo cambio llenado: "+data.length);
+                    //volver al principio
+                    $("#adicionarTipoCambio_2").addClass("hide");
+                    $("#adicionarTipoCambio_1").removeClass("hide");
 
-                                $scope.dataTipoCambio = data;
-                                $scope.selectedTipoCambio = data;
-                                $scope.valorTipoCambio = "";
-                                $("#adicionarTipoCambio_2").addClass("hide");
-                                $("#adicionarTipoCambio_1").removeClass("hide");
-                                $scope.$apply();
-                            },
-                 
-                            // código a ejecutar si la petición falla;
-                            // son pasados como argumentos a la función
-                            // el objeto de la petición en crudo y código de estatus de la petición
-                            error : function(xhr, status) {
-                                console.log('Disculpe, existió un problema');
-                            },
-                 
-                                // código a ejecutar sin importar si la petición falló o no
-                            complete : function(xhr, status) {
-                                //console.log('Petición realizada');
-                               //location.href='#/producto';
-                            }
-                        });
-                            
+                    $scope.$apply();
                 },
-             
+     
                 // código a ejecutar si la petición falla;
                 // son pasados como argumentos a la función
                 // el objeto de la petición en crudo y código de estatus de la petición
                 error : function(xhr, status) {
                     console.log('Disculpe, existió un problema');
                 },
-             
-                // código a ejecutar sin importar si la petición falló o no
+     
+                    // código a ejecutar sin importar si la petición falló o no
                 complete : function(xhr, status) {
                     //console.log('Petición realizada');
-                    //location.href='#/user_listar';
+                   //location.href='#/producto';
                 }
             });
-            //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
     }
 
-    //funcion para el select de Dec. contable
-    $scope.hasChangedDecContableo = function() {
-      
-        switch($scope.selectedDecContable.id) {
-            case "1":
-                $scope.hide_traspaso = "hide";
-                break;
-            case "2":
-                console.log("escoge 2");
-                break;
-            case "3":
-                console.log("escoge 3");
-                break;
-            default:
-                console.log("error con $scope.selectedDecContable.id");
-        }
-
-
-      
         
-    };
+    //desplegar ventana para adicionar una nueva cuenta
+    $scope.buscarFila = function(id){
+        $("#myModal").modal();
+        $scope.nro_filaNOW = id;
+    }
+    //crear fila con datos de cuenta
+    $scope.pushCuenta = function(idCuenta, codCuenta, nomCuenta, idFila){
+        $("#myModal").modal("hide");
+        $scope.formDataInterfaz[12].value[idFila].cod_cuenta = codCuenta;
+        $scope.formDataInterfaz[12].value[idFila].nom_cuenta = nomCuenta;
+    }
+    //agregar fila visualizada
+    $scope.agregarFila = function(){
+        //console.log($scope.formDataInterfaz[12].value);
+        
+        // ajax de adicionar nuevo detalle
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "crear_detalle", idFila : $scope.formDataInterfaz[12].value.length
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz[12].value.push(data);
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+    }
+
+    //ADICIONAR IVA
+    //funcion para el checkbox
+    $scope.hasChangedCheckbox = function(id){
+        console.log($scope.formDataInterfaz[12].value[id].checkboxSelected);
+        if ($scope.formDataInterfaz[12].value[id].checkboxSelected) {
+            $("#myModal_registro").modal();
+        }else{
+            $("#myModal_registro").modal("hide");
+        }
+        // ajax de adicionar nuevo detalle
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "crear_iva", idFila : id, idDecContable : $scope.formDataInterfaz[3].valueSelect.id 
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.dato_registro = data;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+    }
+
+    //agregar Iva Ingreso / Egresolulu
+    $scope.agregarIva = function(idFila){
+        
+        
+        
+    }
 
     //funcion para convertir Bs a Sus debe
-    $scope.valorDolar_debe_sus = function(valor1, valor2, id){
-        $scope.dataRegistroComprobante[id-1].debe_sus = parseFloat((valor1 / valor2)).toFixed(2);
+    $scope.valorDolar_debe_sus = function(valor, id){
+        //console.log("!avisame : "+$scope.formDataInterfaz[5].valueSelect.value);
+
+        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);
+        var valor1 = parseFloat(valor).toFixed(2);
+        if (valor1 !="") {
+            $scope.formDataInterfaz[12].value[id].debe_sus = parseFloat((valor1/valor2)).toFixed(2); 
+        }else{
+            $scope.formDataInterfaz[12].value[id].debe_sus = 0.00;
+        }
+               
     }
     //funcion para convertir Bs a Sus haber
-    $scope.valorDolar_haber_sus = function(valor1, valor2, id){
-        $scope.dataRegistroComprobante[id-1].haber_sus = parseFloat((valor1 / valor2)).toFixed(2);
+    $scope.valorDolar_haber_sus = function(valor, id){
+        //$scope.dataRegistroComprobante[id].haber_sus = parseFloat((valor1 / valor2)).toFixed(2);
+        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);
+        var valor1 = parseFloat(valor).toFixed(2);
+
+        if (valor1 !="") {
+            $scope.formDataInterfaz[12].value[id].haber_sus = parseFloat((valor1/valor2)).toFixed(2); 
+        }else{
+            $scope.formDataInterfaz[12].value[id].haber_sus = 0.00;
+        }
     }
 
-    $scope.suma_debe_bs = function(){
-                var total = 0;
-                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var item = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+item.debe_bs);
-                    total += parseFloat(item.debe_bs);
+
+
+    $scope.suma_debe_bs = function(valor){
+        var total = 0;
+        if (valor != null) {
+            //console.log("no null");
+            for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
+                var item = $scope.formDataInterfaz[12].value[i].debe_bs
+                if (item == "") {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
                 }
-                return total;
+                
+            }
+            return parseFloat(total).toFixed(2);
+        }
+                
+    }
+    $scope.suma_haber_bs = function(valor){
+        var total = 0;
+        if (valor != null) {
+            //console.log("no null");
+            for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
+                var item = $scope.formDataInterfaz[12].value[i].haber_bs
+                if (item == "") {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("haber bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            return parseFloat(total).toFixed(2);
+        }
+                
+    }
+    $scope.suma_debe_sus = function(valor){
+        var total = 0;
+        if (valor != null) {
+            //console.log("no null");
+            for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
+                var item = $scope.formDataInterfaz[12].value[i].debe_sus
+                if (item == "") {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe sus valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            return parseFloat(total).toFixed(2);
+        }
+                
+    }
+    $scope.suma_haber_sus = function(valor){
+        var total = 0;
+        if (valor != null) {
+            //console.log("no null");
+            for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
+                var item = $scope.formDataInterfaz[12].value[i].haber_sus
+                if (item == "") {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("haber sus valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            return parseFloat(total).toFixed(2);
+        }
                 
     }
 
-    $scope.suma_haber_bs = function(){
-                var total = 0;
-                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var item = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+item.haber_bs);
-                    total += parseFloat(item.haber_bs);
-                }
-                return total;
-    }
-
-    $scope.suma_debe_sus = function(){
-                var total = 0;
-                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var item = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+item.debe_sus);
-                    total += parseFloat(item.debe_sus);
-                }
-                return total;
-    }
-
-    $scope.suma_haber_sus = function(){
-                var total = 0;
-                for(var i = 0; i < $scope.dataRegistroComprobante.length; i++){
-                    var item = $scope.dataRegistroComprobante[i];
-                    console.log("debe valor: "+item.haber_sus);
-                    total += parseFloat(item.haber_sus);
-                }
-                return total;
-    }
-
-    //guardar registros
+    //funcion que guardara los datos de libro diario
     $scope.guardar = function(){
-        //$scope.nro_asiento
-        //$scope.nro_comprobante
-        //$scope.selectedMoneda
-        //$scope.selectedDecContable
-        //$scope.fecha_ld
-        //$scope.selectedTipoCambio
-        //$scope.selectedTipoPago
-
-        //$scope.glosa
-        $scope.dataRegistroComprobante = JSON.stringify($scope.dataRegistroComprobante);
+        // ajax de adicionar nuevo tipo de cambio
         $.ajax({
                 // la URL para la petición
-                url : '../php/libroDiario.php',
-             
+                url : url,
+     
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                    glosa: $scope.glosa, 
-                    fecha: $scope.fecha_ld, 
-                    TipoPago_idTipoPago : $scope.selectedTipoPago.idTipoPago, 
-                    Moneda_idMoneda: $scope.selectedMoneda.idMoneda,
-                    nro_ld: $scope.nro_asiento,
-                    Usuario_idUsuario: 1,
-                    CicloContable_idCicloContable : 1,
-                    data : $scope.dataRegistroComprobante
+                     run : "adicionar_tipocambio", value :  JSON.stringify($scope.formDataInterfaz)
                 },
-             
+     
                 // especifica si será una petición POST o GET
                 type : 'POST',
-             
+     
                 // el tipo de información que se espera de respuesta
                 dataType : 'json',
-             
+     
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
 
-                    console.log(data);
-
-                    location.reload();           
+                    
                 },
-             
+     
                 // código a ejecutar si la petición falla;
                 // son pasados como argumentos a la función
                 // el objeto de la petición en crudo y código de estatus de la petición
                 error : function(xhr, status) {
                     console.log('Disculpe, existió un problema');
                 },
-             
-                // código a ejecutar sin importar si la petición falló o no
+     
+                    // código a ejecutar sin importar si la petición falló o no
                 complete : function(xhr, status) {
                     //console.log('Petición realizada');
-                    //location.href='#/user_listar';
+                   //location.href='#/producto';
                 }
             });
     }
 
-    $scope.modal_registro_iva = function(){
-        
-    }
-
-
+    
      
 });
 

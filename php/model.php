@@ -13,6 +13,7 @@
 				return ;
 			}
 			$this->_db->set_charset(db_charset);
+			date_default_timezone_set("America/La_Paz"); 
 		}
 	}
 ?>
