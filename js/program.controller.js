@@ -30,7 +30,7 @@ app.controller("NavBarListarCtrl", function($scope, $http) {
             // código a ejecutar si la petición es satisfactoria;
             // la respuesta es pasada como argumento a la función
             success : function(data) {
-                console.log(data);
+                //console.log(data);
 
                 $scope.dataNavbar = data;
 
@@ -4789,8 +4789,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         switch(llenarSegun){
             case 'cuenta':
                 $scope.nro_filaNOW = id;
-                $scope.valor1 = "";
-                $scope.valor2 = "";
+                $scope.valor1 = "CÓDIGO CUENTA";
+                $scope.valor2 = "NOMBRE CUENTA";
                 llenarSegunCCP = "cuenta";
                 $scope.titulo_llenar_modal = "CUENTA";
                 $scope.tipo_llenarData = "cuenta";
@@ -4928,14 +4928,26 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             });
     }
 
+    //eliminar fila de detalle del libro diario
+    $scope.eliminarFila =function(idFila){
+        $scope.formDataInterfaz[12].value.splice(idFila, 1);
+        console.log($scope.formDataInterfaz[12].value);
+
+        angular.forEach($scope.formDataInterfaz[12].value, function(value, key) {
+            //console.log(key);
+            $scope.formDataInterfaz[12].value[key].id = key;
+        });
+        console.log($scope.formDataInterfaz[12].value);
+    }
+
     //ADICIONAR IVA
     //funcion para el checkbox
     $scope.hasChangedCheckbox = function(id){
-        console.log($scope.formDataInterfaz[12].value[id].checkboxSelected);
-        if ($scope.formDataInterfaz[12].value[id].checkboxSelected) {
-            $("#myModal_registro").modal();
+        //console.log($scope.formDataInterfaz[12].value[id].checkboxSelected);
+        if ($scope.formDataInterfaz[12].value[id].checkboxSelected) {//si fue selecciona y tickeada el check box de IVA
+            $("#myModal_registro").modal();// abre ventana (modal)
         }else{
-            $("#myModal_registro").modal("hide");
+            $("#myModal_registro").modal("hide");// cierra ventana (modal)
         }
         // ajax de adicionar nuevo detalle
         $.ajax({
@@ -4988,27 +5000,48 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     //funcion para convertir Bs a Sus debe
     $scope.valorDolar_debe_sus = function(valor, id){
         //console.log("!avisame : "+$scope.formDataInterfaz[5].valueSelect.value);
+        //console.log("!avisame : "+valor);
 
-        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);
-        var valor1 = parseFloat(valor).toFixed(2);
-        if (valor1 !="") {
-            $scope.formDataInterfaz[12].value[id].debe_sus = parseFloat((valor1/valor2)).toFixed(2); 
-        }else{
-            $scope.formDataInterfaz[12].value[id].debe_sus = 0.00;
+        if (valor == "") {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+            //console.log("entro");
+            valor = "0";
         }
+        
+
+        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);// es el valor del campo Tipo de Cambio
+        var valor1 = parseFloat(valor).toFixed(2);// es el valor del campo Debe bs
+
+        if (valor2 == ""){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+            valor2 = 0.00;
+        }
+
+
+        //operacion division para hallar la conversion de moneda boliviana a dolar americano
+        $scope.formDataInterfaz[12].value[id].debe_sus = parseFloat((valor1/valor2)).toFixed(2); 
+
                
     }
     //funcion para convertir Bs a Sus haber
     $scope.valorDolar_haber_sus = function(valor, id){
-        //$scope.dataRegistroComprobante[id].haber_sus = parseFloat((valor1 / valor2)).toFixed(2);
-        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);
-        var valor1 = parseFloat(valor).toFixed(2);
+        //console.log("!avisame : "+$scope.formDataInterfaz[5].valueSelect.value);
+        //console.log("!avisame : "+valor);
 
-        if (valor1 !="") {
-            $scope.formDataInterfaz[12].value[id].haber_sus = parseFloat((valor1/valor2)).toFixed(2); 
-        }else{
-            $scope.formDataInterfaz[12].value[id].haber_sus = 0.00;
+        if (valor == "") {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+            //console.log("entro");
+            valor = "0";
         }
+        
+
+        var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);// es el valor del campo Tipo de Cambio
+        var valor1 = parseFloat(valor).toFixed(2);// es el valor del campo Debe bs
+
+        if (valor2 == ""){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+            valor2 = 0.00;
+        }
+
+
+        //operacion division para hallar la conversion de moneda boliviana a dolar americano
+        $scope.formDataInterfaz[12].value[id].haber_sus = parseFloat((valor1/valor2)).toFixed(2); 
     }
 
 

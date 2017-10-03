@@ -305,5 +305,12 @@ div.fixed-table-scroll-outer {
     right: 6px;
     top: 245px;
 }
-
+.background-errorTotal{
+  background: red;
+  color: white;
+}
+.background-correctoTotal{
+  background: white;
+  color: green;
+}
 
