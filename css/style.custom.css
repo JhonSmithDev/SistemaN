@@ -263,5 +263,47 @@ div.fixed-table-scroll-outer {
 .navbar-blue div {
     color: #fff;
 }
+.boton_PANTALLA_1 {
+    border-radius: 8px 8px 8px 8px;
+    float: right;
+    position: fixed;
+    min-height: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
+    z-index: 999;
+    right: 6px;
+    top: 125px;
+}
+.boton_PANTALLA_2 {
+    border-radius: 8px 8px 8px 8px;
+    float: right;
+    position: fixed;
+    min-height: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
+    z-index: 999;
+    right: 6px;
+    top: 185px;
+}
+.boton_PANTALLA_3 {
+    border-radius: 8px 8px 8px 8px;
+    float: right;
+    position: fixed;
+    min-height: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
+    z-index: 999;
+    right: 6px;
+    top: 245px;
+}
 
 

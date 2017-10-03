@@ -2400,6 +2400,10 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
     // Dato para el titulo interfaz
     $scope.titulo = "USUARIO";
     var opcion = "usuario";
+    $scope.hide_buttom = '';
+    $scope.formModal=[];
+    $scope.id_modal = "";
+    var url = '../php/usuario.php';
 
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
@@ -2442,11 +2446,11 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
                 //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -2488,11 +2492,11 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
             } else {
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -2560,10 +2564,10 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idUsuario)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
-                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idUsuario)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idUsuario,2)"><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idUsuario,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idUsuario', displayName: 'CÓDIGO', width:100}, 
-                     {field: 'ci_usuario', displayName: 'C.I.', width:200},
+                     {field: 'ci_usu', displayName: 'C.I.', width:200},
                      {field: 'login_usu', displayName:'LOGIN', width: 150},
                      {field: 'pass_usu', displayName:'PASSWORD', width: 150},
                      {field: 'apellidos_usu', displayName:'APELLIDO', width: 150},
@@ -2577,6 +2581,299 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
 
     };
 
+    //Funcion para AGREGAR, MODIFICAR Y ELIMINAR
+    $scope.action = function(id,run){
+        $("#myModalForm").modal();
+        $scope.id_modal = id;
+        //seleccion de tipo de evento a realizar Insert, Update , Delete
+        switch(run) {
+            case 1:
+                $scope.titulo_accion = "AGREGAR"; 
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo" 
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log($scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                break;
+            case 2:
+                $scope.titulo_accion = "MODIFICAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            case 3:
+                $scope.titulo_accion = "ELIMINAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            default:
+            
+        }
+
+        
+    }
+    $scope.cancelar = function(){
+        $("#myModalForm").modal("hide");
+        $scope.formModal = []; 
+    }
+    $scope.actualizaGrid = function(run,id){
+        $("#myModalForm").modal('hide'); 
+        var user = sessionStorage.getItem("user");
+        console.log( $scope.formModal + "esto es lo que agrega");
+        console.log( run + "run");
+        $scope.formModal = JSON.stringify($scope.formModal);
+
+        //selecciona forma de actualizad si sera INSERT UPDATE DELETE
+        switch(run) {
+            case 1:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, 
+                            data : $scope.formModal, 
+                            tipo: "insertar"
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            case 2:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {
+                            run: run, 
+                            data : $scope.formModal, 
+                            tipo: "modificar",
+                            id: $scope.id_modal
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            case 3:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {  
+                            run: run,  
+                            tipo: "eliminar",
+                            id: $scope.id_modal,
+                            user : user
+
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            default:
+        }
+        
+    }
+
 });
 
 //      LISTAR TIPO USUARIO
@@ -2585,7 +2882,13 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
     
     // Dato para el titulo interfaz
     $scope.titulo = "GRUPO USUARIO";
-    var opcion = "grupoUsuario";
+    var opcion = "grupousu";
+    $scope.hide_buttom = '';
+    $scope.formModal=[];
+    $scope.id_modal = "";
+    var url = '../php/grupousu.php';
+
+    
 
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
@@ -2628,11 +2931,11 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
                 //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -2674,11 +2977,11 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
             } else {
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -2746,14 +3049,306 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idGrupoUsu)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
-                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idGrupoUsu)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idGrupoUsu,2)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idGrupoUsu,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idGrupoUsu', displayName: 'CÓDIGO', width:100}, 
                      {field: 'nom_gu', displayName: 'NOMBRE', width:200},
                      
                      ]
 
     };
+    //Funcion para AGREGAR, MODIFICAR Y ELIMINAR
+    $scope.action = function(id,run){
+        $("#myModalForm").modal();
+        $scope.id_modal = id;
+        //seleccion de tipo de evento a realizar Insert, Update , Delete
+        switch(run) {
+            case 1:
+                $scope.titulo_accion = "AGREGAR"; 
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo" 
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log($scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                break;
+            case 2:
+                $scope.titulo_accion = "MODIFICAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            case 3:
+                $scope.titulo_accion = "ELIMINAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            default:
+            
+        }
+
+        
+    }
+    $scope.cancelar = function(){
+        $("#myModalForm").modal("hide");
+        $scope.formModal = []; 
+    }
+    $scope.actualizaGrid = function(run,id){
+        $("#myModalForm").modal('hide'); 
+        var user = sessionStorage.getItem("user");
+        console.log( $scope.formModal + "esto es lo que agrega");
+        console.log( run + "run");
+        $scope.formModal = JSON.stringify($scope.formModal);
+
+        //selecciona forma de actualizad si sera INSERT UPDATE DELETE
+        switch(run) {
+            case 1:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, 
+                            data : $scope.formModal, 
+                            tipo: "insertar"
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            case 2:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {
+                            run: run, 
+                            data : $scope.formModal, 
+                            tipo: "modificar",
+                            id: $scope.id_modal
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            case 3:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {  
+                            run: run,  
+                            tipo: "eliminar",
+                            id: $scope.id_modal,
+                            user : user
+
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            default:
+        }
+        
+    }
 
 });
 
@@ -2943,12 +3538,14 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
 
 app.controller("listarClienteCtrl", function($scope, $http, $location) {
     
+
     // Dato para el titulo interfaz
     $scope.titulo = "CLIENTE";
     var opcion = "cliente";
     $scope.hide_buttom = '';
     $scope.formModal=[];
     $scope.id_modal = "";
+    var url = '../php/cliente.php';
 
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
@@ -2991,11 +3588,11 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                 //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3037,11 +3634,11 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
             } else {
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3137,12 +3734,12 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo" 
+                            run: run, tipo: "campo" 
                         },
              
                         // especifica si será una petición POST o GET
@@ -3181,12 +3778,12 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo", id: id
+                            run: run, tipo: "campo", id: id
                         },
              
                         // especifica si será una petición POST o GET
@@ -3225,12 +3822,12 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo", id: id
+                            run: run, tipo: "campo", id: id
                         },
              
                         // especifica si será una petición POST o GET
@@ -3276,6 +3873,7 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
     }
     $scope.actualizaGrid = function(run,id){
         $("#myModalForm").modal('hide'); 
+        var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
         $scope.formModal = JSON.stringify($scope.formModal);
@@ -3285,12 +3883,11 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
             case 1:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, 
                             run: run, 
                             data : $scope.formModal, 
                             tipo: "insertar"
@@ -3328,12 +3925,11 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
             case 2:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
-                        data : { 
-                            opcion: opcion, 
+                        data : {
                             run: run, 
                             data : $scope.formModal, 
                             tipo: "modificar",
@@ -3373,15 +3969,16 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
             case 3:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
-                        data : { 
-                            opcion: opcion, 
+                        data : {  
                             run: run,  
                             tipo: "eliminar",
-                            id: $scope.id_modal
+                            id: $scope.id_modal,
+                            user : user
+
                         },
              
                         // especifica si será una petición POST o GET
@@ -3418,7 +4015,6 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
         }
         
     }
-
 });
 
 //      LISTAR PROVEEDOR
@@ -3431,6 +4027,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
     $scope.hide_buttom = '';
     $scope.formModal=[];
     $scope.id_modal = "";
+    var url = '../php/proveedor.php';
 
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
@@ -3473,11 +4070,11 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                 //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3519,11 +4116,11 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
             } else {
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3618,12 +4215,12 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo" 
+                            run: run, tipo: "campo" 
                         },
              
                         // especifica si será una petición POST o GET
@@ -3662,12 +4259,12 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo", id: id
+                            run: run, tipo: "campo", id: id
                         },
              
                         // especifica si será una petición POST o GET
@@ -3706,12 +4303,12 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                 $scope.run = run;
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, run: run, tipo: "campo", id: id
+                            run: run, tipo: "campo", id: id
                         },
              
                         // especifica si será una petición POST o GET
@@ -3757,6 +4354,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
     }
     $scope.actualizaGrid = function(run,id){
         $("#myModalForm").modal('hide'); 
+        var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
         $scope.formModal = JSON.stringify($scope.formModal);
@@ -3766,12 +4364,11 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
             case 1:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
                         data : { 
-                            opcion: opcion, 
                             run: run, 
                             data : $scope.formModal, 
                             tipo: "insertar"
@@ -3809,12 +4406,11 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
             case 2:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
-                        data : { 
-                            opcion: opcion, 
+                        data : {
                             run: run, 
                             data : $scope.formModal, 
                             tipo: "modificar",
@@ -3854,15 +4450,16 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
             case 3:
                 $.ajax({
                         // la URL para la petición
-                        url : '../php/main.php',
+                        url : url,
              
                         // la información a enviar
                         // (también es posible utilizar una cadena de datos)
-                        data : { 
-                            opcion: opcion, 
+                        data : {  
                             run: run,  
                             tipo: "eliminar",
-                            id: $scope.id_modal
+                            id: $scope.id_modal,
+                            user : user
+
                         },
              
                         // especifica si será una petición POST o GET
@@ -3917,49 +4514,99 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
         dateFormat: "d/m/yy"
     });
+    //valor por defecto del titulo de Pagado por / recibido por
+    $scope.titulo_llenar = "Por definir"; 
+
+    //llenado de datos para interfaz
     $scope.formDataInterfaz = []; 
+
+    //lenado para para detalle
     var formDataDetalle = [];
+
+    //llenado de datos para el modal de busqueda
+    $scope.formModalLlenar = [];
+
+    //valores de nombre campo en la tabla que se muestra en modal
+    $scope.valor1 = "";
+    $scope.valor2 = "";
+
+    //especifica que tabla se llenara en el modal venta debusqueda
+    $scope.tablaIva = "";
     
-
-    // ajax de llenado de interfaz
-    $.ajax({
-            // la URL para la petición
-            url : url,
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                 run : "listar"
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-
-                $scope.formDataInterfaz = data;
-
-                $scope.$apply();
-            },
- 
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema');
-            },
- 
-                // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-                //console.log('Petición realizada');
-               //location.href='#/producto';
-            }
+    //LIMPIA UN LIBRO DIARIO
+    $scope.limpiaribroDiario = function(){
+        //definicion de variables
+        var url = '../php/librodiario.php';
+        //FECHA DATAPICKER
+        $( ".fecha_comprobante" ).datepicker({
+            //configura lo que debe mostrarse en la ventana de fecha
+            monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+            dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+            dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+            dateFormat: "d/m/yy"
         });
+        //valor por defecto del titulo de Pagado por / recibido por
+        $scope.titulo_llenar = "Por definir"; 
+
+        //llenado de datos para interfaz
+        $scope.formDataInterfaz = []; 
+
+        //lenado para para detalle
+        var formDataDetalle = [];
+
+        //llenado de datos para el modal de busqueda
+        $scope.formModalLlenar = [];
+
+        //valores de nombre campo en la tabla que se muestra en modal
+        $scope.valor1 = "";
+        $scope.valor2 = "";
+
+        //especifica que tabla se llenara en el modal venta debusqueda
+        $scope.tablaIva = "";
+    }
+
+    // ADICIONA UN NUEVO LIBRO DIARIO
+    $scope.nuevoLibroDiario = function(){
+        // ajax de llenado de interfaz
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "listar"
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz = data;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+    }
 
     
     //cambio de moneda hasChangedMoneda()
@@ -4008,34 +4655,42 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     }
     
     //cambio y adicion de un objeto IVA, mostrar y ocultar objeto recibido por y pagado por hasChangedDecContable
-    $scope.hasChangedDecContable = function(){
+    $scope.hasChangedDocContable = function(){
         //console.log($scope.formDataInterfaz[3].valueSelect.id);
         //selecciona si estraspaso / ingreso / egreso
         switch($scope.formDataInterfaz[3].valueSelect.id) {
             case '1'://traspaso
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
-                $scope.DECCONTABLErecibido_por = "hide";     
-                $scope.DECCONTABLEpagado_por = "hide";     
-                $scope.DECCONTABLEiva = "hide";  
-                $scope.TITULOLIBROIVA = "";   
+                    
+                $scope.DECCONTABLEiva = "hide"; 
+                $scope.titulo_llenar = "Por definir"; 
+                $scope.TITULOLIBROIVA = ""; 
+                $scope.tablaIva = "";
+
                 break;
             case '2'://ingreso
-                $scope.DECCONTABLErecibido_por = "";     
-                $scope.DECCONTABLEpagado_por = "hide";     
+                     
                 $scope.DECCONTABLEiva = "";
                 $scope.TITULOLIBROIVA = "Libro Ventas";
+                $scope.titulo_llenar = "Recibido por";
+                $scope.tablaIva = "cliente";
+
+   
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
                 break;
             case '3'://egreso
-                $scope.DECCONTABLErecibido_por = "hide";     
-                $scope.DECCONTABLEpagado_por = "";     
+                    
                 $scope.DECCONTABLEiva = "";
                 $scope.TITULOLIBROIVA = "Libro Compras";
+                $scope.titulo_llenar = "Pagado por";
+                $scope.tablaIva = "proveedor";
+
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
                 break;
             default:
             
         }
+
     }
 
     //al escoger tipo cambio
@@ -4122,15 +4777,111 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
         
     //desplegar ventana para adicionar una nueva cuenta
-    $scope.buscarFila = function(id){
+    $scope.buscarFila = function(id, llenarSegun){
+        console.log(llenarSegun);
+        console.log($scope.tablaIva);
         $("#myModal").modal();
-        $scope.nro_filaNOW = id;
+
+        //variable q se enviara para llenar
+        var llenarSegunCCP = "";
+
+        //escoje el tipo de llenado de cuenta o doc contable
+        switch(llenarSegun){
+            case 'cuenta':
+                $scope.nro_filaNOW = id;
+                $scope.valor1 = "";
+                $scope.valor2 = "";
+                llenarSegunCCP = "cuenta";
+                $scope.titulo_llenar_modal = "CUENTA";
+                $scope.tipo_llenarData = "cuenta";
+
+                break
+            case 'docContable':
+                $scope.tipo_llenarData = "clienteProveedor";
+                //clasificacion de llenado, si sera cuenta o proveedor
+                switch($scope.tablaIva){
+                    case 'cliente':
+                        $scope.nro_filaNOW = id;
+                        $scope.valor1 = "Nombre de cliente";
+                        $scope.valor2 = "CI / NIT";
+                        llenarSegunCCP = "cliente";
+                        $scope.titulo_llenar_modal = "CLIENTE";
+                        break
+                    case 'proveedor':
+                        $scope.nro_filaNOW = id;
+                        $scope.valor1 = "Nombre de proveedor";
+                        $scope.valor2 = "CI / NIT";
+                        llenarSegunCCP = "cliente";
+                        $scope.titulo_llenar_modal = "PROVEEDOR";
+                        break
+                }
+                
+                break
+            default: 
+                
+        }
+
+        
+        // ajax de adicionar nuevo tipo de cambio
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "llenarSegunDocContable", llenarSegunDocContable : llenarSegunCCP
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formModalLlenar = data;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+        
     }
     //crear fila con datos de cuenta
-    $scope.pushCuenta = function(idCuenta, codCuenta, nomCuenta, idFila){
+    $scope.pushDataInput = function(idData, value1Data, value2Data, idFilaCasoCuenta, llenaDataCaso){
         $("#myModal").modal("hide");
-        $scope.formDataInterfaz[12].value[idFila].cod_cuenta = codCuenta;
-        $scope.formDataInterfaz[12].value[idFila].nom_cuenta = nomCuenta;
+        //llenar en input valores 1 y 2 de Data
+        switch(llenaDataCaso){
+            case'cuenta':
+
+                $scope.formDataInterfaz[12].value[idFilaCasoCuenta].cod_cuenta = value1Data;
+                $scope.formDataInterfaz[12].value[idFilaCasoCuenta].nom_cuenta = value2Data;
+                break
+            case'clienteProveedor':
+
+                $scope.formDataInterfaz[6].value = value1Data;
+                $scope.formDataInterfaz[8].value = value2Data;
+
+                break
+            default:
+        }
+        
     }
     //agregar fila visualizada
     $scope.agregarFila = function(){

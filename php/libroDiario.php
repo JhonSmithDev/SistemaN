@@ -382,31 +382,6 @@
 							'class'=> "",
 							'value'=> "",
 							'valueSelect'=> "");
-
-			//**************************************
-			//para campo Listado de cuentas
-			// Creacion de campos
-			$result = $this->_db->query("SELECT * FROM cuenta");
-			$retorna = $result->fetch_all(MYSQL_ASSOC);
-
-			//verifica que exista la tabla
-			if (!$result) {
-				//en casso de error muestra el problema en consola
-		    	return "Fallo select cuenta: (" . $this->_db->errno . ") " . $this->_db->error;
-			}else{
-				//return array('mensaje'=> "todo bien",'tamano'=> count($retorna));
-				// Creacion de campos
-				$outp[] = array('name'=> "cuenta",
-								'table'=> "cuenta",
-								'label'=> "",
-								'tipo'=> "listar",
-								'class'=> "",
-								'value'=> $retorna,
-								'valueSelect'=> "");
-				
-			}
-
-
 			
 
 			$result->close();
@@ -565,6 +540,96 @@
 		}
 
 
+		//funcion par llenar el modal con datos de cuenta, cliente y proveedor
+		public function llenarModal($idDecContable){
+			$outp =  array();
+			switch ($idDecContable) {
+				case 'cuenta':
+					//**************************************
+					//para campo Listado de cuentas
+					// Creacion de campos
+					$result = $this->_db->query("SELECT * FROM cuenta");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+					//verifica que exista la tabla
+					if (!$result) {
+						//en casso de error muestra el problema en consola
+				    	return "Fallo select cuenta: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//return array('mensaje'=> "todo bien",'tamano'=> count($retorna));
+						// Creacion de campos
+						//$outp = $retorna;
+						//formando para el select
+						foreach ($retorna as $clave => $valor) {
+			    			//print_r($valor['categoria_producto']);
+						    $outp[] =  array('id'=> $valor['idCuenta'],
+											 'value1'=> $valor['cod_cuenta'],
+											 'value2'=> $valor['nom_cuenta']
+											 );
+
+						}
+						
+					}
+					break;
+					case 'cliente':
+					//**************************************
+					//para campo Listado de clientes
+					// Creacion de campos
+					$result = $this->_db->query("SELECT * FROM cliente WHERE show_by = '1'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+					//verifica que exista la tabla
+					if (!$result) {
+						//en casso de error muestra el problema en consola
+				    	return "Fallo select cliente: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//return array('mensaje'=> "todo bien",'tamano'=> count($retorna));
+						// Creacion de campos
+						foreach ($retorna as $clave => $valor) {
+			    			//print_r($valor['categoria_producto']);
+						    $outp[] =  array('id'=> $valor['idCliente'],
+											 'value1'=> $valor['nom_cliente'],
+											 'value2'=> $valor['cod_cliente']
+											 );
+
+						}
+						
+					}
+					break;
+					case 'proveedor':
+					//**************************************
+					//para campo Listado de proveedores
+					// Creacion de campos
+					$result = $this->_db->query("SELECT * FROM proveedor WHERE  WHERE show_by = '1'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+					//verifica que exista la tabla
+					if (!$result) {
+						//en casso de error muestra el problema en consola
+				    	return "Fallo select proveedor: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//return array('mensaje'=> "todo bien",'tamano'=> count($retorna));
+						// Creacion de campos
+						foreach ($retorna as $clave => $valor) {
+			    			//print_r($valor['categoria_producto']);
+						    $outp[] =  array('id'=> $valor['idProveedor'],
+											 'value1'=> $valor['nom_prov'],
+											 'value2'=> $valor['cod_prov']
+											 );
+
+						}
+						
+					}
+					break;
+				
+				default:
+					$outp = array('error'=> "Llenar modal");
+					break;
+			}
+			return $outp;
+		}
+
+
 	}
 
 	
@@ -589,6 +654,9 @@
 			break;
 		case 'crear_iva':
 			$outp = $object->crearIva($_POST['idFila'], $_POST['idDecContable']);
+			break;
+		case 'llenarSegunDocContable':
+			$outp = $object->llenarModal($_POST['llenarSegunDocContable']);
 			break;
 		default:
 			# code...
