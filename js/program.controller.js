@@ -4666,6 +4666,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.titulo_llenar = "Por definir"; 
                 $scope.TITULOLIBROIVA = ""; 
                 $scope.tablaIva = "";
+                $scope.formDataInterfaz[1].valueSigla = "CDT-"+$scope.formDataInterfaz[1].value;
 
                 break;
             case '2'://ingreso
@@ -4674,6 +4675,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.TITULOLIBROIVA = "Libro Ventas";
                 $scope.titulo_llenar = "Recibido por";
                 $scope.tablaIva = "cliente";
+                $scope.formDataInterfaz[1].valueSigla = "CDI-"+$scope.formDataInterfaz[1].value;
 
    
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
@@ -4684,6 +4686,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.TITULOLIBROIVA = "Libro Compras";
                 $scope.titulo_llenar = "Pagado por";
                 $scope.tablaIva = "proveedor";
+                $scope.formDataInterfaz[1].valueSigla = "CDE-"+$scope.formDataInterfaz[1].value;
 
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
                 break;
@@ -4778,8 +4781,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         
     //desplegar ventana para adicionar una nueva cuenta
     $scope.buscarFila = function(id, llenarSegun){
-        console.log(llenarSegun);
-        console.log($scope.tablaIva);
+        //console.log(llenarSegun);
+        //console.log($scope.tablaIva);
         $("#myModal").modal();
 
         //variable q se enviara para llenar
@@ -4811,7 +4814,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                         $scope.nro_filaNOW = id;
                         $scope.valor1 = "Nombre de proveedor";
                         $scope.valor2 = "CI / NIT";
-                        llenarSegunCCP = "cliente";
+                        llenarSegunCCP = "proveedor";
                         $scope.titulo_llenar_modal = "PROVEEDOR";
                         break
                 }
@@ -4863,7 +4866,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             });
         
     }
-    //crear fila con datos de cuenta
+    //crear fila con datos de cuenta o llenar los input recibido por:/pagado por: y nit/ci
     $scope.pushDataInput = function(idData, value1Data, value2Data, idFilaCasoCuenta, llenaDataCaso){
         $("#myModal").modal("hide");
         //llenar en input valores 1 y 2 de Data
@@ -4877,6 +4880,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
                 $scope.formDataInterfaz[6].value = value1Data;
                 $scope.formDataInterfaz[8].value = value2Data;
+                $scope.idIVACLIENTEPROVEEDOR = idData;
 
                 break
             default:
@@ -4931,24 +4935,29 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     //eliminar fila de detalle del libro diario
     $scope.eliminarFila =function(idFila){
         $scope.formDataInterfaz[12].value.splice(idFila, 1);
-        console.log($scope.formDataInterfaz[12].value);
+        //console.log($scope.formDataInterfaz[12].value);
 
         angular.forEach($scope.formDataInterfaz[12].value, function(value, key) {
             //console.log(key);
             $scope.formDataInterfaz[12].value[key].id = key;
         });
-        console.log($scope.formDataInterfaz[12].value);
+        //console.log($scope.formDataInterfaz[12].value);
     }
 
     //ADICIONAR IVA
     //funcion para el checkbox
-    $scope.hasChangedCheckbox = function(id){
+    $scope.hasChangedCheckbox = function(id, item){
+
         //console.log($scope.formDataInterfaz[12].value[id].checkboxSelected);
         if ($scope.formDataInterfaz[12].value[id].checkboxSelected) {//si fue selecciona y tickeada el check box de IVA
             $("#myModal_registro").modal();// abre ventana (modal)
         }else{
             $("#myModal_registro").modal("hide");// cierra ventana (modal)
         }
+        
+        //fila en la que se activo el checkbox
+        $scope.checkboxFILA = id;
+
         // ajax de adicionar nuevo detalle
         $.ajax({
                 // la URL para la petición
@@ -4957,7 +4966,11 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                     run : "crear_iva", idFila : id, idDecContable : $scope.formDataInterfaz[3].valueSelect.id 
+                     run : "crear_iva", //que hara
+                     idFila : id, // index de fila
+                     idDecContable : $scope.formDataInterfaz[3].valueSelect.id, // que tipo de Doc. contable es 
+                     idIVACLIENTEPROVEEDOR: $scope.idIVACLIENTEPROVEEDOR,// el id del cliente o proveeedor segun el doc contable
+                     dataFila : JSON.stringify(item) //fila en el que se hizo checked
                 },
      
                 // especifica si será una petición POST o GET
@@ -4990,10 +5003,90 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             });
     }
 
-    //agregar Iva Ingreso / Egresolulu
-    $scope.agregarIva = function(idFila){
-        
-        
+    //agregar Iva Ingreso / Egreso
+    $scope.agregarInfo = function(idFilaIva, datoFilaIva){
+        //console.log($scope.formDataInterfaz[12].value[idFilaIva]);
+        $scope.formDataInterfaz[12].value[idFilaIva].registroIva = datoFilaIva;
+        //console.log($scope.formDataInterfaz[12].value[idFilaIva]);
+        $("#myModal_registro").modal("hide");// cierra ventana (modal)
+        // ajax de adicionar nuevo detalle
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "crear_detalle_FISCAL", // que hara
+                     idFila : $scope.formDataInterfaz[12].value.length, //index fila - en donde lo hara
+                     datoFilaIva: JSON.stringify(datoFilaIva),  //informacion del iva para la fila
+                     idDecContable : $scope.formDataInterfaz[3].valueSelect.id // tipo de doc contable
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    //cuando el doc contable es ingreso se convierte la monedas de la columna haber
+                    if ($scope.formDataInterfaz[3].valueSelect.id == "2") {
+                        $scope.formDataInterfaz[12].value[idFilaIva].haber_bs = datoFilaIva[10].value;
+                        $scope.formDataInterfaz[12].value[idFilaIva].haber_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva].haber_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+
+                        $scope.formDataInterfaz[12].value.push(data);
+                        $scope.formDataInterfaz[12].value[idFilaIva+1].haber_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva+1].haber_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+                    }
+
+                    //cuando el doc contable es egreso se convierte la monedas de la columna debe
+                    if ($scope.formDataInterfaz[3].valueSelect.id == "3") {
+                        $scope.formDataInterfaz[12].value[idFilaIva].debe_bs = datoFilaIva[10].value;
+                        $scope.formDataInterfaz[12].value[idFilaIva].debe_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva].debe_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+
+                        $scope.formDataInterfaz[12].value.push(data);
+                        $scope.formDataInterfaz[12].value[idFilaIva+1].debe_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva+1].debe_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+                    }
+                    
+
+                    $scope.$apply();
+                    console.log($scope.formDataInterfaz[12].value);
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+    }
+
+    //calcula el credito fiscal y el debito fiscal
+    $scope.sumaIva = function(valor1, valor2, valor3, valor4){
+        if(valor1 == ""){
+            valor1 = 0.00;
+        }
+        if(valor2 == ""){
+            valor2 = 0.00;
+        }
+        if(valor3 == ""){
+            valor3 = 0.00;
+        }
+        if(valor4 == ""){
+            valor4 = 0.00;
+        }
+        $scope.dato_registro[8].value = parseFloat(((valor1*1) + (valor2*1) + (valor3*1) + (valor4*1)) * 0.13).toFixed(2);
+        $scope.dato_registro[10].value = parseFloat($scope.dato_registro[9].value - $scope.dato_registro[8].value);
+        //operacion division para hallar la conversion de moneda boliviana a dolar americano
         
     }
 
@@ -5124,7 +5217,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     }
 
     //funcion que guardara los datos de libro diario
-    $scope.guardar = function(){
+    $scope.guardarLibroDiario = function(){
         // ajax de adicionar nuevo tipo de cambio
         $.ajax({
                 // la URL para la petición
@@ -5133,7 +5226,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                     run : "adicionar_tipocambio", value :  JSON.stringify($scope.formDataInterfaz)
+                     run : "guardar_libro_diario", value :  JSON.stringify($scope.formDataInterfaz)
                 },
      
                 // especifica si será una petición POST o GET
@@ -5146,6 +5239,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
 
+                    console.lod(data);
                     
                 },
      

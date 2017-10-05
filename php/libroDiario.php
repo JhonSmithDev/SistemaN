@@ -108,6 +108,8 @@
 			$result->close();
 			
 		}
+
+		//creacion de los campos para el libro diario 
 		public function crearInterfaz(){
 
 			//creacion de arrays de campos
@@ -139,8 +141,8 @@
 									'label'=> "Nro. Comprobante",
 									'tipo'=> "text",
 									'class'=> "",
-									'value'=> "CDT-".count($retorna)."",
-									'valueSelect'=> "");
+									'value'=> "".count($retorna)."",
+									'valueSigla'=> "");
 
 				}else{
 					$outp[] = array('name'=> "nro_ld",
@@ -157,8 +159,8 @@
 									'label'=> "Nro. Comprobante",
 									'tipo'=> "text",
 									'class'=> "",
-									'value'=> "CDT-".($retorna[0]['nro_ld'] + 1)."",
-									'valueSelect'=> "");
+									'value'=> "".($retorna[0]['nro_ld'] + 1)."",
+									'valueSigla'=> "");
 				}
 				
 			}
@@ -313,8 +315,8 @@
 			//**************************************
 			//para campo Nro recibo
 			// Creacion de campos
-			$outp[] = array('name'=> "",
-							'table'=> "0",
+			$outp[] = array('name'=> "recibo_comp",
+							'table'=> "comprobante",
 							'label'=> "Nro. Recibo",
 							'tipo'=> "text",
 							'class'=> "",
@@ -324,18 +326,37 @@
 			//**************************************
 			//para campo TIPO DE PAGO
 
-			//creacio de opcion para select
-			$tipopago []= array('id'=> "1", 'value'=> "Efectivo",);
-			$tipopago []= array('id'=> "2", 'value'=> "Banco",);
-			$tipopago []= array('id'=> "3", 'value'=> "Cheque",);
 			// Creacion de campos
-			$outp[] = array('name'=> "",
-							'table'=> "0",
-							'label'=> "Nro. Recibo",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> $tipopago,
-							'valueSelect'=> "");
+			$outp_select = array();	
+			$result= $this->_db->query("SELECT * FROM tipopago WHERE show_by= '1'");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+			//print_r($retorna);
+
+			//formando para el select
+			foreach ($retorna as $clave => $valor) {
+    			//print_r($valor['categoria_producto']);
+			    $outp_select[] = array('id'=> $valor['idTipoPago'],
+									   'value'=> $valor['nom_tp'],
+									   'filter'=> $valor['tipo_pago']
+									   );
+
+			}
+
+			//verifica que exista la tabla
+			if (!$result) {
+				//en casso de error muestra el problema en consola
+		    	return "Fallo select tipopago: (" . $this->_db->errno . ") " . $this->_db->error;
+			}else{
+				// Creacion de campos
+				$outp[] = array('name'=> "",
+								'table'=> "tipopago",
+								'label'=> "tipopago",
+								'tipo'=> "select",
+								'class'=> "",
+								'value'=> $outp_select,
+								'valueSelect'=> $outp_select);
+			}
+			
 
 			//**************************************
 			//para campo Nro Glosa
@@ -407,7 +428,13 @@
 								  );
 				return $outp;
 		}
-		public function crearIva($idFila , $idDecContable){
+
+		//crea informacion del iva vacio
+		public function crearIva($idFila , $idDecContable, $idIVACLIENTEPROVEEDOR, $dataFila){
+			//convertir json a array para su lectura
+			$data = json_decode($dataFila, true);
+
+			//print_r($data);
 			$outp = array();
 			switch ($idDecContable) {
 				case '2'://Ingreso
@@ -437,33 +464,55 @@
 	                				);
 
 	                $outp[] = array('label'=> "Importe de factura", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_factv",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "imorte_ICEv",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe excento", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_excentov",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe Neto", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_netov",
 	                				'value'=> "" 
 	                				);
 
-	                $outp[] = array('label'=> "D F", 
+	                $outp[] = array('label'=> "DF", 
 	                				'tipo'=> "text", 
-	                				'name'=> "df",
+	                				'name'=> "resultado",
 	                				'value'=> ""
+	                				);
+
+
+	                $outp[] = array('label'=> "sub total fila",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "sub_total_fila",
+	                				'value'=> $data['haber_bs']
+	                				);
+
+	                $outp[] = array('label'=> "total fila",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "total_fila",
+	                				'value'=> 0
+	                				);
+
+	                 $outp[] = array('label'=> "Cliente_idCliente",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "Cliente_idCliente",
+	                				'value'=> $idIVACLIENTEPROVEEDOR
 	                				);
 
 
@@ -497,42 +546,123 @@
 	                				);
 
 	                $outp[] = array('label'=> "Importe de factura", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_factc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "imorte_ICEc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe excento", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_excentoc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe Neto", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_netoc",
 	                				'value'=> "" 
 	                				);
 
-	                $outp[] = array('label'=> "C F", 
+	                $outp[] = array('label'=> "CF", 
 	                				'tipo'=> "text", 
-	                				'name'=> "cf",
+	                				'name'=> "resultado",
 	                				'value'=> ""
 	                				);
 
+	                $outp[] = array('label'=> "sub total fila",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "sub_total_fila",
+	                				'value'=> $data['debe_bs']
+	                				);
+
+	                $outp[] = array('label'=> "total fila",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "total_fila",
+	                				'value'=> 0
+	                				);
+
+	                 $outp[] = array('label'=> "Proveedor_idProveedor",
+	                				'class'=> "", 
+	                				'tipo'=> "text-block", 
+	                				'name'=> "Proveedor_idProveedor",
+	                				'value'=> $idIVACLIENTEPROVEEDOR
+	                				);
+
+
+	                 //print_r($outp);
 	                return $outp;
+
 
 					break;
 				default:
 					# code...
 					break;
 			}
+			//print_r($outp);
+			//**************************************
+				//para campos DETALLE O REGISTRO obj
+				//genra fila
+				
+		}
+
+
+		//creacion de una  fila para detalle de libro diario
+		public function crearDetalleFISCAL($idFila , $datoFilaIva, $idDecContable){
+			//convertir json a array para su lectura
+			$data =  json_decode($datoFilaIva, true);
+
+			//print_r($data);
+			$outp = array();
+			switch ($idDecContable) {
+				case '2'://Ingreso
+					$array_ = array();
+					$outp = array('id'=> $idFila , 
+									  'cod_cuenta'=> "221", 
+									  'nom_cuenta'=> "DEBITO FISCAL", 
+									  'debe_bs'=> "", 
+									  'haber_bs'=> $data[8]['value'], 
+									  'debe_sus'=> "", 
+									  'haber_sus'=> "", 
+									  'checkboxSelected' => true, 
+									  'registro'=> $array_
+									  );
+					
+
+
+					return $outp;
+
+					break;
+				case '3'://Egreso
+					$array_ = array();
+					$outp = array('id'=> $idFila , 
+									  'cod_cuenta'=> "1207", 
+									  'nom_cuenta'=> "CREDITO FISCAL", 
+									  'debe_bs'=> $data[8]['value'], 
+									  'haber_bs'=> "", 
+									  'debe_sus'=> "", 
+									  'haber_sus'=> "", 
+									  'checkboxSelected' => true, 
+									  'registro'=> $array_
+									  );
+
+	                 //print_r($outp);
+	                return $outp;
+
+
+					break;
+				default:
+					# code...
+					break;
+			}
+			//print_r($outp);
 			//**************************************
 				//para campos DETALLE O REGISTRO obj
 				//genra fila
@@ -600,7 +730,7 @@
 					//**************************************
 					//para campo Listado de proveedores
 					// Creacion de campos
-					$result = $this->_db->query("SELECT * FROM proveedor WHERE  WHERE show_by = '1'");
+					$result = $this->_db->query("SELECT * FROM proveedor WHERE show_by = '1'");
 					$retorna = $result->fetch_all(MYSQL_ASSOC);
 
 					//verifica que exista la tabla
@@ -653,7 +783,10 @@
 			$outp = $object->crearDetalle($_POST['idFila']);
 			break;
 		case 'crear_iva':
-			$outp = $object->crearIva($_POST['idFila'], $_POST['idDecContable']);
+			$outp = $object->crearIva($_POST['idFila'], $_POST['idDecContable'], $_POST['idIVACLIENTEPROVEEDOR'], $_POST['dataFila']);
+			break;
+		case 'crear_detalle_FISCAL':
+			$outp = $object->crearDetalleFISCAL($_POST['idFila'], $_POST['datoFilaIva'], $_POST['idDecContable']);
 			break;
 		case 'llenarSegunDocContable':
 			$outp = $object->llenarModal($_POST['llenarSegunDocContable']);

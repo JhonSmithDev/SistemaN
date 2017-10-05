@@ -1,17 +1,17 @@
 
 
-<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_1" ng-click="nuevoLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_1" ng-click="nuevoLibroDiario()" title="Agregar"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
 
 <div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_2" ng-click="guardarLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
 
-<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Guardar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
 
 <div class="col-md-12">
 	<div class="border-1 col-md-12">
 	<form class="form-group">
 	<div class="col-md-6 text-center letter-big letter-blue">LIBRO DIARIO</div>
 	<div class="col-md-2">Asiento: <br><input type="text" name="asiento" class="form-control" readonly="readonly" ng-model="formDataInterfaz[0].value"></div>
-	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control" readonly="readonly" ng-model="formDataInterfaz[1].value"></div>
+	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control" readonly="readonly" ng-model="formDataInterfaz[1].valueSigla"></div>
   <div class="col-md-2">
     Moneda de cambio:  <br>
     <select class="form-control" ng-options="option.value for option in formDataInterfaz[2].value track by option.id" ng-model="formDataInterfaz[2].valueSelect" ng-change="hasChangedMoneda()"></select>
@@ -118,7 +118,7 @@
                <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, item.id)"></td>
                <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly" ></td>
                <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly" ></td>
-               <td style="width: 200px;" class="text-center {{DECCONTABLEiva}}"><input type="checkbox" name="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id)"></td>
+               <td style="width: 200px;" class="text-center {{DECCONTABLEiva}}"><input type="checkbox" name="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id, item)"></td>
             </tr>
             <tr>
                <td style="width: 50px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>
@@ -230,49 +230,48 @@
   <div class="modal-dialog">
 
     <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-content col-md-12">
+      <div class="modal-header col-md-12">
         <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
         <h4 class="modal-title">Registro {{TITULOLIBROIVA}}</h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body col-md-12">
 
         <div class="col-md-12" ng-repeat="item in dato_registro">
-            <form>
 
                 <div class="form-group col-md-12" ng-switch="item.tipo">
 
-                    <div ng-switch-when="text" class="col-md-12">
+                    <div ng-switch-when="text" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                         <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div>
                     </div>
 
+                    <div ng-switch-when="text-keyup" class="col-md-12 {{item.class}}">
+                        <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)"></div>
+                    </div>
 
-                    <div ng-switch-when="text-block" class="col-md-12">
+
+                    <div ng-switch-when="text-block" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                         <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' readonly="readonly"></div>
                     </div>
 
-                    <div ng-switch-when="select" class="col-md-12">
+                    <div ng-switch-when="select" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.for}}">{{item.label}}</label></div>
                         <div class="col-md-6">
                           <select class="form-control {{item.clas}}" ng-options="option.descripcion_categoria for option in item.value track by option.categoria_producto" ng-model="item.valueselect" ng-change="hasChanged(item.valueselect)"></select>
                                 
                         </div>
                     </div>
-
-                    <div ng-switch-default>
-                    </div>
                 </div>
-
-            </form>
         </div>
 
 
       
       </div>
-      <div class="modal-footer">
-
+      <div class="modal-footer col-md-12">
+        <button type="button" class="btn btn-primary" ng-click="agregarInfo(checkboxFILA, dato_registro)">Agregar</button>
         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -280,6 +279,7 @@
   </div>
 </div>
 
+<div class="col-md-12"></div>
 <script type="text/javascript">
 	var $body = $(".table-container-body"),
     $header = $(".table-container-header"),
