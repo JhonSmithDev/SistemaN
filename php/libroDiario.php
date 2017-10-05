@@ -440,7 +440,7 @@
 				case '2'://Ingreso
 					
 					$outp[] = array('label'=> "Fecha de factura", 
-									'tipo'=> "text", 
+									'tipo'=> "text-date", 
 									'name'=> "fecha_factv",
 									'value'=> "" 
 									);
@@ -522,7 +522,7 @@
 				case '3'://Egreso
 
 					$outp[] = array('label'=> "Fecha de factura", 
-									'tipo'=> "text", 
+									'tipo'=> "text-date", 
 									'name'=> "fecha_factc",
 									'value'=> "" 
 									);

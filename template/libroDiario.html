@@ -246,6 +246,11 @@
                         <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div>
                     </div>
 
+                    <div ng-switch-when="text-date" class="col-md-12 {{item.class}}">
+                        <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                        <div class="col-md-6"> <input id="fecha_iva" type="text" class="form-control" name="{{item.name}}" ng-model="item.value"></div>
+                    </div>
+
                     <div ng-switch-when="text-keyup" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                         <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)"></div>

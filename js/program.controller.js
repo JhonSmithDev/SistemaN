@@ -4545,6 +4545,14 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
             dateFormat: "d/m/yy"
         });
+
+        $("#fecha_iva" ).datepicker({
+            //configura lo que debe mostrarse en la ventana de fecha
+            monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+            dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+            dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+            dateFormat: "d/m/yy"
+        });
         //valor por defecto del titulo de Pagado por / recibido por
         $scope.titulo_llenar = "Por definir"; 
 
@@ -5033,21 +5041,21 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
                     //cuando el doc contable es ingreso se convierte la monedas de la columna haber
-                    if ($scope.formDataInterfaz[3].valueSelect.id == "2") {
+                    if ($scope.formDataInterfaz[3].valueSelect.id == "2") {//ingreso
                         $scope.formDataInterfaz[12].value[idFilaIva].haber_bs = datoFilaIva[10].value;
                         $scope.formDataInterfaz[12].value[idFilaIva].haber_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva].haber_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
 
                         $scope.formDataInterfaz[12].value.push(data);
-                        $scope.formDataInterfaz[12].value[idFilaIva+1].haber_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva+1].haber_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+                        $scope.formDataInterfaz[12].value[$scope.formDataInterfaz[12].value.length - 1].haber_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[$scope.formDataInterfaz[12].value.length - 1].haber_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
                     }
 
                     //cuando el doc contable es egreso se convierte la monedas de la columna debe
-                    if ($scope.formDataInterfaz[3].valueSelect.id == "3") {
+                    if ($scope.formDataInterfaz[3].valueSelect.id == "3") {//egreso
                         $scope.formDataInterfaz[12].value[idFilaIva].debe_bs = datoFilaIva[10].value;
                         $scope.formDataInterfaz[12].value[idFilaIva].debe_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva].debe_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
 
                         $scope.formDataInterfaz[12].value.push(data);
-                        $scope.formDataInterfaz[12].value[idFilaIva+1].debe_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[idFilaIva+1].debe_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
+                        $scope.formDataInterfaz[12].value[$scope.formDataInterfaz[12].value.length - 1].debe_sus = parseFloat(parseFloat($scope.formDataInterfaz[12].value[$scope.formDataInterfaz[12].value.length - 1].debe_bs).toFixed(2)/parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2)).toFixed(2); 
                     }
                     
 
