@@ -4514,6 +4514,17 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
         dateFormat: "d/m/yy"
     });
+    $( ".fecha_iva" ).datepicker({
+        //configura lo que debe mostrarse en la ventana de fecha
+        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+        dateFormat: "d/m/yy"
+    });
+
+    
+
+
     //valor por defecto del titulo de Pagado por / recibido por
     $scope.titulo_llenar = "Por definir"; 
 
@@ -4546,13 +4557,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             dateFormat: "d/m/yy"
         });
 
-        $("#fecha_iva" ).datepicker({
-            //configura lo que debe mostrarse en la ventana de fecha
-            monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
-            dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
-            dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
-            dateFormat: "d/m/yy"
-        });
+        
+
         //valor por defecto del titulo de Pagado por / recibido por
         $scope.titulo_llenar = "Por definir"; 
 
@@ -4992,6 +4998,14 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.dato_registro = data;
+                    $('#idTourDateDetails').datepicker({
+         dateFormat: 'dd-mm-yy',
+         minDate: '+5d',
+         changeMonth: true,
+         changeYear: true,
+         altField: "#idTourDateDetailsHidden",
+         altFormat: "yy-mm-dd"
+    });
 
                     $scope.$apply();
                 },

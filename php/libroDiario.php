@@ -133,7 +133,7 @@
 									'label'=> "Asiento",
 									'tipo'=> "text",
 									'class'=> "",
-									'value'=> "".count($retorna)."",
+									'value'=> "".(count($retorna) + 1)."",
 									'valueSelect'=> "");
 					// Creacion de campos
 					$outp[] = array('name'=> "sigla_comp",
@@ -141,7 +141,7 @@
 									'label'=> "Nro. Comprobante",
 									'tipo'=> "text",
 									'class'=> "",
-									'value'=> "".count($retorna)."",
+									'value'=> "".(count($retorna)+1)."",
 									'valueSigla'=> "");
 
 				}else{
@@ -434,6 +434,8 @@
 			//convertir json a array para su lectura
 			$data = json_decode($dataFila, true);
 
+			//fecha de hoy
+			$hoy = date("Y/n/d");
 			//print_r($data);
 			$outp = array();
 			switch ($idDecContable) {
@@ -442,7 +444,7 @@
 					$outp[] = array('label'=> "Fecha de factura", 
 									'tipo'=> "text-date", 
 									'name'=> "fecha_factv",
-									'value'=> "" 
+									'value'=> $hoy
 									);
 
 	                $outp[] = array('label'=> "Nro. de factura", 
@@ -524,7 +526,7 @@
 					$outp[] = array('label'=> "Fecha de factura", 
 									'tipo'=> "text-date", 
 									'name'=> "fecha_factc",
-									'value'=> "" 
+									'value'=> $hoy 
 									);
 
 	                $outp[] = array('label'=> "Nro. de factura", 

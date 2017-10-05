@@ -233,33 +233,32 @@
     <div class="modal-content col-md-12">
       <div class="modal-header col-md-12">
         <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-        <h4 class="modal-title">Registro {{TITULOLIBROIVA}}</h4>
+        <h4 class="modal-title col-md-12">Registro {{TITULOLIBROIVA}}</h4>
       </div>
       <div class="modal-body col-md-12">
+        <div class='col-md-12'><div class='col-md-12'><div class='col-md-12'>
+          <div class="col-md-6"><label for="{{dato_registro[0].name}}">{{dato_registro[0].label}}</label></div>
+            <!--<p>{{datePicker || "00/00/0000"}}</p>-->
+            <div class="col-md-6"><input class="clsDatePicker form-control fecha_comprobante" type="text"  placeholder="Presione"  readonly="readonly" ng-model="dato_registro[0].value" /></div>
+          </div></div></div>
 
         <div class="col-md-12" ng-repeat="item in dato_registro">
-
                 <div class="form-group col-md-12" ng-switch="item.tipo">
 
                     <div ng-switch-when="text" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
-                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div>
-                    </div>
-
-                    <div ng-switch-when="text-date" class="col-md-12 {{item.class}}">
-                        <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
-                        <div class="col-md-6"> <input id="fecha_iva" type="text" class="form-control" name="{{item.name}}" ng-model="item.value"></div>
+                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div><br>
                     </div>
 
                     <div ng-switch-when="text-keyup" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
-                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)"></div>
+                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)"></div><br>
                     </div>
 
 
                     <div ng-switch-when="text-block" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
-                        <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' readonly="readonly"></div>
+                        <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' readonly="readonly"></div><br>
                     </div>
 
                     <div ng-switch-when="select" class="col-md-12 {{item.class}}">
@@ -267,7 +266,7 @@
                         <div class="col-md-6">
                           <select class="form-control {{item.clas}}" ng-options="option.descripcion_categoria for option in item.value track by option.categoria_producto" ng-model="item.valueselect" ng-change="hasChanged(item.valueselect)"></select>
                                 
-                        </div>
+                        </div><br>  
                     </div>
                 </div>
         </div>
