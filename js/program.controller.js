@@ -4681,7 +4681,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.titulo_llenar = "Por definir"; 
                 $scope.TITULOLIBROIVA = ""; 
                 $scope.tablaIva = "";
-                
+
                 docContableGet = "traspaso";
 
                 break;
@@ -5328,6 +5328,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
                     //especifica que tabla se llenara en el modal venta debusqueda
                     $scope.tablaIva = "";
+
+                    $scope.$apply();
                     
                 },
      
@@ -5348,6 +5350,56 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
     
      
+});
+
+
+//      LISTAR COMPRAS IVA
+app.controller("comprasIvaCtrl", function($scope, $http) {
+    //cargar los datos por defecto de compras iva
+    var url= "../php/lcompras.php"; 
+    var titulo= "LIBRO DE COMPRAS IVA";
+    var razoSocial = "proveedor"
+
+    // ajax de llenado de interfaz
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "0"
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz = data;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
 });
 
 
@@ -5418,10 +5470,12 @@ app.config(function($routeProvider) {
         templateUrl : "../template/libroMayor.html"
     })
     .when("/libro_compra", {
-        templateUrl : "../template/libroCompras.html"
+        templateUrl : "../template/libroCompras.html",
+        controller : "comprasIvaCtrl"
     })
     .when("/libro_venta", {
-        templateUrl : "../template/libroVentas.html"
+        templateUrl : "../template/libroVentas.html",
+        controller : "libroDiarioCtrl"
     })
     ;
 });

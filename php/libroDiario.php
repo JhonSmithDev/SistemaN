@@ -125,10 +125,10 @@
 					$outp = array('value'=> "CDT-".(count($retorna)+1));
 					break;
 				case 'ingreso':
-					$outp = array('value'=> "CDT-".(count($retorna)+1));
+					$outp = array('value'=> "CDI-".(count($retorna)+1));
 					break;
 				case 'egreso':
-					$outp = array('value'=> "CDT-".(count($retorna)+1));
+					$outp = array('value'=> "CDE-".(count($retorna)+1));
 					break;
 				
 				default:
@@ -920,14 +920,18 @@
 							foreach ($array as $key => $value) {
 							   	//realizar consulta sql para llenar en ld_detalle
 							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
-							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['cod_cuenta']."' , '1', '".$value['hora']."'";
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$data[11]['value']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
 
-							   	//query
+							   	//query para ld_detalle
 								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
 								if (!$this->_db->query($query)) {
 									//en casso de error muestra el problema en consola
-								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								    return "Fallo INSERT INTO ld_detalle [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
 								}
+
+								//query para libromayor
+
+
 							}
 							unset($valor); // rompe la referencia con el último elemento
 
@@ -1027,13 +1031,13 @@
 							   	//realizar consulta sql para llenar en ld_detalle
 							   	//print_r($array);
 							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
-							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
-
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$data[11]['value']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
+							   	print_r($value_set);
 							   	//query
 								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
 								if (!$this->_db->query($query)) {
 									//en casso de error muestra el problema en consola
-								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								    return "Fallo INSERT INTO ld_detalle [ingreso]: (" . $this->_db->errno . ") " . $this->_db->error;
 								}else{
 
 									//2.4 llenado de la tabla lventas
@@ -1161,13 +1165,13 @@
 							   	//realizar consulta sql para llenar en ld_detalle
 							   	//print_r($array);
 							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
-							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$data[11]['value']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
 
 							   	//query
 								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
 								if (!$this->_db->query($query)) {
 									//en casso de error muestra el problema en consola
-								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								    return "Fallo INSERT INTO ld_detalle [egreso]: (" . $this->_db->errno . ") " . $this->_db->error;
 								}else{
 
 									//2.4 llenado de la tabla lventas
