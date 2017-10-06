@@ -5296,19 +5296,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
 
-                    console.lod(data);
+                    console.log(data);
                     //definicion de variables
-                    var url = '../php/librodiario.php';
-                    //FECHA DATAPICKER
-                    $( ".fecha_comprobante" ).datepicker({
-                        //configura lo que debe mostrarse en la ventana de fecha
-                        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
-                        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
-                        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
-                        dateFormat: "d/m/yy"
-                    });
-
-                    
 
                     //valor por defecto del titulo de Pagado por / recibido por
                     $scope.titulo_llenar = "Por definir"; 

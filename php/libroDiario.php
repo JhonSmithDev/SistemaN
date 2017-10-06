@@ -1032,7 +1032,7 @@
 							   	//print_r($array);
 							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
 							   	$value_set="'".(($value['id']*1)+1)."' , '".$data[11]['value']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
-							   	print_r($value_set);
+							   	//print_r($value_set);
 							   	//query
 								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
 								if (!$this->_db->query($query)) {
