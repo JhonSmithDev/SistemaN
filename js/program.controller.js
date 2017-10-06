@@ -5297,6 +5297,37 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 success : function(data) {
 
                     console.lod(data);
+                    //definicion de variables
+                    var url = '../php/librodiario.php';
+                    //FECHA DATAPICKER
+                    $( ".fecha_comprobante" ).datepicker({
+                        //configura lo que debe mostrarse en la ventana de fecha
+                        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+                        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+                        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+                        dateFormat: "d/m/yy"
+                    });
+
+                    
+
+                    //valor por defecto del titulo de Pagado por / recibido por
+                    $scope.titulo_llenar = "Por definir"; 
+
+                    //llenado de datos para interfaz
+                    $scope.formDataInterfaz = []; 
+
+                    //lenado para para detalle
+                    var formDataDetalle = [];
+
+                    //llenado de datos para el modal de busqueda
+                    $scope.formModalLlenar = [];
+
+                    //valores de nombre campo en la tabla que se muestra en modal
+                    $scope.valor1 = "";
+                    $scope.valor2 = "";
+
+                    //especifica que tabla se llenara en el modal venta debusqueda
+                    $scope.tablaIva = "";
                     
                 },
      
