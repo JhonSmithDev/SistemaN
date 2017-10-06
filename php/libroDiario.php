@@ -108,6 +108,38 @@
 			$result->close();
 			
 		}
+		//Recuperar el numero de comprobante
+		public function crearSiglaComprobante($docContable){
+			//creacion de arrays de campos
+			$outp = array();
+
+			//**************************************
+			//crear asiento Y Comprobante con la tabla librodiario
+			$result = $this->_db->query("SELECT * FROM ".$docContable." WHERE show_by= '1'");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+			
+
+			switch ($docContable) {
+				case 'traspaso':
+					$outp = array('value'=> "CDT-".(count($retorna)+1));
+					break;
+				case 'ingreso':
+					$outp = array('value'=> "CDT-".(count($retorna)+1));
+					break;
+				case 'egreso':
+					$outp = array('value'=> "CDT-".(count($retorna)+1));
+					break;
+				
+				default:
+					$outp = array('value'=> "error docContable");
+					break;
+			}
+
+			return $outp;
+
+
+		}
 
 		//creacion de los campos para el libro diario 
 		public function crearInterfaz(){
@@ -371,11 +403,15 @@
 
 			//**************************************
 			//para campos DETALLE O REGISTRO 
-			//genra fila
+			//genera hora
+			$hoy_hora = date('Y/m/d h:i:s');
+			//genera fila
 			$array_ = array();
-			$array[] = array('id'=> 0 , 
+			$array[] = array('id'=> 0 ,
+							  'id_cuenta'=> "", 
 							  'cod_cuenta'=> "", 
-							  'nom_cuenta'=> "", 
+							  'nom_cuenta'=> "",
+							  'hora'=> $hoy_hora, 
 							  'debe_bs'=> "", 
 							  'haber_bs'=> "", 
 							  'debe_sus'=> "", 
@@ -414,15 +450,19 @@
 		public function crearDetalle($idFila){
 			//**************************************
 				//para campos DETALLE O REGISTRO obj
-				//genra fila
+				// genera fecha hora 
+				$hoy_hora = date('Y/m/d h:i:s');
+				//genera fila
 				$array_ = array();
 				$outp = array('id'=> $idFila , 
+								  'id_cuenta'=> "",
 								  'cod_cuenta'=> "", 
 								  'nom_cuenta'=> "", 
+								  'hora'=> $hoy_hora,
 								  'debe_bs'=> "", 
 								  'haber_bs'=> "", 
 								  'debe_sus'=> "", 
-								  'haber_sus'=> "", 
+								  'haber_sus'=> "",
 								  'checkboxSelected' => false, 
 								  'registro'=> $array_
 								  );
@@ -435,12 +475,13 @@
 			$data = json_decode($dataFila, true);
 
 			//fecha de hoy
-			$hoy = date("Y/n/d");
+			$hoy = date("d/n/y");
 			//print_r($data);
 			$outp = array();
 			switch ($idDecContable) {
 				case '2'://Ingreso
 					
+
 					$outp[] = array('label'=> "Fecha de factura", 
 									'tipo'=> "text-date", 
 									'name'=> "fecha_factv",
@@ -468,7 +509,7 @@
 	                $outp[] = array('label'=> "Importe de factura", 
 	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_factv",
-	                				'value'=> "" 
+	                				'value'=> $data['haber_bs'] 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
@@ -492,7 +533,7 @@
 	                $outp[] = array('label'=> "DF", 
 	                				'tipo'=> "text", 
 	                				'name'=> "resultado",
-	                				'value'=> ""
+	                				'value'=> number_format(($data['haber_bs'] * 0.13), 2)
 	                				);
 
 
@@ -507,7 +548,7 @@
 	                				'class'=> "", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
-	                				'value'=> 0
+	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2), 2)
 	                				);
 
 	                 $outp[] = array('label'=> "Cliente_idCliente",
@@ -550,7 +591,7 @@
 	                $outp[] = array('label'=> "Importe de factura", 
 	                				'tipo'=> "text-keyup", 
 	                				'name'=> "importe_factc",
-	                				'value'=> "" 
+	                				'value'=> $data['debe_bs'] 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
@@ -574,7 +615,7 @@
 	                $outp[] = array('label'=> "CF", 
 	                				'tipo'=> "text", 
 	                				'name'=> "resultado",
-	                				'value'=> ""
+	                				'value'=> number_format(($data['debe_bs'] * 0.13), 2)
 	                				);
 
 	                $outp[] = array('label'=> "sub total fila",
@@ -588,7 +629,7 @@
 	                				'class'=> "", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
-	                				'value'=> 0
+	                				'value'=> number_format($data['debe_bs'] - number_format(($data['debe_bs'] * 0.13), 2), 2)
 	                				);
 
 	                 $outp[] = array('label'=> "Proveedor_idProveedor",
@@ -621,14 +662,25 @@
 			//convertir json a array para su lectura
 			$data =  json_decode($datoFilaIva, true);
 
+			
+
+			//hora y fech 
+			$hoy_hora = date('Y/m/d h:i:s');
 			//print_r($data);
 			$outp = array();
 			switch ($idDecContable) {
 				case '2'://Ingreso
+					//conseguir el idCuenta de Fiscal
+					$result= $this->_db->query("SELECT * FROM cuenta WHERE cod_cuenta = '221'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
 					$array_ = array();
 					$outp = array('id'=> $idFila , 
+									  'id_cuenta'=> $retorna[0]['idCuenta'], 
 									  'cod_cuenta'=> "221", 
 									  'nom_cuenta'=> "DEBITO FISCAL", 
+									  'hora'=> $hoy_hora, 
 									  'debe_bs'=> "", 
 									  'haber_bs'=> $data[8]['value'], 
 									  'debe_sus'=> "", 
@@ -643,10 +695,15 @@
 
 					break;
 				case '3'://Egreso
+					//conseguir el idCuenta de Fiscal
+					$result= $this->_db->query("SELECT * FROM cuenta WHERE cod_cuenta = '127'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
 					$array_ = array();
 					$outp = array('id'=> $idFila , 
-									  'cod_cuenta'=> "1207", 
+									  'id_cuenta'=> $retorna[0]['idCuenta'], 
+									  'cod_cuenta'=> "127", 
 									  'nom_cuenta'=> "CREDITO FISCAL", 
+									  'hora'=> $hoy_hora,
 									  'debe_bs'=> $data[8]['value'], 
 									  'haber_bs'=> "", 
 									  'debe_sus'=> "", 
@@ -762,6 +819,413 @@
 		}
 
 
+		//funcion para guardar en lis tablas de librodiario, ld_detallec, comprobante, egreso, ingreso , traspaso , lvnetas, lcompras y libromayor
+		public function guardarLibroDiario($dataLibroDiario, $Usuario_idUsuario){
+
+			//valores para resrevar - con finalidad que 2 usuarios o mas puedan guardar sin confilcto de datos
+			$_idComprobante = '';
+			$_idLibroDiario = '';
+			$_idTraspaso = '';
+			$_idIngreso = '';
+			$_idEgreso = '';
+			$_idLventas = '';
+			$_idLcompras = '';
+			$_idCicloContable = '';
+			$_idUsuario = $Usuario_idUsuario;
+
+			// ciclocntable el ultimo valor para ejecutar el select necesario para obtener el nro_ld
+			$result = $this->_db->query("SELECT * FROM ciclocontable WHERE show_by = '1' ORDER BY idCicloContable DESC LIMIT 1");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+			$_idCicloContable = $retorna[0]['idCicloContable'];
+
+			//convertir json a array para su lectura
+			$data =  json_decode($dataLibroDiario, true);
+			//print_r($data);
+			
+			// divide la sigla de comprobante en 2 partes y las convierte en array
+			$opcion = explode("-", $data[1]['valueSigla']);
+			//Reservar un comprobante y un libro diario
+			switch ($opcion[0]) {
+				case 'CDT':
+					//print_r("traspaso");
+
+					//1 Reservar tablas para insertar
+					//  1.1RESREVA DE UN COMPROBANTE
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//Obtenemod el idComprobante para operarlo despues
+						$result = $this->_db->query("SELECT * FROM comprobante WHERE show_by = '1' ORDER BY idComprobante DESC LIMIT 1");
+
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+						$_idComprobante = $retorna[0]['idComprobante'];
+
+						//1.2 RESREVA DE UN librodiario
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' ORDER BY 	idLibroDiario DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idLibroDiario = $retorna[0]['idLibroDiario'];
+						}
+						//1.3 RESREVA DE UN traspaso
+						$query = "INSERT INTO traspaso (Comprobante_idComprobante, show_by) VALUES (".$_idComprobante.", '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO traspaso: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM traspaso WHERE show_by = '1' ORDER BY 	idTraspaso DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idTraspaso = $retorna[0]['idTraspaso'];
+						}
+					}
+
+					// 2. update de las tablas reservadas del ultimo hasta el principio
+					//  2.1 traspaso llenado de tabla
+					// verificamos el numero de traspasos
+					$result = $this->_db->query("SELECT * FROM traspaso WHERE show_by = '1'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
+					$query = "UPDATE traspaso SET nro_t ='".count($retorna)."'  WHERE idTraspaso = '".$_idTraspaso."'";
+					//print_r($query);
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo UPDATE traspaso: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						
+						//2.2 librodiario llenado de tabla
+						//contamos las filas de nro_ld (asiento) y colocamos el que sigue con count()
+						$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' and CicloContable_idCicloContable = '".$_idCicloContable."'");
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+						//modificamos valores de nro_ld que es numero de filas
+						$query = "UPDATE librodiario SET nro_ld	 ='".count($retorna)."'WHERE idLibroDiario = '".$_idLibroDiario."'";
+						//print_r($query);
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo UPDATE librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+
+							//2.3. llenado en la tabla ld_detalle
+							$array = $data[12]['value'];
+							foreach ($array as $key => $value) {
+							   	//realizar consulta sql para llenar en ld_detalle
+							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['cod_cuenta']."' , '1', '".$value['hora']."'";
+
+							   	//query
+								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
+								if (!$this->_db->query($query)) {
+									//en casso de error muestra el problema en consola
+								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								}
+							}
+							unset($valor); // rompe la referencia con el último elemento
+
+							//2.4 llenado en la tabla comprobante
+							//contamos las filas de traspaso y colocamos el sigla comp con el que sigue con count()
+							$result = $this->_db->query("SELECT * FROM traspaso WHERE show_by = '1'");
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+							//cambiar posicion de fecha para base de datos 
+							$fehca_array = explode("/",$data[4]['value']);
+							$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0]; 
+							//modificamos valores de nro_ld que es numero de filas
+							$query = "UPDATE comprobante SET recibo_comp = '".$data[9]['value']."', sigla_comp	 ='".$opcion[0]."-".count($retorna)."', glosa_comp = '".$data[11]['value']."' , fecha_comp = '".$fecha_db."' , TipoPago_idTipoPago = '".$data[10]['valueSelect']['id']."' , Moneda_idMoneda = '".$data[2]['valueSelect']['id']."'  WHERE idComprobante = '".$_idComprobante."'";
+							//print_r($query);
+							if (!$this->_db->query($query)) {
+								//en casso de error muestra el problema en consola
+							    return "Fallo UPDATE comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								return array('mensaje'=> "Guardar ok");
+							}
+						}
+					}					
+					break;
+				case 'CDI':
+					
+					//print_r("Ingreso");
+
+					//1 Reservar tablas para insertar
+					//  1.1RESREVA DE UN COMPROBANTE
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//Obtenemod el idComprobante para operarlo despues
+						$result = $this->_db->query("SELECT * FROM comprobante WHERE show_by = '1' ORDER BY idComprobante DESC LIMIT 1");
+
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+						$_idComprobante = $retorna[0]['idComprobante'];
+
+						//1.2 RESREVA DE UN librodiario
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' ORDER BY 	idLibroDiario DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idLibroDiario = $retorna[0]['idLibroDiario'];
+						}
+						//1.3 RESREVA DE UN traspaso
+						$query = "INSERT INTO ingreso (Comprobante_idComprobante, show_by) VALUES ('".$_idComprobante."', '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO ingreso: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM ingreso WHERE show_by = '1' ORDER BY 	idIngreso DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idIngreso = $retorna[0]['idIngreso'];
+						}
+					}
+
+					// 2. update de las tablas reservadas del ultimo hasta el principio
+					//  2.1 traspaso llenado de tabla
+					// verificamos el numero de traspasos
+					$result = $this->_db->query("SELECT * FROM ingreso WHERE show_by = '1'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
+					$query = "UPDATE ingreso SET nro_i ='".count($retorna)."'  WHERE idIngreso = '".$_idIngreso."'";
+					//print_r($query);
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo UPDATE ingreso: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						
+						//2.2 librodiario llenado de tabla
+						//contamos las filas de nro_ld (asiento) y colocamos el que sigue con count()
+						$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' and CicloContable_idCicloContable = '".$_idCicloContable."'");
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+						//modificamos valores de nro_ld que es numero de filas
+						$query = "UPDATE librodiario SET nro_ld	 ='".count($retorna)."'WHERE idLibroDiario = '".$_idLibroDiario."'";
+						//print_r($query);
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo UPDATE librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+
+							//2.3. llenado en la tabla ld_detalle
+							$array = $data[12]['value'];
+							foreach ($array as $key => $value) {
+							   	//realizar consulta sql para llenar en ld_detalle
+							   	//print_r($array);
+							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
+
+							   	//query
+								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
+								if (!$this->_db->query($query)) {
+									//en casso de error muestra el problema en consola
+								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								}else{
+
+									//2.4 llenado de la tabla lventas
+									//guardamos en un array todo si es que tiene iva
+									if (isset($value['registroIva'])) {// pregunta si tiene iva
+										//en caso de que tenga iva.
+										//print_r("hola");
+
+										$array_iva = $value['registroIva'];
+
+										//fecha convertir
+										$fehca_array = explode("/",$array_iva[0]['value']);
+										print_r($fehca_array);
+										$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0];
+
+										//recorremos todo lo que tenga iva
+
+										$nombre_ivaSet ="fecha_factv, nro_factv, nro_autorizacionv, cod_controlv, importe_factv, importe_ICEv, importe_excentov, importe_netov, df, Ingreso_idIngreso, Cliente_idCliente";
+										$values_ivaSet ="'".$fecha_db."' , '".$array_iva[1]['value']."' , '".$array_iva[2]['value']."' , '".$array_iva[3]['value']."' , '".$array_iva[4]['value']."' , '".$array_iva[5]['value']."' , '".$array_iva[6]['value']."' , '".$array_iva[7]['value']."' , '".$array_iva[8]['value']."' , '".$_idIngreso."' , '".$array_iva[11]['value']."'"; 
+
+										//print_r($values_ivaSet);
+										$query = "INSERT INTO lventas (".$nombre_ivaSet." , show_by) VALUES (".$values_ivaSet.", '1')";
+										if (!$this->_db->query($query)) {
+											//en casso de error muestra el problema en consola
+										    return "Fallo INSERT INTO lventas: (" . $this->_db->errno . ") " . $this->_db->error;
+										}
+									}
+								}
+							}
+							unset($valor); // rompe la referencia con el último elemento
+
+							//2.4 llenado en la tabla comprobante
+							//contamos las filas de traspaso y colocamos el sigla comp con el que sigue con count()
+							$result = $this->_db->query("SELECT * FROM ingreso WHERE show_by = '1'");
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+							//cambiar posicion de fecha para base de datos 
+							$fehca_array = explode("/",$data[4]['value']);
+							$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0]; 
+							//modificamos valores de nro_ld que es numero de filas
+							$query = "UPDATE comprobante SET recibo_comp = '".$data[9]['value']."', sigla_comp	 ='".$opcion[0]."-".count($retorna)."', glosa_comp = '".$data[11]['value']."' , fecha_comp = '".$fecha_db."' , TipoPago_idTipoPago = '".$data[10]['valueSelect']['id']."' , Moneda_idMoneda = '".$data[2]['valueSelect']['id']."'  WHERE idComprobante = '".$_idComprobante."'";
+							//print_r($query);
+							if (!$this->_db->query($query)) {
+								//en casso de error muestra el problema en consola
+							    return "Fallo UPDATE comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								return array('mensaje'=> "Guardar ok");
+							}
+						}
+					}					
+
+					break;
+				case 'CDE':
+					//print_r("Egreso");
+
+					//1 Reservar tablas para insertar
+					//  1.1RESREVA DE UN COMPROBANTE
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						//Obtenemod el idComprobante para operarlo despues
+						$result = $this->_db->query("SELECT * FROM comprobante WHERE show_by = '1' ORDER BY idComprobante DESC LIMIT 1");
+
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+						$_idComprobante = $retorna[0]['idComprobante'];
+
+						//1.2 RESREVA DE UN librodiario
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' ORDER BY 	idLibroDiario DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idLibroDiario = $retorna[0]['idLibroDiario'];
+						}
+						//1.3 RESREVA DE UN traspaso
+						$query = "INSERT INTO egreso (Comprobante_idComprobante, show_by) VALUES ('".$_idComprobante."', '1')";
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo INSERT INTO egreso: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+							//Obtenemod el idComprobante para operarlo despues
+							$result = $this->_db->query("SELECT * FROM egreso WHERE show_by = '1' ORDER BY idEgreso DESC LIMIT 1");
+
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+							$_idEgreso = $retorna[0]['idEgreso'];
+						}
+					}
+
+					// 2. update de las tablas reservadas del ultimo hasta el principio
+					//  2.1 traspaso llenado de tabla
+					// verificamos el numero de traspasos
+					$result = $this->_db->query("SELECT * FROM egreso WHERE show_by = '1'");
+					$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
+					$query = "UPDATE egreso SET nro_e ='".count($retorna)."'  WHERE idEgreso = '".$_idEgreso."'";
+					//print_r($query);
+					if (!$this->_db->query($query)) {
+						//en casso de error muestra el problema en consola
+					    return "Fallo UPDATE egreso: (" . $this->_db->errno . ") " . $this->_db->error;
+					}else{
+						
+						//2.2 librodiario llenado de tabla
+						//contamos las filas de nro_ld (asiento) y colocamos el que sigue con count()
+						$result = $this->_db->query("SELECT * FROM librodiario WHERE show_by = '1' and CicloContable_idCicloContable = '".$_idCicloContable."'");
+						$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+						//modificamos valores de nro_ld que es numero de filas
+						$query = "UPDATE librodiario SET nro_ld	 ='".count($retorna)."'WHERE idLibroDiario = '".$_idLibroDiario."'";
+						//print_r($query);
+						if (!$this->_db->query($query)) {
+							//en casso de error muestra el problema en consola
+						    return "Fallo UPDATE librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
+						}else{
+
+							//2.3. llenado en la tabla ld_detalle
+							$array = $data[12]['value'];
+							foreach ($array as $key => $value) {
+							   	//realizar consulta sql para llenar en ld_detalle
+							   	//print_r($array);
+							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
+							   	$value_set="'".(($value['id']*1)+1)."' , '".$value['nom_cuenta']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
+
+							   	//query
+								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
+								if (!$this->_db->query($query)) {
+									//en casso de error muestra el problema en consola
+								    return "Fallo INSERT INTO ld_detalle: (" . $this->_db->errno . ") " . $this->_db->error;
+								}else{
+
+									//2.4 llenado de la tabla lventas
+									//guardamos en un array todo si es que tiene iva
+									if (isset($value['registroIva'])) {// pregunta si tiene iva
+										//en caso de que tenga iva.
+										//print_r("hola");
+
+										$array_iva = $value['registroIva'];
+
+										//fecha convertir
+										$fehca_array = explode("/",$array_iva[0]['value']);
+										//print_r($fehca_array);
+										$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0];
+
+										//recorremos todo lo que tenga iva
+
+										$nombre_ivaSet ="fecha_factc, nro_factc, nro_autorizacionc, cod_controlc, importe_factc, importe_ICEc, importe_excentoc, importe_netoc, cf, Egreso_idEgreso, Proveedor_idProveedor";
+										$values_ivaSet ="'".$fecha_db."' , '".$array_iva[1]['value']."' , '".$array_iva[2]['value']."' , '".$array_iva[3]['value']."' , '".$array_iva[4]['value']."' , '".$array_iva[5]['value']."' , '".$array_iva[6]['value']."' , '".$array_iva[7]['value']."' , '".$array_iva[8]['value']."' , '".$_idEgreso."' , '".$array_iva[11]['value']."'"; 
+
+										//print_r($values_ivaSet);
+										$query = "INSERT INTO lcompras (".$nombre_ivaSet." , show_by) VALUES (".$values_ivaSet.", '1')";
+										if (!$this->_db->query($query)) {
+											//en casso de error muestra el problema en consola
+										    return "Fallo INSERT INTO lcompras: (" . $this->_db->errno . ") " . $this->_db->error;
+										}
+									}
+								}
+							}
+							unset($valor); // rompe la referencia con el último elemento
+
+							//2.4 llenado en la tabla comprobante
+							//contamos las filas de traspaso y colocamos el sigla comp con el que sigue con count()
+							$result = $this->_db->query("SELECT * FROM egreso WHERE show_by = '1'");
+							$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+							//cambiar posicion de fecha para base de datos 
+							$fehca_array = explode("/",$data[4]['value']);
+							$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0]; 
+							//modificamos valores de nro_ld que es numero de filas
+							$query = "UPDATE comprobante SET recibo_comp = '".$data[9]['value']."', sigla_comp	 ='".$opcion[0]."-".count($retorna)."', glosa_comp = '".$data[11]['value']."' , fecha_comp = '".$fecha_db."' , TipoPago_idTipoPago = '".$data[10]['valueSelect']['id']."' , Moneda_idMoneda = '".$data[2]['valueSelect']['id']."'  WHERE idComprobante = '".$_idComprobante."'";
+							//print_r($query);
+							if (!$this->_db->query($query)) {
+								//en casso de error muestra el problema en consola
+							    return "Fallo UPDATE comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
+							}else{
+								return array('mensaje'=> "Guardar ok");
+							}
+						}
+					}		
+					break;
+				default:
+					# code...
+					break;
+				$result->close();
+			}
+			
+		}
 	}
 
 	
@@ -792,6 +1256,12 @@
 			break;
 		case 'llenarSegunDocContable':
 			$outp = $object->llenarModal($_POST['llenarSegunDocContable']);
+			break;
+		case 'guardar_libro_diario':
+			$outp = $object->guardarLibroDiario($_POST['value'], $_POST['Usuario_idUsuario']);
+			break;
+		case 'crear_sigla_comprobante':
+			$outp = $object->crearSiglaComprobante($_POST['docContableGet']);
 			break;
 		default:
 			# code...

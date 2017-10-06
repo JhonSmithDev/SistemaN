@@ -4672,6 +4672,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     $scope.hasChangedDocContable = function(){
         //console.log($scope.formDataInterfaz[3].valueSelect.id);
         //selecciona si estraspaso / ingreso / egreso
+        var docContableGet = '';
         switch($scope.formDataInterfaz[3].valueSelect.id) {
             case '1'://traspaso
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
@@ -4680,7 +4681,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.titulo_llenar = "Por definir"; 
                 $scope.TITULOLIBROIVA = ""; 
                 $scope.tablaIva = "";
-                $scope.formDataInterfaz[1].valueSigla = "CDT-"+$scope.formDataInterfaz[1].value;
+                
+                docContableGet = "traspaso";
 
                 break;
             case '2'://ingreso
@@ -4689,7 +4691,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.TITULOLIBROIVA = "Libro Ventas";
                 $scope.titulo_llenar = "Recibido por";
                 $scope.tablaIva = "cliente";
-                $scope.formDataInterfaz[1].valueSigla = "CDI-"+$scope.formDataInterfaz[1].value;
+                
+                docContableGet = "ingreso";
 
    
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
@@ -4700,13 +4703,52 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 $scope.TITULOLIBROIVA = "Libro Compras";
                 $scope.titulo_llenar = "Pagado por";
                 $scope.tablaIva = "proveedor";
-                $scope.formDataInterfaz[1].valueSigla = "CDE-"+$scope.formDataInterfaz[1].value;
+                docContableGet = "egreso";
 
                 //console.log($scope.formDataInterfaz[3].valueSelect.id);
                 break;
             default:
-            
         }
+
+        // ajax para cambiar el numero de comprobante
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "crear_sigla_comprobante", docContableGet : docContableGet
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                   $scope.formDataInterfaz[1].valueSigla = data.value;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
 
     }
 
@@ -4887,6 +4929,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         switch(llenaDataCaso){
             case'cuenta':
 
+                $scope.formDataInterfaz[12].value[idFilaCasoCuenta].id_cuenta = idData;
                 $scope.formDataInterfaz[12].value[idFilaCasoCuenta].cod_cuenta = value1Data;
                 $scope.formDataInterfaz[12].value[idFilaCasoCuenta].nom_cuenta = value2Data;
                 break
@@ -4997,15 +5040,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la respuesta es pasada como argumento a la función
                 success : function(data) {
 
-                    $scope.dato_registro = data;
-                    $('#idTourDateDetails').datepicker({
-         dateFormat: 'dd-mm-yy',
-         minDate: '+5d',
-         changeMonth: true,
-         changeYear: true,
-         altField: "#idTourDateDetailsHidden",
-         altFormat: "yy-mm-dd"
-    });
+                    $scope.dato_registro = data;    
 
                     $scope.$apply();
                 },
@@ -5248,7 +5283,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
                 data : { 
-                     run : "guardar_libro_diario", value :  JSON.stringify($scope.formDataInterfaz)
+                     run : "guardar_libro_diario", value :  JSON.stringify($scope.formDataInterfaz), Usuario_idUsuario: sessionStorage.getItem("id_user")
                 },
      
                 // especifica si será una petición POST o GET
