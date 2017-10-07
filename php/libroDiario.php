@@ -863,7 +863,7 @@
 						$_idComprobante = $retorna[0]['idComprobante'];
 
 						//1.2 RESREVA DE UN librodiario
-						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES ('".$Usuario_idUsuario."' , ".$_idCicloContable." , ".$_idComprobante.", '1')";
 						if (!$this->_db->query($query)) {
 							//en casso de error muestra el problema en consola
 						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
@@ -930,9 +930,14 @@
 								    return "Fallo INSERT INTO ld_detalle [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
 								}
 
-								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								//seleccionamos los valores anteriores de ld_detalle, el ultimo valor, para conseguir su id
 								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
 								$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM ld_detalle WHERE show_by = '1' ORDER BY 	idld_detalle  DESC LIMIT 1");
+								$_idld_detalle = $result->fetch_all(MYSQL_ASSOC);
 								//print_r(count($retorna));
 								//print_r(($value['debe_bs']));
 								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
@@ -945,7 +950,7 @@
 									//print_r(number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', ''));
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -958,7 +963,7 @@
 									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1011,7 +1016,7 @@
 						$_idComprobante = $retorna[0]['idComprobante'];
 
 						//1.2 RESREVA DE UN librodiario
-						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES ('".$Usuario_idUsuario."' , ".$_idCicloContable." , ".$_idComprobante.", '1')";
 						if (!$this->_db->query($query)) {
 							//en casso de error muestra el problema en consola
 						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
@@ -1109,6 +1114,10 @@
 								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
 								$retorna = $result->fetch_all(MYSQL_ASSOC);
 
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM ld_detalle WHERE show_by = '1' ORDER BY 	idld_detalle  DESC LIMIT 1");
+								$_idld_detalle = $result->fetch_all(MYSQL_ASSOC);
+
 								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
 								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
 
@@ -1117,7 +1126,7 @@
 									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1130,7 +1139,7 @@
 									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1179,7 +1188,7 @@
 						$_idComprobante = $retorna[0]['idComprobante'];
 
 						//1.2 RESREVA DE UN librodiario
-						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES (1 , ".$_idCicloContable." , ".$_idComprobante.", '1')";
+						$query = "INSERT INTO librodiario (Usuario_idUsuario, CicloContable_idCicloContable, Comprobante_idComprobante, show_by) VALUES ('".$Usuario_idUsuario."' , ".$_idCicloContable." , ".$_idComprobante.", '1')";
 						if (!$this->_db->query($query)) {
 							//en casso de error muestra el problema en consola
 						    return "Fallo INSERT INTO librodiario: (" . $this->_db->errno . ") " . $this->_db->error;
@@ -1276,6 +1285,10 @@
 								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
 								$retorna = $result->fetch_all(MYSQL_ASSOC);
 
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM ld_detalle WHERE show_by = '1' ORDER BY 	idld_detalle  DESC LIMIT 1");
+								$_idld_detalle = $result->fetch_all(MYSQL_ASSOC);
+
 								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
 								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
 
@@ -1284,7 +1297,7 @@
 									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1297,7 +1310,7 @@
 									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
-									$_setVALOR = "'".$value['id_cuenta']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
+									$_setVALOR = "'".$_idld_detalle[0]['idld_detalle']."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {

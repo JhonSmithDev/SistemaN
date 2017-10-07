@@ -1,4 +1,8 @@
-<div class="col-md-12 table-responsive">
+<div class="col-md-6 text-center letter-big letter-blue">LIBRO MAYOR</div>
+<div class="col-md-6 text-center letter-blue"><div class="col-md-6">Buscar: </div> <div class="col-md-6"><input type="text" class="form-control" name="" ng-model = "buscar" placeholder="Escriba nombre cuenta..."></div></div>
+<div class="col-md-12 margin-20 padding-20">
+
+<div class="col-md-12 table-responsive" ng-repeat ="item in formDataInterfaz | filter:buscar as results">
 	<table class="table border-1">
 		<thead>
 			<tr>
@@ -6,11 +10,11 @@
 			</tr>	
 			<tr>
 				<th colspan="1" class="text-center border-1-white background-blue letter-white">CÓDIGO</th>
-				<th colspan="1" class="text-center border-1-white background-blue letter-white">11101</th>
+				<th colspan="1" class="text-center border-1-white background-blue letter-white	">{{item['value'][0]['cod_cuenta']}}</th>
 				<th colspan="1" class="text-center border-1-white background-blue letter-white">CUENTA</th>
-				<th colspan="2" class="text-center border-1-white background-blue letter-white">CAJA</th>
+				<th colspan="2" class="text-center border-1-white background-blue letter-white">{{item['value'][0]['nom_cuenta']}}</th>
 				<th colspan="1" class="text-center border-1-white background-blue letter-white">Nro.</th>
-				<th colspan="1" class="text-center border-1-white background-blue letter-white">1</th>
+				<th colspan="1" class="text-center border-1-white background-blue letter-white">{{item['id']}}</th>
 			</tr>
 			<tr>
 				<th colspan="1" class="text-center border-1-white background-blue letter-white">FECHA</th>
@@ -22,21 +26,13 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td colspan="1" class="text-center border-1">02/08/2007</td>
-				<td colspan="2" class="text-center border-1">Por el inicio de actividades</td>
-				<td colspan="1" class="text-center border-1">CDT1</td>
-				<td colspan="1" class="text-center border-1">840,00</td>
-				<td colspan="1" class="text-center border-1"></td>
-				<td colspan="1" class="text-center border-1">840</td>
-			</tr>
-			<tr>
-				<td colspan="1" class="text-center border-1">08/08/2007</td>
-				<td colspan="2" class="text-center border-1">Por el retiro de dinero del Banco Nacional</td>
-				<td colspan="1" class="text-center border-1">CDT2</td>
-				<td colspan="1" class="text-center border-1">2000,00</td>
-				<td colspan="1" class="text-center border-1"></td>
-				<td colspan="1" class="text-center border-1">2840,00</td>
+			<tr ng-repeat="subitem in item.value">
+				<td colspan="1" class="text-center border-1">{{subitem.fecha_comp}}</td>
+				<td colspan="2" class="text-center border-1">{{subitem.detalle_ldd}}</td>
+				<td colspan="1" class="text-center border-1">{{subitem.sigla_comp}}</td>
+				<td colspan="1" class="text-center border-1">{{subitem.debe_bs}}</td>
+				<td colspan="1" class="text-center border-1">{{subitem.haber_bs}}</td>
+				<td colspan="1" class="text-center border-1">{{subitem.saldo_lm}}</td>
 			</tr>
 		</tbody>
 	</table>
