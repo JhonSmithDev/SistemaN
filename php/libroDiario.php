@@ -851,7 +851,7 @@
 
 					//1 Reservar tablas para insertar
 					//  1.1RESREVA DE UN COMPROBANTE
-					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,".$data[10]['valueSelect']['id']." , ".$data[2]['valueSelect']['id'].", '1')";
 					if (!$this->_db->query($query)) {
 						//en casso de error muestra el problema en consola
 					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
@@ -961,7 +961,7 @@
 
 					//1 Reservar tablas para insertar
 					//  1.1RESREVA DE UN COMPROBANTE
-					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,".$data[10]['valueSelect']['id']." , ".$data[2]['valueSelect']['id'].", '1')";
 					if (!$this->_db->query($query)) {
 						//en casso de error muestra el problema en consola
 					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
@@ -1050,7 +1050,7 @@
 
 										//fecha convertir
 										$fehca_array = explode("/",$array_iva[0]['value']);
-										print_r($fehca_array);
+										//print_r($fehca_array);
 										$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0];
 
 										//recorremos todo lo que tenga iva
@@ -1095,7 +1095,7 @@
 
 					//1 Reservar tablas para insertar
 					//  1.1RESREVA DE UN COMPROBANTE
-					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,1 , 1, '1')";
+					$query = "INSERT INTO comprobante (sigla_comp, TipoPago_idTipoPago, Moneda_idMoneda, show_by) VALUES ('".$opcion[0]."' ,".$data[10]['valueSelect']['id']." , ".$data[2]['valueSelect']['id'].", '1')";
 					if (!$this->_db->query($query)) {
 						//en casso de error muestra el problema en consola
 					    return "Fallo INSERT INTO comprobante: (" . $this->_db->errno . ") " . $this->_db->error;
