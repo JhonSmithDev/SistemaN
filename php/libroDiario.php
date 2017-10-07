@@ -548,7 +548,7 @@
 	                				'class'=> "", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
-	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2, '.', ''), 2, '.', '');
+	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2, '.', ''), 2, '.', '')
 	                				);
 
 	                 $outp[] = array('label'=> "Cliente_idCliente",
