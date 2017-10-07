@@ -938,10 +938,10 @@
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -951,10 +951,10 @@
 								}else{
 									//asignar valor anterior
 									$saldo_ago = number_format($retorna[0]['saldo'], 2);
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1110,10 +1110,10 @@
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1123,10 +1123,10 @@
 								}else{
 									//asignar valor anterior
 									$saldo_ago = number_format($retorna[0]['saldo'], 2);
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1277,10 +1277,10 @@
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
@@ -1290,10 +1290,10 @@
 								}else{
 									//asignar valor anterior
 									$saldo_ago = number_format($retorna[0]['saldo'], 2);
-									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
 
-									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
-									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
 									//query para libromayor
 									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
 									if (!$this->_db->query($query)) {
