@@ -929,7 +929,41 @@
 								    return "Fallo INSERT INTO ld_detalle [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
 								}
 
-								//query para libromayor
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
+								$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
+								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
+
+									//asignar valor anterior
+									$saldo_ago = 0.00;
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
+									}
+								}else{
+									//asignar valor anterior
+									$saldo_ago = number_format($retorna[0]['saldo'], 2);
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
+									}
+								}
+
+								
 
 
 							}
@@ -1066,6 +1100,40 @@
 										}
 									}
 								}
+
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
+								$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
+								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
+
+									//asignar valor anterior
+									$saldo_ago = 0.00;
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
+									}
+								}else{
+									//asignar valor anterior
+									$saldo_ago = number_format($retorna[0]['saldo'], 2);
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
+									}
+								}
 							}
 							unset($valor); // rompe la referencia con el último elemento
 
@@ -1198,6 +1266,39 @@
 											//en casso de error muestra el problema en consola
 										    return "Fallo INSERT INTO lcompras: (" . $this->_db->errno . ") " . $this->_db->error;
 										}
+									}
+								}
+								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
+								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
+								$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
+								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
+
+									//asignar valor anterior
+									$saldo_ago = 0.00;
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
+									}
+								}else{
+									//asignar valor anterior
+									$saldo_ago = number_format($retorna[0]['saldo'], 2);
+									$saldo_present = number_format(($value['debe_bs'] = $value['haber_bs'] + $saldo_ago), 2);
+
+									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta";
+									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."'";
+									//query para libromayor
+									$query = "INSERT INTO libromayor (".$_setNOMBRE.") VALUES (".$_setVALOR.")";
+									if (!$this->_db->query($query)) {
+										//en casso de error muestra el problema en consola
+									    return "Fallo INSERT INTO libromayor [traspaso]: (" . $this->_db->errno . ") " . $this->_db->error;
 									}
 								}
 							}
