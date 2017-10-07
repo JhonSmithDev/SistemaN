@@ -533,7 +533,7 @@
 	                $outp[] = array('label'=> "DF", 
 	                				'tipo'=> "text", 
 	                				'name'=> "resultado",
-	                				'value'=> number_format(($data['haber_bs'] * 0.13), 2)
+	                				'value'=> number_format(($data['haber_bs'] * 0.13), 2, '.', '')
 	                				);
 
 
@@ -548,7 +548,7 @@
 	                				'class'=> "", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
-	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2), 2)
+	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2, '.', ''), 2, '.', '');
 	                				);
 
 	                 $outp[] = array('label'=> "Cliente_idCliente",
@@ -615,7 +615,7 @@
 	                $outp[] = array('label'=> "CF", 
 	                				'tipo'=> "text", 
 	                				'name'=> "resultado",
-	                				'value'=> number_format(($data['debe_bs'] * 0.13), 2)
+	                				'value'=> number_format(($data['debe_bs'] * 0.13), 2, '.', '')
 	                				);
 
 	                $outp[] = array('label'=> "sub total fila",
@@ -629,7 +629,7 @@
 	                				'class'=> "", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
-	                				'value'=> number_format($data['debe_bs'] - number_format(($data['debe_bs'] * 0.13), 2), 2)
+	                				'value'=> number_format($data['debe_bs'] - number_format(($data['debe_bs'] * 0.13), 2, '.', ''), 2, '.', '')
 	                				);
 
 	                 $outp[] = array('label'=> "Proveedor_idProveedor",
@@ -922,6 +922,7 @@
 							   	$nombre_set="nro_linea, detalle_ldd, debe_bs, haber_bs, debe_us, haber_us, LibroDiario_idLibroDiario, Cuenta_idCuenta, show_by, hora_ldd";
 							   	$value_set="'".(($value['id']*1)+1)."' , '".$data[11]['value']."' , '".$value['debe_bs']."' , '".$value['haber_bs']."', '".$value['debe_sus']."', '".$value['haber_sus']."', '".$_idLibroDiario."' , '".$value['id_cuenta']."' , '1', '".$value['hora']."'";
 
+							   	//print_r(($value['debe_bs']));
 							   	//query para ld_detalle
 								$query = "INSERT INTO ld_detalle (".$nombre_set.") VALUES (".$value_set.")";
 								if (!$this->_db->query($query)) {
@@ -932,13 +933,16 @@
 								//seleccionamos los valores anteriores de libromayor, el ultimo valor de la cuenta para restar para su saldo
 								$result = $this->_db->query("SELECT * FROM libromayor WHERE show_by = '1' and Cuenta_idCuenta = '".$value['id_cuenta']."' ORDER BY 	idLibroMayor DESC");
 								$retorna = $result->fetch_all(MYSQL_ASSOC);
-
+								//print_r(count($retorna));
+								//print_r(($value['debe_bs']));
 								//verificamos que tenga un valor en caso de que no tuviera valor se lo inicializa con cero. esto se hara con valor absoluto
-								if (count($retorna) == 0) {// se verifica que no tiene valor saldo anterior
+								if (count($retorna) <= 0) {// se verifica que no tiene valor saldo anterior
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
+
+									//print_r(number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', ''));
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
@@ -950,8 +954,8 @@
 									}
 								}else{
 									//asignar valor anterior
-									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2);
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2, '.', '');
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta, show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
@@ -1110,7 +1114,7 @@
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
@@ -1122,8 +1126,8 @@
 									}
 								}else{
 									//asignar valor anterior
-									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2);
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2, '.', '');
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
@@ -1277,7 +1281,7 @@
 
 									//asignar valor anterior
 									$saldo_ago = 0.00;
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta , show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
@@ -1289,8 +1293,8 @@
 									}
 								}else{
 									//asignar valor anterior
-									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2);
-									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2);
+									$saldo_ago = number_format($retorna[0]['saldo_lm'], 2, '.', '');
+									$saldo_present = number_format(($value['debe_bs'] - $value['haber_bs'] + $saldo_ago), 2, '.', '');
 
 									$_setNOMBRE = "nro_lm, saldo_lm, Comprobante_idComprobante, Cuenta_idCuenta ,show_by";
 									$_setVALOR = "'".count($retorna)."', '".$saldo_present."', '".$_idComprobante."', '".$value['id_cuenta']."', '1'";
