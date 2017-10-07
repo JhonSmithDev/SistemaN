@@ -5298,7 +5298,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
                     console.log(data);
                     //definicion de variables
-/*
+
                     //valor por defecto del titulo de Pagado por / recibido por
                     $scope.titulo_llenar = "Por definir"; 
 
@@ -5318,7 +5318,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                     //especifica que tabla se llenara en el modal venta debusqueda
                     $scope.tablaIva = "";
 
-                    $scope.$apply(); */
+                    $scope.$apply(); 
                     
                 },
      
