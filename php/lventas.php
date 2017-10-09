@@ -3,7 +3,7 @@
 	/**
 	* BY: Rolando Angel Montenegro Carranza
 	*/
-	class lcompras extends model{
+	class lventas extends model{
 		//private $table
 
 		public function __construct(){
@@ -13,7 +13,7 @@
 		//funcion para mostrar todos los registros de una tabla
 		public function getTable(){
 			// creamos el array $retorna con los datos de la tabla lcompras
-			$result = $this->_db->query("SELECT * FROM lcompras WHERE  show_by= '1'");
+			$result = $this->_db->query("SELECT * FROM lventas WHERE  show_by= '1'");
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 
 
@@ -22,27 +22,27 @@
 
 				//buesqueda del proveedor
 				// creamos el array $retorna con los datos de la tabla lcompras
-				$result = $this->_db->query("SELECT * FROM proveedor WHERE  show_by= '1' and idProveedor = '".$value['Proveedor_idProveedor']."'");
+				$result = $this->_db->query("SELECT * FROM cliente WHERE  show_by= '1' and 	idCliente = '".$value['Cliente_idCliente']."'");
 				$retorna_proveedor = $result->fetch_all(MYSQL_ASSOC);
 
 				//creamos fecha con vector $fecha_lcompras
-				$fecha_lcompras = explode("-", $value['fecha_factc']);
+				$fecha_lcompras = explode("-", $value['fecha_factv']);
 
 				//formar el arrray delibro compras para la interfaz
-				$outp[] = array('id'=> $value['idLcompras'],
+				$outp[] = array('id'=> $value['idLventas'],
 								'd'=> $fecha_lcompras[2],
 								'm'=>$fecha_lcompras[1],
 								'a'=>$fecha_lcompras[0],
-								'cod_fuente'=>$retorna_proveedor[0]['cod_prov'],
-								'nom_fuente'=>$retorna_proveedor[0]['nom_prov'],
-								'nro_factura'=>$value['nro_factc'],
-								'nro_autorizacion'=>$value['nro_autorizacionc'],
-								'cod_control'=>$value['cod_controlc'],
-								'total_factura'=>$value['importe_factc'],
-								'total_ice'=>$value['importe_ICEc'],
-								'total_exento'=>$value['importe_excentoc'],
-								'importe_neto'=>$value['importe_netoc'],
-								'fiscal'=> $value['cf']);
+								'cod_fuente'=>$retorna_proveedor[0]['cod_cliente'],
+								'nom_fuente'=>$retorna_proveedor[0]['nom_cliente'],
+								'nro_factura'=>$value['nro_factv'],
+								'nro_autorizacion'=>$value['nro_autorizacionv'],
+								'cod_control'=>$value['cod_controlv'],
+								'total_factura'=>$value['importe_factv'],
+								'total_ice'=>$value['importe_ICEv'],
+								'total_exento'=>$value['importe_excentov'],
+								'importe_neto'=>$value['importe_netov'],
+								'fiscal'=> $value['df']);
 
 				
 				
@@ -56,9 +56,9 @@
 
 	//main para llamar a las clases
 	//objeto a manipular
-	$object = new lcompras();
-	$table = "lcompras"; //nombre de la tabla
-	$nom_idTable = "idLcompras";
+	$object = new lventas();
+	$table = "lventas"; //nombre de la tabla
+	$nom_idTable = "	idLventas";
 
 	switch ($_POST['run']) {
 		case '0':// listar

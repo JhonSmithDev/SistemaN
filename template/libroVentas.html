@@ -1,5 +1,5 @@
 <div class="col-md-12">
-	<div class="col-md-12 text-center">LIBRO DE VENTAS IVA</div>
+	<div class="col-md-12 text-center letter-big letter-blue ">{{titulo}}</div>
 	<div class="col-md-12 text-center margin-20">PERIODO FISCAL <input type="text" name="" value="enero"><input type="text" name="" value="2012"></div>
 
 	<div class="col-md-8 margin-20">NOMBRE O RAZON SOCIAL <input type="text" name="" class="text-center" value="TRIBUTO TODO SRL."></div>
@@ -34,50 +34,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="border-1">10</td>
-					<td class="border-1">1</td>
-					<td class="border-1">2012</td>
-					<td class="border-1">65893254</td>
-					<td class="border-1">Sr. Jaime Zenteno</td>
-					<td class="border-1">1</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">50.000.00</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">6.500.0</td>
-				</tr>
-				<tr>
-					<td class="border-1">20</td>
-					<td class="border-1">1</td>
-					<td class="border-1">2012</td>
-					<td class="border-1">65893254</td>
-					<td class="border-1">Sr. Bolita</td>
-					<td class="border-1">3</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">147000</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">19.110.0</td>
-				</tr>
-				<tr>
-					<td class="border-1">1</td>
-					<td class="border-1">10</td>
-					<td class="border-1">2012</td>
-					<td class="border-1">32541895</td>
-					<td class="border-1">Sr. picapiedra</td>
-					<td class="border-1">4</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">11.223.33</td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1"></td>
-					<td class="border-1">1459.000.00</td>
+				<tr ng-repeat="item in formDataInterfaz">
+					<td class="border-1">{{item.d}}</td>
+					<td class="border-1">{{item.m}}</td>
+					<td class="border-1">{{item.a}}</td>
+					<td class="border-1">{{item.cod_fuente}}</td>
+					<td class="border-1">{{item.nom_fuente}}</td>
+					<td class="border-1">{{item.nro_factura}}</td>
+					<td class="border-1">{{item.nro_autorizacion}}</td>
+					<td class="border-1">{{item.cod_control}}</td>
+					<td class="border-1">{{item.total_factura}}</td>
+					<td class="border-1">{{item.total_ice}}</td>
+					<td class="border-1">{{item.total_exento}}</td>
+					<td class="border-1">{{item.importe_neto}}</td>
+					<td class="border-1">{{item.fiscal}}</td>
 				</tr>
 
 				<tr>
