@@ -10,7 +10,7 @@
 	font-size: 26px;
 }
 .letter-blue{
-	color: #337AB7;
+	color: #064378;
 }
 .letter-white{
   color: #FFF;
@@ -29,7 +29,7 @@
 	padding-right: 20px;
 }
 .border-1{
-	border: 1px solid #337AB7;
+	border: 1px solid #064378;
 	padding: 10px;
 }
 .border-1-white{
@@ -101,7 +101,7 @@
 	padding-right: 0px;
 }
 .navbar-blue{
-	background: #337AB7;
+	background: #064378;
 }
 .navbar-blue a{
 	color: #fff;
@@ -109,14 +109,14 @@
 .nav-blue > li > a:focus, .nav-blue > li > a:hover, .nav-blue > li > a:active {
 
     background: #D5E3F0;
-    color: #337AB7;
+    color: #064378;
 
 }
 .letter-white{
 	color: #fff;
 }
 .button-blue{
-	background: #337AB7;
+	background: #064378;
 }
 .button-blue span{
 	background: #fff;
@@ -134,7 +134,7 @@
 	height: 50vh;
 }
 .background-blue{
-	background: #377BB5;
+	background: #064378;
 } 
 .letter-white{
 	color: #fff;
@@ -304,8 +304,8 @@ div.fixed-table-scroll-outer {
     top: 245px;
 }
 .background-errorTotal{
-  background: red;
-  color: white;
+  border: 1px solid red;
+  color: red;
 }
 .background-correctoTotal{
   background: white;
@@ -314,4 +314,57 @@ div.fixed-table-scroll-outer {
 .clsDatePicker {
     z-index: 100000;
 }
-
+.img-size-default{
+  height: 40px;
+  width: 54px;
+  margin-top: -10px;
+}
+#particles-js{
+  background-image: url(../img/logo.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 80vh;
+}
+.btn-primary{
+  background: #064378;
+}
+.btn-primary-white{
+  background: #FFF;
+  color: #064378;
+  border: 1px solid #064378;
+}
+.btn-primary-white:hover, .btn-primary-white:focus, .btn-primary-white:active{
+  background: #064378;
+  color: #fff;
+  border: 1px solid #064378;
+}
+.btn-danger-white:hover, .btn-danger-white:focus, .btn-danger-white:active{
+  background: #C73232;
+  color: #fff;
+  border: 1px solid #C73232;
+}
+.btn-danger-white{
+  background: #fff;
+  color: #C73232;
+  border: 1px solid #C73232;
+}
+.form-control{
+  border: 1px solid #064378;
+  border-radius: 0px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-control[readonly], fieldset[disabled] .form-control {
+    background-color: #064378;
+    opacity: 0.8;
+    color: #fff;
+}
+.background-yellow{
+  background: #FED431;
+}
+.background-white-text{
+  background: #fff;
+  color: #064378;
+  border: 1px solid #064378;
+}

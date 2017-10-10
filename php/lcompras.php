@@ -51,6 +51,35 @@
 			$result->close();
 		}//End function getTable
 
+		//funcion para mostrar todos los registros de una tabla
+		public function getDataUsuarioEmpresa($_idUsuario){
+
+			//hallar ciclo contable
+			$result = $this->_db->query("SELECT * FROM ciclocontable WHERE show_by= '1' ORDER BY idCicloContable DESC LIMIT 1");
+			$retorna_gestion = $result->fetch_all(MYSQL_ASSOC);
+
+			//hallar empresa que pertenece el ciclo contable
+			//hallar empresa
+			$result = $this->_db->query("SELECT * FROM empresa WHERE show_by= '1' and idEmpresa = '".$retorna_gestion[0]['Empresa_idEmpresa']."'");
+			$retorna_empresa = $result->fetch_all(MYSQL_ASSOC);
+
+
+			//hallar usuario
+			$result = $this->_db->query("SELECT * FROM usuario WHERE show_by= '1' and idUsuario = '".$_idUsuario."'");
+			$retorna_usuario = $result->fetch_all(MYSQL_ASSOC);
+
+			//formar el arrray delibro compras para la interfaz
+				  $outp = array('gestion'=> $retorna_gestion[0]['gestion_ccontable'],
+								'nom_fuente'=> $retorna_empresa[0]['nom_empresa'],
+								'cod_fuente'=>$retorna_empresa[0]['nit_empresa'],
+								'ci_usu'=>$retorna_usuario[0]['ci_usu'],
+								'nombres_usu'=>$retorna_usuario[0]['nombres_usu'],
+								'apellidos_usu'=>$retorna_usuario[0]['apellidos_usu']
+								);
+
+			return $outp;
+		}
+
 	}
 
 
@@ -63,6 +92,11 @@
 	switch ($_POST['run']) {
 		case '0':// listar
 			$outp = $object->getTable();
+			//envia json a amgularjs 
+			echo json_encode($outp);
+			break;
+		case '1':// listar primera parte
+			$outp = $object->getDataUsuarioEmpresa($_POST['idUsuario']);
 			//envia json a amgularjs 
 			echo json_encode($outp);
 			break;

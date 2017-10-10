@@ -211,7 +211,7 @@ app.controller("cuentaListarCtrl", function($scope, $http) {
 app.controller("listarCuentaCtrl", function($scope, $http, $location) {
     
     // Dato para el titulo interfaz
-    $scope.titulo = "CUENTA";
+    $scope.titulo = "PLAN DE CUENTAS";
     var opcion = "cuenta";
     $scope.hide_buttom = 'hide';
 
@@ -4513,16 +4513,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
         dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
         dateFormat: "d/m/yy"
-    });
-    $( ".fecha_iva" ).datepicker({
-        //configura lo que debe mostrarse en la ventana de fecha
-        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
-        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
-        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
-        dateFormat: "d/m/yy"
-    });
-
-    
+    });    
 
 
     //valor por defecto del titulo de Pagado por / recibido por
@@ -4543,7 +4534,10 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
     //especifica que tabla se llenara en el modal venta debusqueda
     $scope.tablaIva = "";
-    
+
+    //bloqueo de boton guardar
+    $("#boton_save").prop("disabled", true);
+
     //LIMPIA UN LIBRO DIARIO
     $scope.limpiaribroDiario = function(){
         //definicion de variables
@@ -4577,10 +4571,17 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
         //especifica que tabla se llenara en el modal venta debusqueda
         $scope.tablaIva = "";
+
+        $("#boton_save").prop("disabled", true);
+        $("#boton_plus").prop("disabled", false);
+        $("#boton_plus").focus();
     }
 
     // ADICIONA UN NUEVO LIBRO DIARIO
     $scope.nuevoLibroDiario = function(){
+        $("#boton_save").prop("disabled", false);
+        $("#boton_plus").prop("disabled", true);
+        $("#focus-ini").focus();
         // ajax de llenado de interfaz
         $.ajax({
                 // la URL para la petición
@@ -5152,16 +5153,16 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         //console.log("!avisame : "+$scope.formDataInterfaz[5].valueSelect.value);
         //console.log("!avisame : "+valor);
 
-        if (valor == "") {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+        if (valor == "" || valor == null) {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
             //console.log("entro");
-            valor = "0";
+            valor = 0.00;
         }
         
 
         var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);// es el valor del campo Tipo de Cambio
         var valor1 = parseFloat(valor).toFixed(2);// es el valor del campo Debe bs
 
-        if (valor2 == ""){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+        if (valor2 == "" || valor == null){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
             valor2 = 0.00;
         }
 
@@ -5176,16 +5177,16 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
         //console.log("!avisame : "+$scope.formDataInterfaz[5].valueSelect.value);
         //console.log("!avisame : "+valor);
 
-        if (valor == "") {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+        if (valor == "" || valor == null) {// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
             //console.log("entro");
-            valor = "0";
+            valor = 0.00;
         }
         
 
         var valor2 = parseFloat($scope.formDataInterfaz[5].valueSelect.value).toFixed(2);// es el valor del campo Tipo de Cambio
         var valor1 = parseFloat(valor).toFixed(2);// es el valor del campo Debe bs
 
-        if (valor2 == ""){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
+        if (valor2 == "" || valor == null){// en caso de que no estuviera escrito ningun valor se le asigna el 0.00
             valor2 = 0.00;
         }
 
@@ -5202,7 +5203,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             //console.log("no null");
             for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
                 var item = $scope.formDataInterfaz[12].value[i].debe_bs
-                if (item == "") {
+                if (item == "" || item == null) {
                     //console.log("vacio ");
                     total += 0;
                 }else{
@@ -5221,7 +5222,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             //console.log("no null");
             for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
                 var item = $scope.formDataInterfaz[12].value[i].haber_bs
-                if (item == "") {
+                if (item == "" || item == null) {
                     //console.log("vacio ");
                     total += 0;
                 }else{
@@ -5240,7 +5241,8 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             //console.log("no null");
             for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
                 var item = $scope.formDataInterfaz[12].value[i].debe_sus
-                if (item == "") {
+                //console.log("suma"+item);
+                if (item == "" || item == null) {
                     //console.log("vacio ");
                     total += 0;
                 }else{
@@ -5259,7 +5261,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             //console.log("no null");
             for(var i = 0; i < $scope.formDataInterfaz[12].value.length; i++){
                 var item = $scope.formDataInterfaz[12].value[i].haber_sus
-                if (item == "") {
+                if (item == "" || item == null) {
                     //console.log("vacio ");
                     total += 0;
                 }else{
@@ -5273,8 +5275,85 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                 
     }
 
+    //diferencia de totales de haber, debe
+    $scope.diferencia_debe_bs = function(valor1, valor2){
+        //convertir valor nulo o vacio en 0
+        if (valor1 == "" || valor1 == null) {
+            valor1 = 0.00;
+        }
+        //convertir valor nulo o vacio en 0
+        if (valor2 == "" || valor2 == null) {
+            valor2 = 0.00;
+        }
+        if((valor1 - valor2) >= 0){
+            return parseFloat(0).toFixed(2);
+        }else{
+            
+            return Math.abs(parseFloat((valor1 - valor2)).toFixed(2));
+        }
+              
+    }
+    //diferencia de totales de haber, debe
+    $scope.diferencia_haber_bs = function(valor1, valor2){
+        //convertir valor nulo o vacio en 0
+        if (valor1 == "" || valor1 == null) {
+            valor1 = 0.00;
+        }
+        //convertir valor nulo o vacio en 0
+        if (valor2 == "" || valor2 == null) {
+            valor2 = 0.00;
+        }
+        if((valor1 - valor2) >= 0){
+            return parseFloat(0).toFixed(2);
+        }else{
+            
+            return Math.abs(parseFloat((valor1 - valor2)).toFixed(2));
+        }
+              
+    }
+
+    //diferencia de totales de haber, debe
+    $scope.diferencia_debe_sus = function(valor1, valor2){
+        //convertir valor nulo o vacio en 0
+        if (valor1 == "" || valor1 == null) {
+            valor1 = 0.00;
+        }
+        //convertir valor nulo o vacio en 0
+        if (valor2 == "" || valor2 == null) {
+            valor2 = 0.00;
+        }
+        if((valor1 - valor2) >= 0){
+            return parseFloat(0).toFixed(2);
+        }else{
+            
+            return Math.abs(parseFloat((valor1 - valor2)).toFixed(2));
+        }
+              
+    }
+    //diferencia de totales de haber, debe
+    $scope.diferencia_haber_sus = function(valor1, valor2){
+        //convertir valor nulo o vacio en 0
+        if (valor1 == "" || valor1 == null) {
+            valor1 = 0.00;
+        }
+        //convertir valor nulo o vacio en 0
+        if (valor2 == "" || valor2 == null) {
+            valor2 = 0.00;
+        }
+        if((valor1 - valor2) >= 0){
+            return parseFloat(0).toFixed(2);
+        }else{
+            
+            return Math.abs(parseFloat((valor1 - valor2)).toFixed(2));
+        }
+              
+    }
+
     //funcion que guardara los datos de libro diario
     $scope.guardarLibroDiario = function(){
+        //focus en boton nuevo agregar
+        $("#boton_plus").focus();
+
         // ajax de adicionar nuevo tipo de cambio
         $.ajax({
                 // la URL para la petición
@@ -5399,7 +5478,50 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lcompras.php"; 
     $scope.titulo= "LIBRO DE COMPRAS IVA";
-    var razoSocial = "proveedor"
+    var razoSocial = "proveedor";
+    var dimension = 0;
+    var idUsuario = sessionStorage.getItem("id_user");
+
+    // ajax de llenado de interfaz primer bloque
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "1", idUsuario: idUsuario
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfazPrimera = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
 
     // ajax de llenado de interfaz
         $.ajax({
@@ -5423,8 +5545,11 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.formDataInterfaz = data;
+                    dimension = data.length;
 
                     $scope.$apply();
+
+
                 },
      
                 // código a ejecutar si la petición falla;
@@ -5440,6 +5565,104 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
                    //location.href='#/producto';
                 }
             });
+
+    
+
+    //funcion para sumar los total factura
+    $scope.suma_total_factura = function(){
+
+        //inicializar valor
+        var total = 0;
+
+        //recorrer los registros
+        //console.log($scope.formDataInterfaz.length);
+
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_factura
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total ICE
+    $scope.suma_total_ice = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_ice
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los totales importe exento
+    $scope.suma_importe_exento = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_exento
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total importe neto
+    $scope.suma_importe_neto = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].importe_neto
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total iva
+    $scope.suma_total_iva = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].fiscal
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
 
 });
 
@@ -5449,7 +5672,50 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lventas.php"; 
     $scope.titulo= "LIBRO DE VENTAS IVA";
-    var razoSocial = "cliente"
+    var razoSocial = "cliente";
+    var dimension = 0;
+    var idUsuario = sessionStorage.getItem("id_user");
+
+    // ajax de llenado de interfaz primer bloque
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "1", idUsuario: idUsuario
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfazPrimera = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
 
     // ajax de llenado de interfaz
         $.ajax({
@@ -5473,6 +5739,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.formDataInterfaz = data;
+                    dimension = data.length;
 
                     $scope.$apply();
                 },
@@ -5491,6 +5758,143 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
                 }
             });
 
+    //funcion para sumar los total factura
+    $scope.suma_total_factura = function(){
+
+        //inicializar valor
+        var total = 0;
+
+        //recorrer los registros
+        //console.log($scope.formDataInterfaz.length);
+
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_factura
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total ICE
+    $scope.suma_total_ice = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_ice
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los totales importe exento
+    $scope.suma_importe_exento = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_exento
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total importe neto
+    $scope.suma_importe_neto = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].importe_neto
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total iva
+    $scope.suma_total_iva = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].fiscal
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+});
+
+app.directive('numericOnly', function(){
+    return {
+        restrict : 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            modelCtrl.$parsers.push(function (inputValue) {
+                //se restringe solo en numeros
+                var transformedInput = inputValue ? inputValue.replace(/[^0-9.]/g, '') : null;
+
+                if (transformedInput!=inputValue) {
+                    modelCtrl.$setViewValue(transformedInput);
+                    modelCtrl.$render();
+                }
+
+                return transformedInput;
+            });
+        }
+    };
+});
+app.directive('stringOnly', function(){
+    return {
+        restrict : 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            modelCtrl.$parsers.push(function (inputValue) {
+                //reemplaza, y se aceptan valores con acento y úüñ por lengua castellana
+                var transformedInput = inputValue ? inputValue.replace(/[^ a-z0-9áéíóúüñ]+/g,"") : null;
+
+                if (transformedInput!=inputValue) {
+                    modelCtrl.$setViewValue(transformedInput);
+                    modelCtrl.$render();
+                }
+
+                return transformedInput;
+            });
+        }
+    };
 });
 
 

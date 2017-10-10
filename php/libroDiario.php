@@ -489,13 +489,13 @@
 									);
 
 	                $outp[] = array('label'=> "Nro. de factura", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-numericOnly", 
 	                				'name'=> "nro_factv",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Nro. de autirzación", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text--numericOnly", 
 	                				'name'=> "nro_autorizacionv",
 	                				'value'=> "" 
 	                				);
@@ -507,52 +507,52 @@
 	                				);
 
 	                $outp[] = array('label'=> "Importe de factura", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_factv",
 	                				'value'=> $data['haber_bs'] 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "imorte_ICEv",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe excento", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_excentov",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe Neto", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_netov",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "DF", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-block", 
 	                				'name'=> "resultado",
 	                				'value'=> number_format(($data['haber_bs'] * 0.13), 2, '.', '')
 	                				);
 
 
 	                $outp[] = array('label'=> "sub total fila",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "sub_total_fila",
 	                				'value'=> $data['haber_bs']
 	                				);
 
 	                $outp[] = array('label'=> "total fila",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
 	                				'value'=> number_format($data['haber_bs'] - number_format(($data['haber_bs'] * 0.13), 2, '.', ''), 2, '.', '')
 	                				);
 
 	                 $outp[] = array('label'=> "Cliente_idCliente",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "Cliente_idCliente",
 	                				'value'=> $idIVACLIENTEPROVEEDOR
@@ -571,13 +571,13 @@
 									);
 
 	                $outp[] = array('label'=> "Nro. de factura", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-numericOnly", 
 	                				'name'=> "nro_factc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Nro. de autirzación", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-numericOnly", 
 	                				'name'=> "nro_autorizacionc",
 	                				'value'=> "" 
 	                				);
@@ -589,51 +589,51 @@
 	                				);
 
 	                $outp[] = array('label'=> "Importe de factura", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_factc",
 	                				'value'=> $data['debe_bs'] 
 	                				);
 
 	                $outp[] = array('label'=> "Importe ICE", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "imorte_ICEc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe excento", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_excentoc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "Importe Neto", 
-	                				'tipo'=> "text-keyup", 
+	                				'tipo'=> "text-keyup-numericOnly", 
 	                				'name'=> "importe_netoc",
 	                				'value'=> "" 
 	                				);
 
 	                $outp[] = array('label'=> "CF", 
-	                				'tipo'=> "text", 
+	                				'tipo'=> "text-block", 
 	                				'name'=> "resultado",
 	                				'value'=> number_format(($data['debe_bs'] * 0.13), 2, '.', '')
 	                				);
 
 	                $outp[] = array('label'=> "sub total fila",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "sub_total_fila",
 	                				'value'=> $data['debe_bs']
 	                				);
 
 	                $outp[] = array('label'=> "total fila",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "total_fila",
 	                				'value'=> number_format($data['debe_bs'] - number_format(($data['debe_bs'] * 0.13), 2, '.', ''), 2, '.', '')
 	                				);
 
 	                 $outp[] = array('label'=> "Proveedor_idProveedor",
-	                				'class'=> "", 
+	                				'class'=> "hide", 
 	                				'tipo'=> "text-block", 
 	                				'name'=> "Proveedor_idProveedor",
 	                				'value'=> $idIVACLIENTEPROVEEDOR

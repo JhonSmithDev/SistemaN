@@ -1,10 +1,10 @@
 
 
-<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_1" ng-click="nuevoLibroDiario()" title="Agregar"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_plus" class="btn btn-primary-white boton_PANTALLA_1" ng-click="nuevoLibroDiario()" title="Agregar"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
 
-<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_2" ng-click="guardarLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_save" class="btn btn-primary-white boton_PANTALLA_2" ng-click="guardarLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
 
-<div class="col-md-12 text-right"><button id="boton_atras" class="btn btn_afirmativo boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_remove" class="btn btn-danger-white boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
 
 <div class="col-md-12">
 	<div class="border-1 col-md-12">
@@ -19,7 +19,7 @@
 
 
 	<div class="col-md-2">Doc. contable: <br> 
-    <select class="form-control" ng-options="option.value for option in formDataInterfaz[3].value track by option.id" ng-model="formDataInterfaz[3].valueSelect" ng-change="hasChangedDocContable()"></select>
+    <select id="focus-ini" class="form-control" ng-options="option.value for option in formDataInterfaz[3].value track by option.id" ng-model="formDataInterfaz[3].valueSelect" ng-change="hasChangedDocContable()"></select>
 	</div>
 	<div class="col-md-2">Fecha: <br> 
 	<div class='' >
@@ -32,22 +32,22 @@
 
     <div id="adicionarTipoCambio_1" class="input-group z-index-fondo">
       <div class="input-group-btn">
-        <button class="btn btn-primary" type="submit" ng-click="adicionarTipoCambio()">
+        <button class="btn btn-primary" type="submit" ng-click="adicionarTipoCambio()" title="Adicionar un nuevo tipo de cambio">
           <i class="glyphicon glyphicon-plus"></i>
         </button>
       </div>
-      <select class="form-control" ng-options="option.value for option in formDataInterfaz[5].value track by option.id" ng-model="formDataInterfaz[5].valueSelect" ng-change="hasChangedTipoCambio()"></select> <span class="input-group-addon">Bs.</span>
+      <select class="form-control" ng-options="option.value for option in formDataInterfaz[5].value track by option.id" ng-model="formDataInterfaz[5].valueSelect" ng-change="hasChangedTipoCambio()"></select> <span class="input-group-addon background-white-text">Bs.</span>
     </div>
 
     <div id="adicionarTipoCambio_2" class="input-group hide">
       <div class="input-group-btn">
-        <button class="btn btn-primary" type="submit" ng-click="actionTipoCambio()">
+        <button class="btn btn-primary" type="submit" ng-click="actionTipoCambio()" title="Agrega nuevo tipo de cambio">
           <i class="glyphicon glyphicon-ok"></i>
         </button>
       </div>
-      <input type="text" name="" ng-model="valorTipoCambio" class="form-control" placeholder="Escriba nuevo valor en Bs. ">
+      <input type="text" name="" ng-model="valorTipoCambio" class="form-control" placeholder="Escriba nuevo valor en Bs. " numeric-only>
       <div class="input-group-btn">
-        <button class="btn btn-danger" type="submit" ng-click="cancelarAdicionarTipoCambio()">
+        <button class="btn btn-danger" type="submit" ng-click="cancelarAdicionarTipoCambio()" title="Cancela nuevo tipo dde cambio">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
       </div>
@@ -57,7 +57,7 @@
 	<div class="col-md-2 {{DECCONTABLEiva}}">{{titulo_llenar}} : 
     <div class="input-group">
       <div class="input-group-btn">
-        <button class="btn btn-primary" type="submit" ng-click="buscarFila('item.id', 'docContable')">
+        <button class="btn btn-primary" type="submit" ng-click="buscarFila('item.id', 'docContable')" title="Buscar en una lista">
           <i class="glyphicon glyphicon-search"></i>
         </button>
       </div>
@@ -66,8 +66,8 @@
   </div>
 
 
-	<div class="col-md-2 {{DECCONTABLEiva}}">NIT/CI: <br> <input type="text" name="nit_ci" class="form-control" ng-model="formDataInterfaz[8].value"></div>
-	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control" ng-model="formDataInterfaz[9].value"></div>
+	<div class="col-md-2 {{DECCONTABLEiva}}">NIT/CI: <br> <input type="text" name="nit_ci" class="form-control" ng-model="formDataInterfaz[8].value" numeric-only></div>
+	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control" ng-model="formDataInterfaz[9].value" numeric-only></div>
   <div class="col-md-2">
     Tipo de Pago:  <br>
     <select class="form-control" ng-options="option.value for option in formDataInterfaz[10].value track by option.id" ng-model="formDataInterfaz[10].valueSelect" ng-change="hasChangedTipoPago()"></select>
@@ -114,10 +114,10 @@
             	<td style="width: 50px;"><a href="" ng-click="eliminarFila(item.id)"><span class="glyphicon glyphicon-minus edita_css" aria-hidden="true"></span></a></td>
                <td style="width: 200px;"><a href="" ng-click="buscarFila(item.id, 'cuenta')"><span class="glyphicon glyphicon-search edita_css" aria-hidden="true"></span></a><input type="text" name="" value="{{item.cod_cuenta}}"></td>
                <td style="width: 200px;"><input type="text" name="" value="{{item.nom_cuenta}}"></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs" ng-keyup = "valorDolar_debe_sus(item.debe_bs, item.id)"></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, item.id)"></td>
-               <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly" ></td>
-               <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly" ></td>
+               <td style="width: 200px;"><input type="text" name="" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs" ng-keyup = "valorDolar_debe_sus(item.debe_bs, item.id)" numeric-only></td>
+               <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, item.id)" numeric-only></td>
+               <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly"  numeric-only></td>
+               <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly"  numeric-only></td>
                <td style="width: 200px;" class="text-center {{DECCONTABLEiva}}"><input type="checkbox" name="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id, item)"></td>
             </tr>
             <tr>
@@ -140,7 +140,7 @@
             	<th class="border-1-white"></th>
                <th class="border-1-white"></th>
                <th class="border-1-white border-1" style="border-right: 1px solid #337AB7;">Totales</th>
-               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_debe_bs(formDataInterfaz[12].value)}}</th>
+               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_debe_bs(formDataInterfaz[12].value)}} </th>
                <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_haber_bs(formDataInterfaz[12].value)}}</th>
                <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_debe_sus(formDataInterfaz[12].value)}}</th>
                <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_haber_sus(formDataInterfaz[12].value)}}</th>
@@ -151,10 +151,10 @@
             	<th class="border-1-white"></th>
                <th class="border-1-white"></th>
                <th class="border-1-white border-1" style="border-right: 1px solid #337AB7;">Diferencia</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">Debe (Bs.)</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">Haber (Bs.)</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">Debe ($us.)</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">haber ($us.)</th>
+               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_debe_bs(suma_debe_bs(formDataInterfaz[12].value), suma_haber_bs(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_haber_bs( suma_haber_bs(formDataInterfaz[12].value), suma_debe_bs(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value))}}</th>
 
                <th class="border-1-white"></th>
             </tr>
@@ -250,11 +250,20 @@
                         <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div><br>
                     </div>
 
+                     <div ng-switch-when="text-numericOnly" class="col-md-12 {{item.class}}">
+                        <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' numeric-only></div><br>
+                    </div>
+
                     <div ng-switch-when="text-keyup" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                         <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)"></div><br>
                     </div>
 
+                    <div ng-switch-when="text-keyup-numericOnly" class="col-md-12 {{item.class}}">
+                        <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                        <div class="col-md-6"> <input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' ng-keyup="sumaIva(dato_registro[4].value,dato_registro[5].value,dato_registro[6].value,dato_registro[7].value)" numeric-only></div><br>
+                    </div>
 
                     <div ng-switch-when="text-block" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>

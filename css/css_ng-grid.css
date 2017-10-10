@@ -38,7 +38,7 @@
   position: relative;
   overflow: hidden;
   font-weight: bold;
-  background-color:  #337ab7;
+  background-color:  #064378;
   color: #fff;
 }
 .ngHeaderCell {
@@ -381,7 +381,7 @@
 .ngFooterPanel {
   background-color: #fff;
   padding: 0;
-  border-top: 1px solid #337AB7;
+  border-top: 1px solid #064378;
   position: relative;
 }
 .ngRowCountPicker{
@@ -415,7 +415,7 @@
   height: 25px;
   min-width: 26px;
   background-color: #fff;
-  border: 1px solid #337AB7; 
+  border: 1px solid #064378; 
 }
 .ngPagerFirstTriangle {
   width: 0;
