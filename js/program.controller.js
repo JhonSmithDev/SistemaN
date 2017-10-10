@@ -4786,6 +4786,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
     $scope.cancelarAdicionarTipoCambio = function(){
         $("#adicionarTipoCambio_2").addClass("hide");
         $("#adicionarTipoCambio_1").removeClass("hide");
+        $scope.valorTipoCambio = "";
     }
     
     $scope.actionTipoCambio = function(){
@@ -4816,6 +4817,7 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
                     //volver al principio
                     $("#adicionarTipoCambio_2").addClass("hide");
                     $("#adicionarTipoCambio_1").removeClass("hide");
+                    $scope.valorTipoCambio = "";
 
                     $scope.$apply();
                 },
@@ -5347,6 +5349,58 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
             return Math.abs(parseFloat((valor1 - valor2)).toFixed(2));
         }
               
+    }
+
+    //agregar Ajuste de cambio
+    $scope.agregarAjusteCambio = function(debe_sus, haber_sus){
+        //console.log($scope.formDataInterfaz[12].value[idFilaIva]);
+        
+        // ajax de adicionar nuevo detalle
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "crear_detalle_ajuste_cambio", // que hara
+                     idFila : $scope.formDataInterfaz[12].value.length, //index fila - en donde lo hara
+                     debe_sus : debe_sus,
+                     haber_sus : haber_sus
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz[12].value.push(data);
+
+                    console.log($scope.formDataInterfaz[12].value);
+                    
+
+                    $scope.$apply();
+                    //console.log($scope.formDataInterfaz[12].value);
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
     }
 
     //funcion que guardara los datos de libro diario

@@ -728,6 +728,41 @@
 				
 		}
 
+		//creacion de una  fila para detalle de libro diario
+		public function crearDetalleAjusteCambio($idFila , $_debe_sus, $_haber_sus){
+
+			//convertir json a array para su lectura
+			//$data =  json_decode($datoFila, true);
+			//hora y fech 
+			$hoy_hora = date('Y/m/d h:i:s');
+			//print_r($data);
+			$outp = array();
+			//conseguir el idCuenta de Fiscal
+			$result= $this->_db->query("SELECT * FROM cuenta WHERE cod_cuenta = '553'");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+
+			$array_ = array();
+			$outp = array('id'=> $idFila , 
+						  'id_cuenta'=> $retorna[0]['idCuenta'], 
+						  'cod_cuenta'=> $retorna[0]['cod_cuenta'], 
+						  'nom_cuenta'=> $retorna[0]['nom_cuenta'], 
+						  'hora'=> $hoy_hora, 
+						  'debe_bs'=> "", 
+						  'haber_bs'=> "", 
+						  'debe_sus'=> $_debe_sus, 
+						  'haber_sus'=> $_haber_sus, 
+						  'checkboxSelected' => true, 
+						  'registro'=> $array_
+						  );
+			//print_r($outp);
+			//**************************************
+				//para campos DETALLE O REGISTRO obj
+				//genra fila
+			return $outp;
+				
+		}
+
 
 		//funcion par llenar el modal con datos de cuenta, cliente y proveedor
 		public function llenarModal($idDecContable){
@@ -1384,6 +1419,9 @@
 			break;
 		case 'crear_sigla_comprobante':
 			$outp = $object->crearSiglaComprobante($_POST['docContableGet']);
+			break;
+		case 'crear_detalle_ajuste_cambio':
+			$outp = $object->crearDetalleAjusteCambio($_POST['idFila'],$_POST['debe_sus'],$_POST['haber_sus']);
 			break;
 		default:
 			# code...

@@ -6,12 +6,14 @@
 
 <div class="col-md-12 text-right"><button id="boton_remove" class="btn btn-danger-white boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
 
+<div class="col-md-12 text-right"><button id="boton_ajuste" ng-class="diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value)) == diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value)) ? 'desaparece' : 'aparece'" class=" desaparece btn btn-danger-white boton_PANTALLA_4" ng-click="agregarAjusteCambio(diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value)), diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value)))" title="Ajustar Cambio de Dolar"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></button></div>
+
 <div class="col-md-12">
 	<div class="border-1 col-md-12">
 	<form class="form-group">
 	<div class="col-md-6 text-center letter-big letter-blue">LIBRO DIARIO</div>
-	<div class="col-md-2">Asiento: <br><input type="text" name="asiento" class="form-control" readonly="readonly" ng-model="formDataInterfaz[0].value"></div>
-	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control" readonly="readonly" ng-model="formDataInterfaz[1].valueSigla"></div>
+	<div class="col-md-2">Asiento: <br><input type="text" name="asiento" class="form-control text-center" readonly="readonly" ng-model="formDataInterfaz[0].value"></div>
+	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control text-center" readonly="readonly" ng-model="formDataInterfaz[1].valueSigla"></div>
   <div class="col-md-2">
     Moneda de cambio:  <br>
     <select class="form-control" ng-options="option.value for option in formDataInterfaz[2].value track by option.id" ng-model="formDataInterfaz[2].valueSelect" ng-change="hasChangedMoneda()"></select>
@@ -24,7 +26,7 @@
 	<div class="col-md-2">Fecha: <br> 
 	<div class='' >
   					<!--<p>{{datePicker || "00/00/0000"}}</p>-->
-  					<input class="form-control fecha_comprobante" type="text" ng-model="formDataInterfaz[4].value" placeholder="Presione"  readonly="readonly" ng-value="fechaUsuario" />
+  					<input class="form-control fecha_comprobante text-right" type="text" ng-model="formDataInterfaz[4].value" placeholder="Presione"  readonly="readonly" ng-value="fechaUsuario" />
 				</div></div>
 	<div class="col-md-4">Tipo Cambio(venta): 
     
@@ -45,7 +47,7 @@
           <i class="glyphicon glyphicon-ok"></i>
         </button>
       </div>
-      <input type="text" name="" ng-model="valorTipoCambio" class="form-control" placeholder="Escriba nuevo valor en Bs. " numeric-only>
+      <input type="text" name="" ng-model="valorTipoCambio" class="form-control text-right" placeholder="Escriba nuevo valor en Bs. " numeric-only>
       <div class="input-group-btn">
         <button class="btn btn-danger" type="submit" ng-click="cancelarAdicionarTipoCambio()" title="Cancela nuevo tipo dde cambio">
           <i class="glyphicon glyphicon-remove"></i>
@@ -61,13 +63,13 @@
           <i class="glyphicon glyphicon-search"></i>
         </button>
       </div>
-      <input type="text" name="titular" ng-model="formDataInterfaz[6].value" class="form-control">
+      <input type="text" name="titular" ng-model="formDataInterfaz[6].value" class="form-control text-center">
     </div>
   </div>
 
 
-	<div class="col-md-2 {{DECCONTABLEiva}}">NIT/CI: <br> <input type="text" name="nit_ci" class="form-control" ng-model="formDataInterfaz[8].value" numeric-only></div>
-	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control" ng-model="formDataInterfaz[9].value" numeric-only></div>
+	<div class="col-md-2 {{DECCONTABLEiva}}">NIT/CI: <br> <input type="text" name="nit_ci" class="form-control text-center" ng-model="formDataInterfaz[8].value" numeric-only></div>
+	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control text-center" ng-model="formDataInterfaz[9].value" numeric-only></div>
   <div class="col-md-2">
     Tipo de Pago:  <br>
     <select class="form-control" ng-options="option.value for option in formDataInterfaz[10].value track by option.id" ng-model="formDataInterfaz[10].valueSelect" ng-change="hasChangedTipoPago()"></select>
@@ -85,14 +87,14 @@
       		<table class="table table-striped table-hover table-condensed table-bordered">
          		<thead>
             		<tr>
-            			<th style="width: 50px;" class="background-blue letter-white text-center"></th>
+            			<th style="width: 30px;" class="background-blue letter-white text-center"></th>
                			<th style="width: 200px;" class="background-blue letter-white text-center">Código</th>
                			<th style="width: 200px;" class="background-blue letter-white text-center">Nombre de cuenta</th>
-               			<th style="width: 200px;" class="background-blue letter-white text-center">Debe (Bs.)</th>
-               			<th style="width: 200px;" class="background-blue letter-white text-center">Haber (Bs.)</th>
-               			<th style="width: 200px;" class="background-blue letter-white text-center">Debe ($us.)</th>
-               			<th style="width: 200px;" class="background-blue letter-white text-center">haber ($us.)</th>
-               			<th style="width: 200px;" class="background-blue letter-white text-center">IVA</th>
+               			<th style="width: 150px;" class="background-blue letter-white text-center">Debe (Bs.)</th>
+               			<th style="width: 150px;" class="background-blue letter-white text-center">Haber (Bs.)</th>
+               			<th style="width: 150px;" class="background-blue letter-white text-center">Debe ($us.)</th>
+               			<th style="width: 150px;" class="background-blue letter-white text-center">haber ($us.)</th>
+               			<th style="width: 80px;" class="background-blue letter-white text-center">IVA</th>
             		</tr>
          		</thead>
       		</table>
@@ -100,35 +102,47 @@
    	<div class="table-container-body">
       <table class="table table-striped table-hover table-condensed table-bordered">
          <colgroup>
-         	<col style="width: 50px;"></col>
+         	<col style="width: 30px;"></col>
             <col style="width: 200px;"></col>
             <col style="width: 200px;"></col>
-            <col style="width: 200px;"></col>
-            <col style="width: 200px;"></col>
-            <col style="width: 200px;"></col>
-            <col style="width: 200px;"></col>
-            <col style="width: 200px;"></col>
+            <col style="width: 150px;"></col>
+            <col style="width: 150px;"></col>
+            <col style="width: 150px;"></col>
+            <col style="width: 150px;"></col>
+            <col style="width: 80px;"></col>
          </colgroup>
          <tbody>
             <tr ng-repeat="item in formDataInterfaz[12].value track by $index" class="fila_{{item.id}}">
-            	<td style="width: 50px;"><a href="" ng-click="eliminarFila(item.id)"><span class="glyphicon glyphicon-minus edita_css" aria-hidden="true"></span></a></td>
-               <td style="width: 200px;"><a href="" ng-click="buscarFila(item.id, 'cuenta')"><span class="glyphicon glyphicon-search edita_css" aria-hidden="true"></span></a><input type="text" name="" value="{{item.cod_cuenta}}"></td>
-               <td style="width: 200px;"><input type="text" name="" value="{{item.nom_cuenta}}"></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs" ng-keyup = "valorDolar_debe_sus(item.debe_bs, item.id)" numeric-only></td>
-               <td style="width: 200px;"><input type="text" name="" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, item.id)" numeric-only></td>
-               <td style="width: 200px;"><input type="text" name="" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly"  numeric-only></td>
-               <td style="width: 200px;"><input type="text" name="" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly"  numeric-only></td>
-               <td style="width: 200px;" class="text-center {{DECCONTABLEiva}}"><input type="checkbox" name="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id, item)"></td>
+            	<td style="width: 30px;"><a href="" ng-click="eliminarFila(item.id)"><span class="glyphicon glyphicon-minus edita_css" aria-hidden="true"></span></a></td>
+
+              <!--columna de busqueda de cuenta-->
+              <td style="width: 200px;">
+                <div class="input-group">
+                  <div class="input-group-btn">
+                    <button class="btn btn-primary" type="submit" ng-click="buscarFila(item.id, 'cuenta')" title="Buscar en una lista">
+                      <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                  </div>
+                  <input type="text" name="" class="form-control text-center" value="{{item.cod_cuenta}}">
+                </div>
+              </td>
+
+               <td style="width: 200px;"><input type="text" name="" class="form-control text-center" value="{{item.nom_cuenta}}"></td>
+               <td style="width: 150px;"><input type="text" name="" class="form-control text-right" value="" class="debe_bs_{{item.id}}" ng-model="item.debe_bs" ng-keyup = "valorDolar_debe_sus(item.debe_bs, item.id)" numeric-only></td>
+               <td style="width: 150px;"><input type="text" name="" class="form-control text-right" value="" class="haber_bs_{{item.id}}" ng-model="item.haber_bs" ng-keyup = "valorDolar_haber_sus(item.haber_bs, item.id)" numeric-only></td>
+               <td style="width: 150px;"><input type="text" name="" class="form-control text-right" class="debe_sus_{{item.id}}" ng-model="item.debe_sus" readonly="readonly"  numeric-only></td>
+               <td style="width: 150px;"><input type="text" name="" class="form-control text-right" class="haber_sus_{{item.id}}" ng-model="item.haber_sus" readonly="readonly"  numeric-only></td>
+               <td style="width: 80px;" class="text-center {{DECCONTABLEiva}}"><input type="checkbox" name="" class="" ng-model = "item.checkboxSelected" ng-change="hasChangedCheckbox(item.id, item)"></td>
             </tr>
             <tr>
-               <td style="width: 50px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>
+               <td style="width: 30px;"><a href="" ng-click="agregarFila()""><span class="glyphicon glyphicon-plus edita_css" aria-hidden="true"></span></a></td>
                <td style="width: 200px;"></td>
                <td style="width: 200px;"></td>
-               <td style="width: 200px;"></td>
-               <td style="width: 200px;"></td>
-               <td style="width: 200px;"></td>
-               <td style="width: 200px;"></td>
-               <td style="width: 200px;"></td>
+               <td style="width: 150px;"></td>
+               <td style="width: 150px;"></td>
+               <td style="width: 150px;"></td>
+               <td style="width: 150px;"></td>
+               <td style="width: 80px;"></td>
             </tr>
          </tbody>
       </table>
@@ -139,22 +153,21 @@
             <tr>
             	<th class="border-1-white"></th>
                <th class="border-1-white"></th>
-               <th class="border-1-white border-1" style="border-right: 1px solid #337AB7;">Totales</th>
-               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_debe_bs(formDataInterfaz[12].value)}} </th>
-               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_haber_bs(formDataInterfaz[12].value)}}</th>
-               <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_debe_sus(formDataInterfaz[12].value)}}</th>
-               <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class="border-1-white border-1" style="border: 1px solid #337AB7;">{{suma_haber_sus(formDataInterfaz[12].value)}}</th>
-
+               <th class="border-1-white background-blue letter-white">Totales</th>
+               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class=" text-right" >{{suma_debe_bs(formDataInterfaz[12].value)}} </th>
+               <th ng-class="suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class=" text-right">{{suma_haber_bs(formDataInterfaz[12].value)}}</th>
+               <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class=" text-right" >{{suma_debe_sus(formDataInterfaz[12].value)}}</th>
+               <th ng-class="suma_debe_sus(formDataInterfaz[12].value) == suma_haber_sus(formDataInterfaz[12].value) ? 'background-correctoTotal' : 'background-errorTotal'" class=" text-right" >{{suma_haber_sus(formDataInterfaz[12].value)}}</th>
                <th class="border-1-white"></th>
             </tr>
             <tr>
             	<th class="border-1-white"></th>
                <th class="border-1-white"></th>
-               <th class="border-1-white border-1" style="border-right: 1px solid #337AB7;">Diferencia</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_debe_bs(suma_debe_bs(formDataInterfaz[12].value), suma_haber_bs(formDataInterfaz[12].value))}}</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_haber_bs( suma_haber_bs(formDataInterfaz[12].value), suma_debe_bs(formDataInterfaz[12].value))}}</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value))}}</th>
-               <th class="border-1-white border-1" style="border: 1px solid #337AB7;">{{diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white background-red letter-white">Diferencia</th>
+               <th class="border-1-white background-red letter-white text-right">{{diferencia_debe_bs(suma_debe_bs(formDataInterfaz[12].value), suma_haber_bs(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white background-red letter-white text-right">{{diferencia_haber_bs( suma_haber_bs(formDataInterfaz[12].value), suma_debe_bs(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white background-red letter-white text-right">{{diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value))}}</th>
+               <th class="border-1-white background-red letter-white text-right">{{diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value))}}</th>
 
                <th class="border-1-white"></th>
             </tr>

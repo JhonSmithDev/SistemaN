@@ -303,6 +303,20 @@ div.fixed-table-scroll-outer {
     right: 6px;
     top: 245px;
 }
+.boton_PANTALLA_4 {
+    border-radius: 8px 8px 8px 8px;
+    float: right;
+    position: fixed;
+    min-height: 50px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    width: 50px;
+    z-index: 999;
+    right: 6px;
+    top: 305px;
+}
 .background-errorTotal{
   border: 1px solid red;
   color: red;
@@ -320,6 +334,7 @@ div.fixed-table-scroll-outer {
   margin-top: -10px;
 }
 #particles-js{
+
   background-image: url(../img/logo_big.png);
   background-repeat: no-repeat;
   background-position: center;
@@ -368,4 +383,16 @@ div.fixed-table-scroll-outer {
   background: #fff;
   color: #064378;
   border: 1px solid #064378;
+}
+.boder-silver{
+  border: 1px solid #ddd;
+}
+.background-red{
+  background: #7D1C6B;
+}
+.aparece{
+  display: block;
+}
+.desaparece{
+  display: none;
 }
