@@ -320,10 +320,11 @@ div.fixed-table-scroll-outer {
   margin-top: -10px;
 }
 #particles-js{
-  background-image: url(../img/logo.png);
+  background-image: url(../img/logo_big.png);
   background-repeat: no-repeat;
   background-position: center;
   height: 80vh;
+  background-size: 50%;
 }
 .btn-primary{
   background: #064378;
