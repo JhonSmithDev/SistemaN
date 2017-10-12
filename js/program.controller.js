@@ -5721,7 +5721,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
 });
 
 
-//      LISTAR COMPRAS IVA
+//      LISTAR VENTAS IVA
 app.controller("ventasIvaCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lventas.php"; 
@@ -5910,6 +5910,391 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
 
 });
 
+
+//      LISTAR  REPORTE INGRESOS SIMILAR A LIBRO VENTAS
+app.controller("ingresosCtrl", function($scope, $http) {
+    //cargar los datos por defecto de compras iva
+    var url= "../php/lventas.php"; 
+    $scope.titulo= "REPORTE INGRESOS";
+    var razoSocial = "cliente";
+    var dimension = 0;
+    var idUsuario = sessionStorage.getItem("id_user");
+
+    // ajax de llenado de interfaz primer bloque
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "1", idUsuario: idUsuario
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfazPrimera = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    // ajax de llenado de interfaz
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "0"
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    //funcion para sumar los total factura
+    $scope.suma_total_factura = function(){
+
+        //inicializar valor
+        var total = 0;
+
+        //recorrer los registros
+        //console.log($scope.formDataInterfaz.length);
+
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_factura
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total ICE
+    $scope.suma_total_ice = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_ice
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los totales importe exento
+    $scope.suma_importe_exento = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_exento
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total importe neto
+    $scope.suma_importe_neto = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].importe_neto
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total iva
+    $scope.suma_total_iva = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].fiscal
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+});
+
+
+//     LISTAR  REPORTE EGRESOS SIMILAR A LIBRO COMPRAS
+app.controller("egresosCtrl", function($scope, $http) {
+    //cargar los datos por defecto de compras iva
+    var url= "../php/lcompras.php"; 
+    $scope.titulo= "REPORTE EGRESOS";
+    var razoSocial = "proveedor";
+    var dimension = 0;
+    var idUsuario = sessionStorage.getItem("id_user");
+
+    // ajax de llenado de interfaz primer bloque
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "1", idUsuario: idUsuario
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfazPrimera = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    // ajax de llenado de interfaz
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "0"
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfaz = data;
+                    dimension = data.length;
+
+                    $scope.$apply();
+
+
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    
+
+    //funcion para sumar los total factura
+    $scope.suma_total_factura = function(){
+
+        //inicializar valor
+        var total = 0;
+
+        //recorrer los registros
+        //console.log($scope.formDataInterfaz.length);
+
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_factura
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total ICE
+    $scope.suma_total_ice = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_ice
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los totales importe exento
+    $scope.suma_importe_exento = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].total_exento
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total importe neto
+    $scope.suma_importe_neto = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].importe_neto
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+    //funcion para sumar los total iva
+    $scope.suma_total_iva = function(){
+        var total = 0;
+        for(var i = 0; i < dimension; i++){
+            var item = $scope.formDataInterfaz[i].fiscal
+            if (item == "" || item == null) {
+                //console.log("vacio ");
+                total += 0;
+            }else{
+                //console.log("haber sus valor: "+item);
+                total += parseFloat(item);
+            }
+                
+        }
+        return parseFloat(total).toFixed(2);
+                
+    }
+
+});
+
+//directivas para restringir los inputs
 app.directive('numericOnly', function(){
     return {
         restrict : 'A',
@@ -6025,6 +6410,14 @@ app.config(function($routeProvider) {
     .when("/libro_venta", {
         templateUrl : "../template/libroVentas.html",
         controller : "ventasIvaCtrl"
+    })
+    .when("/ingresos", {
+        templateUrl : "../template/ingresos.html",
+        controller : "ingresosCtrl"
+    })
+    .when("/egresos", {
+        templateUrl : "../template/egresos.html",
+        controller : "egresosCtrl"
     })
     ;
 });

@@ -396,3 +396,6 @@ div.fixed-table-scroll-outer {
 .desaparece{
   display: none;
 }
+.border-1-black{
+  border: 1px solid #000;
+}

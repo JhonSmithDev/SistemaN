@@ -1,0 +1,74 @@
+<div class="col-md-12 text-right"><button id="boton_print" class="btn btn-primary-white boton_PANTALLA_1" ng-click="imprimir()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></div>
+
+
+<div class="col-md-12">
+	<div class="col-md-12 text-center letter-big letter-blue ">{{titulo}}</div>
+	<div class="col-md-12 text-center margin-20">PERIODO FISCAL<input type="text" name="" ng-model= "formDataInterfazPrimera.gestion" class="text-center" ></div>
+
+
+	<div class="col-md-12 table-responsive">
+		<table class="table border-1-black">
+			<thead>
+				<tr>
+					<th colspan="8" class="text-center border-1-black "></th>
+					<th colspan="5" class="text-center border-1-black ">CIFRAS EN BOLIVIANOS</th>
+				</tr>
+				<tr>
+					<th colspan="3" class="text-center border-1-black ">FECHA</th>
+					<th rowspan="2" class="text-center border-1-black ">Nro. NIT DEL COMPRADOR</th>
+					<th rowspan="2" class="text-center border-1-black ">NOMBRE O RAZON SOCIAL DEL COMPRADOR</th>
+					<th rowspan="2" class="text-center border-1-black ">Nro. DE FACTURA</th>
+					<th rowspan="2" class="text-center border-1-black ">Nro. DE AUTORIZACION</th>
+					<th rowspan="2" class="text-center border-1-black ">CODIGO DE CONTROL</th>
+					<th rowspan="2" class="text-center border-1-black ">TOTAL FACTURA (A)</th>
+					<th rowspan="2" class="text-center border-1-black ">TOTAL I.C.E. (B)</th>
+					<th rowspan="2" class="text-center border-1-black ">IMPORTES EXENTOS "C"</th>
+					<th rowspan="2" class="text-center border-1-black ">IMPORTE NETO (A B C)</th>
+					<th rowspan="2" class="text-center border-1-black ">CREDITO FISCAL IVA</th>
+				</tr>
+				<tr>
+					<th class="text-center border-1-black">D</th>
+					<th class="text-center border-1-black">M</th>
+					<th class="text-center border-1-black">A</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in formDataInterfaz">
+					<td class="border-1">{{item.d}}</td>
+					<td class="border-1">{{item.m}}</td>
+					<td class="border-1">{{item.a}}</td>
+					<td class="border-1">{{item.cod_fuente}}</td>
+					<td class="border-1">{{item.nom_fuente}}</td>
+					<td class="border-1">{{item.nro_factura}}</td>
+					<td class="border-1">{{item.nro_autorizacion}}</td>
+					<td class="border-1">{{item.cod_control}}</td>
+					<td class="border-1">{{item.total_factura}}</td>
+					<td class="border-1">{{item.total_ice}}</td>
+					<td class="border-1">{{item.total_exento}}</td>
+					<td class="border-1">{{item.importe_neto}}</td>
+					<td class="border-1">{{item.fiscal}}</td>
+				</tr>
+
+				<tr>
+					<td rowspan="2" colspan="3" class="border-1">CI <br>{{formDataInterfazPrimera.ci_usu}}</td>
+					<td rowspan="2" colspan="3" class="border-1">Nombre completo<br>{{formDataInterfazPrimera.nombres_usu}} {{formDataInterfazPrimera.apellidos_usu}}</td>
+					<td colspan="2">Totales parciales</td>
+					<td class="border-1">{{suma_total_factura()}}</td>
+					<td class="border-1">{{suma_total_ice()}}</td>
+					<td class="border-1">{{suma_importe_exento()}}</td>
+					<td class="border-1">{{suma_importe_neto()}}</td>
+					<td class="border-1">{{suma_total_iva()}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="border-1">Totales generales</td>
+					<td class="border-1">{{suma_total_factura()}}</td>
+					<td class="border-1">{{suma_total_ice()}}</td>
+					<td class="border-1">{{suma_importe_exento()}}</td>
+					<td class="border-1">{{suma_importe_neto()}}</td>
+					<td class="border-1">{{suma_total_iva()}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div
