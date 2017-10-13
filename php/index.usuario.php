@@ -50,7 +50,7 @@
 											'nombres_usu'=> "".$retorna_child[0]['nombres_usu']."",
 											'apellidos_usu'=> "".$retorna_child[0]['apellidos_usu']."",
 											'GrupoUsu_idGrupoUsu'=> "".$retorna_master[0]['idGrupoUsu']."",
-											'GrupoUsu_nombreGrupoUsu'=> "".$retorna_master[0]['nom_gu']."",
+											'idGrupoUsu'=> "".$retorna_master[0]['idGrupoUsu']."",
 											'activo'=> "1",
 											);
 							return $outp;

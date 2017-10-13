@@ -45,7 +45,7 @@ app.controller("Ctrl_administra", function($scope, $http) {
                     sessionStorage.setItem("id_user", data[0].idUsuario);
                     sessionStorage.setItem("activo", data[0].activo);
                     sessionStorage.setItem("rol", data[0].GrupoUsu_idGrupoUsu); 
-                    sessionStorage.setItem("id_rol", data[0].GrupoUsu_nombreGrupoUsu);    
+                    sessionStorage.setItem("id_rol", data[0].idGrupoUsu);    
 
                     location.href = 'template/program.html';  
                   }else{

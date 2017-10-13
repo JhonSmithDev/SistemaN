@@ -317,7 +317,7 @@ app.controller("listarCuentaCtrl", function($scope, $http, $location) {
                 // código a ejecutar si la petición es satisfactoria;
                 // la respuesta es pasada como argumento a la función
                 success : function(largeLoad) {
-                    console.log(largeLoad);
+                    //console.log(largeLoad);
                     $scope.setPagingData(largeLoad,page,pageSize);
                     $(".carga-info").css("display", "none");
                 },
@@ -6294,6 +6294,11 @@ app.controller("egresosCtrl", function($scope, $http) {
 
 });
 
+//     LISTAR  REPORTE EGRESOS SIMILAR A LIBRO COMPRAS
+app.controller("vacioCtrl", function($scope, $http) {
+
+});
+
 //directivas para restringir los inputs
 app.directive('numericOnly', function(){
     return {
@@ -6346,78 +6351,59 @@ app.directive('stringOnly', function(){
 //***************************************router*******************************
 app.config(function($routeProvider) {
 
-    $routeProvider
-    .when("/", {
-        templateUrl : "../template/vacio.html"
-        
-    })
-    .when("/cuentas", {
-        templateUrl : "../template/listar.html",
-        controller : "listarCuentaCtrl"
-    })
-    .when("/cuentas2", {
-        templateUrl : "../template/cuenta.html",
-        controller : "cuentaListarCtrl"
-    })
-    .when("/empresa", {
-        templateUrl : "../template/listar.html",
-        controller : "listarEmpresaCtrl"
-    })
-    .when("/ciclo_contable", {
-        templateUrl : "../template/listar.html",
-        controller : "listarCicloContableCtrl"
-    })
-    .when("/moneda", {
-        templateUrl : "../template/listar.html",
-        controller : "listarMonedaCtrl"
-    })
-    .when("/tipo_cambio", {
-        templateUrl : "../template/listar.html",
-        controller : "listarTipoCambioCtrl"
-    })
-    .when("/usuario", {
-        templateUrl : "../template/listar.html",
-        controller : "listarUsuarioCtrl"
-    })
-    .when("/grupo_usuario", {
-        templateUrl : "../template/listar.html",
-        controller : "listarGrupoUsuarioCtrl"
-    })
-    .when("/clase_cuenta", {
-        templateUrl : "../template/listar.html",
-        controller : "listarClaseCuentaCtrl"
-    })
-    .when("/cliente", {
-        templateUrl : "../template/listar.html",
-        controller : "listarClienteCtrl"
-    })
-    .when("/proveedor", {
-        templateUrl : "../template/listar.html",
-        controller : "listarProveedorCtrl"
-    })
-    .when("/libro_diario", {
-        templateUrl : "../template/libroDiario.html",
-        controller : "libroDiarioCtrl"
-    })
-    .when("/libro_mayor", {
-        templateUrl : "../template/libroMayor.html",
-        controller : "listarLibroMayorCtrl"
-    })
-    .when("/libro_compra", {
-        templateUrl : "../template/libroCompras.html",
-        controller : "comprasIvaCtrl"
-    })
-    .when("/libro_venta", {
-        templateUrl : "../template/libroVentas.html",
-        controller : "ventasIvaCtrl"
-    })
-    .when("/ingresos", {
-        templateUrl : "../template/ingresos.html",
-        controller : "ingresosCtrl"
-    })
-    .when("/egresos", {
-        templateUrl : "../template/egresos.html",
-        controller : "egresosCtrl"
-    })
-    ;
+     $routeProvider
+                    .when("/", {
+                        templateUrl : "../template/vacio.html",
+                        controller : "vacioCtrl"
+                        
+                    });
+    var url = "../php/configura.php";
+    var rol = sessionStorage.getItem("id_rol");
+    // ajax de llenado de interfaz
+    $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     rol : rol
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    angular.forEach(data, function(value, key) {
+                      $routeProvider
+                        .when(value.url, {
+                            templateUrl : value.template,
+                            controller : value.controller
+                        });
+                    });
+
+
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                   
+                }
+            });
+
 });
+
+

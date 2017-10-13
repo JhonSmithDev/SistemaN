@@ -31,9 +31,28 @@ $(document).ready(function(){
             location.href = '../index.html';
 		});
     }else{
-    	$(".contenido").css("display","none");
+    	$(".contenido").remove();
     }; 
 
+    if (sessionStorage.getItem("activo") == "1") {
+
+        //this contador 
+        if (sessionStorage.getItem("id_rol") == "2") {
+            $(".show_contador").remove();
+        }
+        //this axiliar contaduria 
+        if (sessionStorage.getItem("id_rol") == "3") {
+            $(".show_auxi").remove();
+        }
+        //this auditor 
+        if (sessionStorage.getItem("id_rol") == "4") {
+            $(".show_audi").remove();
+        }
+        
+    }else{
+        $(".contenido").remove();
+    }; 
+    
     /***para cambiar el teclado enter por tab en la pagina***/
     /*$('body').on('keydown', 'input, select, textarea', function(e) {
         var self = $(this)
