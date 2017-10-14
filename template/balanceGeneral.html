@@ -1,9 +1,44 @@
 <div class="col-md-12">
-	<table>
-		<thead>
-			<tr>
-				<th>BALANCE GENERAL</th>
-			</tr>
-		</thead>
-	</table>
+	<div class="col-md-12 letter-big letter-blue text-center"> Balance General</div>
+
+
+	
+	<div class="col-md-2 text-center">
+	    Periódo contable:  <br>
+	    <select class="form-control" ng-options="option.gestion_ccontable for option in formDataInterfazBalanceGeneral[0] track by option.idCicloContable" ng-model="select" ng-change="hasChanged()"></select>
+  	</div>
+
+  	<div class="col-md-4 ">
+  		Crear balance deacuerdo a:  <br>
+  		<div class="col-md-12" ng-repeat="item in formDataInterfazBalanceGeneral[1]"><input type="checkbox" name=""> {{item.nom_ccuenta}} </div>
+  		
+  	</div>
+
+  	<div class="col-md-6 text-center">
+  		<button id="" class="btn btn-primary" ng-click="crearBalanceGeneral()" title="Crear">Crear <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
+  	</div>
+
+
+  	<div class="col-md-12">
+  		<table>
+  			<thead>
+  				<tr>
+  					<th colspan="2">Balance General</th>
+  				</tr>
+  				<tr>
+  					<th colspan="2">
+  						(Expresado en Bolivianos)
+  					</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+  				<tr ng-repeat="item in formDataBalanceGeneral">
+  					<td>{{item.nombre}}</td>
+  					<td>{{item.value}}</td>
+  				</tr>
+  			</tbody>
+  		</table>
+  	</div>
+
+
 </div>

@@ -1,8 +1,8 @@
 <div class="col-md-6 text-center letter-big letter-blue">LIBRO MAYOR</div>
-<div class="col-md-6 text-center letter-blue"><div class="col-md-6">Buscar: </div> <div class="col-md-6"><input type="text" class="form-control" name="" ng-model = "buscar" placeholder="Escriba nombre cuenta..."></div></div>
+<div class="col-md-6 text-center letter-blue"><div class="col-md-6">Buscar: </div> <div class="col-md-6"><input type="text" class="form-control" name="" ng-model = "buscar.nombre_cuenta" placeholder="Escriba nombre cuenta..."></div></div>
 <div class="col-md-12 margin-20 padding-20">
 
-<div class="col-md-12 table-responsive" ng-repeat ="item in formDataInterfaz | filter:buscar as results">
+<div class="col-md-12 table-responsive" ng-repeat ="item in formDataInterfaz | filter:buscar">
 	<table class="table border-1">
 		<thead>
 			<tr>

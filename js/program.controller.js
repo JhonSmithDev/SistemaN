@@ -6294,6 +6294,90 @@ app.controller("egresosCtrl", function($scope, $http) {
 
 });
 
+
+//  LISTAR BALANCE GENERAL
+app.controller("balanceGeneralCtrl", function($scope, $http) {
+    var url = "../php/balanceGeneral.php";     
+
+    $.ajax({
+            // la URL para la petición
+            url : url,
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    run: 0 // carga los datos necesarios como ciclocontable y clase cuenta
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                
+                console.log(data);
+                $scope.formDataInterfazBalanceGeneral = data;
+            },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema envio');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+            //console.log('Petición realizada');
+            }
+    });
+
+
+    $scope.crearBalanceGeneral = function(){
+        $.ajax({
+            // la URL para la petición
+            url : url,
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                        run: 1, 
+                        ciclocontable: 2, 
+                        nivel_1: 1, 
+                        nivel_2: 4
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                
+                $scope.formDataBalanceGeneral = data;
+            },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema envio');
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+            //console.log('Petición realizada');
+            }
+        });
+    }
+});
+
+
 //     LISTAR  REPORTE EGRESOS SIMILAR A LIBRO COMPRAS
 app.controller("vacioCtrl", function($scope, $http) {
 
@@ -6356,53 +6440,20 @@ app.config(function($routeProvider) {
                         templateUrl : "../template/vacio.html",
                         controller : "vacioCtrl"
                         
-                    });
-    var url = "../php/configura.php";
-    var rol = sessionStorage.getItem("id_rol");
-    // ajax de llenado de interfaz
-    $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     rol : rol
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
-
-                    angular.forEach(data, function(value, key) {
-                      $routeProvider
-                        .when(value.url, {
+                    })
+                    .otherwise({redirectTo:'/'});
+                    
+    //var url = "../php/configura.php";
+    //var rol = sessionStorage.getItem("id_rol");
+    var jsonData = JSON.parse(sessionStorage.getItem("jsonDataViewSystem"));
+    //console.log(sessionStorage.getItem("view_system"));
+    angular.forEach(jsonData, function(value, key) {
+        //Genera rutas 
+        $routeProvider.when(value.url, {
                             templateUrl : value.template,
                             controller : value.controller
-                        });
-                    });
-
-
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                   
-                }
-            });
+                            });
+        });
 
 });
 
