@@ -5558,7 +5558,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.formDataInterfazPrimera = data;
-                    dimension = data.length;
+                    //dimension = data.length;
 
                     $scope.$apply();
                 },
@@ -5730,6 +5730,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
+
     // ajax de llenado de interfaz primer bloque
         $.ajax({
                 // la URL para la petición
@@ -5752,7 +5753,6 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.formDataInterfazPrimera = data;
-                    dimension = data.length;
 
                     $scope.$apply();
                 },
@@ -5771,7 +5771,8 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
                 }
             });
 
-    // ajax de llenado de interfaz
+
+        // ajax de llenado de interfaz
         $.ajax({
                 // la URL para la petición
                 url : url,
@@ -5811,6 +5812,10 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
                    //location.href='#/producto';
                 }
             });
+
+    
+
+
 
     //funcion para sumar los total factura
     $scope.suma_total_factura = function(){
@@ -5920,47 +5925,6 @@ app.controller("ingresosCtrl", function($scope, $http) {
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
-    // ajax de llenado de interfaz primer bloque
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "1", idUsuario: idUsuario
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
-
-                    $scope.formDataInterfazPrimera = data;
-                    dimension = data.length;
-
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
-
     // ajax de llenado de interfaz
         $.ajax({
                 // la URL para la petición
@@ -6001,6 +5965,49 @@ app.controller("ingresosCtrl", function($scope, $http) {
                    //location.href='#/producto';
                 }
             });
+
+    // ajax de llenado de interfaz primer bloque
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                     run : "1", idUsuario: idUsuario
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+
+                    $scope.formDataInterfazPrimera = data;
+                    //dimension = data.length;
+
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema');
+                },
+     
+                    // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                   //location.href='#/producto';
+                }
+            });
+
+    
 
     //funcion para sumar los total factura
     $scope.suma_total_factura = function(){
@@ -6132,7 +6139,7 @@ app.controller("egresosCtrl", function($scope, $http) {
                 success : function(data) {
 
                     $scope.formDataInterfazPrimera = data;
-                    dimension = data.length;
+                    //dimension = data.length;
 
                     $scope.$apply();
                 },
@@ -6297,8 +6304,11 @@ app.controller("egresosCtrl", function($scope, $http) {
 
 //  LISTAR BALANCE GENERAL
 app.controller("balanceGeneralCtrl", function($scope, $http) {
+    //url de coneccion
     var url = "../php/balanceGeneral.php";     
 
+    
+    //para recuperar datos del primer bloque superior
     $.ajax({
             // la URL para la petición
             url : url,
@@ -6319,8 +6329,144 @@ app.controller("balanceGeneralCtrl", function($scope, $http) {
             // la respuesta es pasada como argumento a la función
             success : function(data) {
                 
-                console.log(data);
+                //console.log(data);
+
+                //asignar valor a formulario de la interfaz
                 $scope.formDataInterfazBalanceGeneral = data;
+
+                // poner un select por defecto
+                $scope.selectGestion = data[0][0];
+                $scope.$apply();
+                //console.log($scope.selectGestion.idCicloContable);
+                
+                //console.log(dimension-1);
+                
+                //console.log($scope.selectGestion);
+
+                //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'activo', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralActivo = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralActivo = [];
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
+
+
+                //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'pasivo', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralPasivo = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralPasivo = [];
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
+
+
+                //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'patrimonio', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralPatrimonio = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralPatrimonio = [];
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
             },
             // código a ejecutar si la petición falla;
             // son pasados como argumentos a la función
@@ -6335,46 +6481,138 @@ app.controller("balanceGeneralCtrl", function($scope, $http) {
             }
     });
 
+    $scope.hasChangedCicloContable = function(){
+        //console.log($scope.selectGestion.idCicloContable);
+        //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'activo', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralActivo = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralActivo = [];
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
 
-    $scope.crearBalanceGeneral = function(){
-        $.ajax({
-            // la URL para la petición
-            url : url,
- 
-            // la información a enviar
-            // (también es posible utilizar una cadena de datos)
-            data : { 
-                        run: 1, 
-                        ciclocontable: 2, 
-                        nivel_1: 1, 
-                        nivel_2: 4
-            },
- 
-            // especifica si será una petición POST o GET
-            type : 'POST',
- 
-            // el tipo de información que se espera de respuesta
-            dataType : 'json',
- 
-            // código a ejecutar si la petición es satisfactoria;
-            // la respuesta es pasada como argumento a la función
-            success : function(data) {
-                
-                $scope.formDataBalanceGeneral = data;
-            },
-            // código a ejecutar si la petición falla;
-            // son pasados como argumentos a la función
-            // el objeto de la petición en crudo y código de estatus de la petición
-            error : function(xhr, status) {
-                console.log('Disculpe, existió un problema envio');
-            },
- 
-            // código a ejecutar sin importar si la petición falló o no
-            complete : function(xhr, status) {
-            //console.log('Petición realizada');
-            }
-        });
+
+                //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'pasivo', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralPasivo = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralPasivo = [];
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
+
+
+                //para recuperar datos de cuenta y saldo
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run: 'patrimonio', ciclocontable: $scope.selectGestion.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+                            
+                            //console.log(data);
+                            $scope.formDataBalanceGeneralPatrimonio = data;
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema envio');
+                            $scope.formDataBalanceGeneralPatrimonio = [];
+                            //console.log($scope.formDataBalanceGeneral);
+                            $scope.$apply();
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                        //console.log('Petición realizada');
+                        }
+                });
+
     }
+
 });
 
 
@@ -6425,6 +6663,109 @@ app.directive('stringOnly', function(){
     };
 });
 
+
+//filtrador personalizado 
+ app.filter('customFilterActivo', function() {
+    
+    return function(input, ccs) {
+        if(!ccs || ccs.length === 0){
+            var total = 0;
+            angular.forEach(input, function(item) {
+                total += parseFloat(item.saldo_lm);
+            });
+            //$scope.total = total;
+            //console.log("info1: "+total);
+            total = parseFloat(total).toFixed(2);
+            $(".suma_activo").html(total);
+            return input;
+        }else{
+            var total = 0;
+            var out = [];
+            angular.forEach(input, function(item) {
+                angular.forEach(ccs, function(cc) {
+                    if (item.idClaseCuenta === cc.idClaseCuenta) {
+                        total += parseFloat(item.saldo_lm);
+                        out.push(item);
+                    }
+                });
+            });
+            //console.log("info2: "+total)
+            total = parseFloat(total).toFixed(2);
+            $(".suma_activo").html(total);
+            return out;
+        }
+    }
+          
+  });
+ //filtrador personalizado 
+ app.filter('customFilterPasivo', function() {
+    //var total = 0;
+    return function(input, ccs) {
+        if(!ccs || ccs.length === 0){
+            var total = 0;
+            angular.forEach(input, function(item) {
+                total += parseFloat(item.saldo_lm);
+            });
+            //$scope.total = total;
+            //console.log("info1: "+total);
+            total = parseFloat(total).toFixed(2);
+            $(".suma_pasivo").html(total);
+            
+            return input;
+        }else{
+            var total = 0;
+            var out = [];
+            angular.forEach(input, function(item) {
+                angular.forEach(ccs, function(cc) {
+                    if (item.idClaseCuenta === cc.idClaseCuenta) {
+                        total += parseFloat(item.saldo_lm);
+                        out.push(item);
+                    }
+                });
+            });
+            total = parseFloat(total).toFixed(2);
+            $(".suma_pasivo").html(total);
+            return out;
+        }
+    }
+          
+  });
+
+ //filtrador personalizado 
+ app.filter('customFilterPatrimonio', function() {
+    //var total = 0;
+    return function(input, ccs) {
+        if(!ccs || ccs.length === 0){
+            var total = 0;
+            angular.forEach(input, function(item) {
+                total += parseFloat(item.saldo_lm);
+            });
+            //$scope.total = total;
+            //console.log("info1: "+total);
+            total = parseFloat(total).toFixed(2);
+            $(".suma_patrimonio").html(total);
+            
+            return input;
+        }else{
+            var total = 0;
+            var out = [];
+            angular.forEach(input, function(item) {
+                angular.forEach(ccs, function(cc) {
+                    if (item.idClaseCuenta === cc.idClaseCuenta) {
+                        //total += parseFloat(item.saldo_lm);
+                        total += parseFloat(item.saldo_lm);
+                        out.push(item);
+                    }
+                });
+            });
+            total = parseFloat(total).toFixed(2);
+            $(".suma_patrimonio").html(total);
+            //console.log("info2: "+total);
+            return out;
+        }
+    }
+          
+  });
 
 //////----=============++++++++++++++++FIN de controladores
 

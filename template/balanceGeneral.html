@@ -1,22 +1,23 @@
+<div class="col-md-12 text-right"><button id="boton_print" class="btn btn-primary-white boton_PANTALLA_1" ng-click="imprimir()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></div>
 <div class="col-md-12">
-	<div class="col-md-12 letter-big letter-blue text-center"> Balance General</div>
+	<div class="col-md-12 letter-big letter-blue text-center margin-20 padding-20"> Balance General</div>
 
 
 	
-	<div class="col-md-2 text-center">
-	    Periódo contable:  <br>
-	    <select class="form-control" ng-options="option.gestion_ccontable for option in formDataInterfazBalanceGeneral[0] track by option.idCicloContable" ng-model="select" ng-change="hasChanged()"></select>
+	<div class="col-md-6 text-center">
+	    <div class="col-md-6 text-center">Periódo contable: </div>
+	    <div class="col-md-6 text-center"><select class="form-control" ng-options="option.gestion_ccontable for option in formDataInterfazBalanceGeneral[0] track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select></div>
   	</div>
 
-  	<div class="col-md-4 ">
+  	<div class="col-md-4 col-md-offset-2">
+      <form name="myForm">  
   		Crear balance deacuerdo a:  <br>
-  		<div class="col-md-12" ng-repeat="item in formDataInterfazBalanceGeneral[1]"><input type="checkbox" name=""> {{item.nom_ccuenta}} </div>
+  		<div class="col-md-12" ng-repeat="cc in formDataInterfazBalanceGeneral[1]"><input type="checkbox" name=""  ng-model="cc.selected"> {{cc.nom_ccuenta}}</div>
+      <form>
   		
   	</div>
 
-  	<div class="col-md-6 text-center">
-  		<button id="" class="btn btn-primary" ng-click="crearBalanceGeneral()" title="Crear">Crear <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span></button>
-  	</div>
+
 
 
   	<div class="col-md-12">
@@ -32,10 +33,61 @@
   				</tr>
   			</thead>
   			<tbody>
-  				<tr ng-repeat="item in formDataBalanceGeneral">
-  					<td>{{item.nombre}}</td>
-  					<td>{{item.value}}</td>
+          <tr>
+            <td><b>ACTIVO</b></td>
+            <td></td>
+          </tr>
+  				<tr ng-repeat="item in formDataBalanceGeneralActivo | customFilterActivo:(formDataInterfazBalanceGeneral[1]|filter:{selected:true})">
+  					<td class="padding-left-10">{{item.nom_cuenta}}</td>
+  					<td>{{item.saldo_lm}}</td>
   				</tr>
+          <tr>
+            <td><b>TOTAL</b></td>
+            <td><b class="suma_activo">0.00</b></td>
+          </tr>
+          <tr>
+            <td>.</td>
+            <td></td>
+          </tr>
+
+
+          <tr>
+            <td><b>PASIVO</b></td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="item in formDataBalanceGeneralPasivo | customFilterPasivo:(formDataInterfazBalanceGeneral[1]|filter:{selected:true})">
+            <td class="padding-left-10">{{item.nom_cuenta}}</td>
+            <td>{{item.saldo_lm}}</td>
+          </tr>
+          <tr>
+            <td><b>TOTAL</b></td>
+            <td><b class="suma_pasivo">0.00</b></td>
+          </tr>
+          <tr>
+            <td>.</td>
+            <td></td>
+          </tr>
+
+
+          <tr>
+            <td><b>PATRIMONIO</b></td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="item in formDataBalanceGeneralPatrimonio | customFilterPatrimonio:(formDataInterfazBalanceGeneral[1]|filter:{selected:true})">
+            <td class="padding-left-10">{{item.nom_cuenta}}</td>
+            <td>{{item.saldo_lm}}</td>
+          </tr>
+          <tr>
+            <td><b>TOTAL</b></td>
+            <td><b class="suma_patrimonio">0.00</b></td>
+          </tr>
+          <tr>
+            <td>.</td>
+            <td></td>
+          </tr>
+
+
+
   			</tbody>
   		</table>
   	</div>
