@@ -6621,6 +6621,8 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
     var url = "../php/estadoResultado.php";
     var dimensionI = 0;
     var dimensionE = 0;
+    $scope.totalI = 0.00;
+    $scope.totalE = 0.00;
     //para recuperar datos del primer bloque superior
     $.ajax({
             // la URL para la petición
@@ -6680,6 +6682,24 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                             //console.log(data);
                             $scope.formDataEstadoResultadosIngreso = data;
                             dimensionI = data.length;
+
+                            var total = 0;
+                            //console.log(dimensionI);
+                            //console.log("no null");
+                            for(var i = 0; i < dimensionI; i++){
+                                
+                                //console.log(item);
+                                if ($scope.formDataEstadoResultadosIngreso == "" || $scope.formDataEstadoResultadosIngreso == null) {
+                                    //console.log("vacio ");
+                                    total += 0;
+                                }else{
+                                    var item = $scope.formDataEstadoResultadosIngreso[i].saldo_lm;
+                                    //console.log("debe bs valor: "+item);
+                                    total += parseFloat(item);
+                                }
+                                
+                            }
+                            $scope.totalI = parseFloat(total).toFixed(2);
                             //console.log($scope.formDataBalanceGeneral);
                             $scope.$apply();
                         },
@@ -6689,6 +6709,7 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         error : function(xhr, status) {
                             console.log('Disculpe, existió un problema envio');
                             $scope.formDataEstadoResultadosIngreso = [];
+                            $scope.totalI = 0.00;
                             $scope.$apply();
                         },
              
@@ -6724,6 +6745,22 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                             $scope.formDataEstadoResultadosEgreso = data;
                             dimensionE = data.length;
                             //console.log($scope.formDataBalanceGeneral);
+
+                            var total = 0;
+        
+                            //console.log("no null");
+                            for(var i = 0; i < dimensionE; i++){
+                                if ($scope.formDataEstadoResultadosEgreso == "" || $scope.formDataEstadoResultadosEgreso == null) {
+                                    //console.log("vacio ");
+                                    total += 0;
+                                }else{
+                                    var item = $scope.formDataEstadoResultadosEgreso[i].saldo_lm;
+                                    //console.log("debe bs valor: "+item);
+                                    total += parseFloat(item);
+                                }
+                                
+                            }
+                            $scope.totalE = parseFloat(total).toFixed(2)
                             $scope.$apply();
                         },
                         // código a ejecutar si la petición falla;
@@ -6732,6 +6769,7 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         error : function(xhr, status) {
                             console.log('Disculpe, existió un problema envio');
                             $scope.formDataEstadoResultadosEgreso = [];
+                            $scope.totalE = 0.00;
                             $scope.$apply();
                         },
              
@@ -6740,6 +6778,10 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         //console.log('Petición realizada');
                         }
                 });
+
+
+
+
 
             },
             // código a ejecutar si la petición falla;
@@ -6751,7 +6793,8 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
  
             // código a ejecutar sin importar si la petición falló o no
             complete : function(xhr, status) {
-            //console.log('Petición realizada');
+                //console.log('Petición realizada');
+                
             }
     });
 
@@ -6759,7 +6802,7 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
         //console.log($scope.selectGestion.idCicloContable);
         //para recuperar datos de ingreso y egreso
 
-         //para recuperar datos de ingreso
+        //para recuperar datos de ingreso
                 $.ajax({
                         // la URL para la petición
                         url : url,
@@ -6783,6 +6826,24 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                             //console.log(data);
                             $scope.formDataEstadoResultadosIngreso = data;
                             dimensionI = data.length;
+
+                            var total = 0;
+                            //console.log(dimensionI);
+                            //console.log("no null");
+                            for(var i = 0; i < dimensionI; i++){
+                                
+                                //console.log(item);
+                                if ($scope.formDataEstadoResultadosIngreso == "" || $scope.formDataEstadoResultadosIngreso == null) {
+                                    //console.log("vacio ");
+                                    total += 0;
+                                }else{
+                                    var item = $scope.formDataEstadoResultadosIngreso[i].saldo_lm;
+                                    //console.log("debe bs valor: "+item);
+                                    total += parseFloat(item);
+                                }
+                                
+                            }
+                            $scope.totalI = parseFloat(total).toFixed(2);
                             //console.log($scope.formDataBalanceGeneral);
                             $scope.$apply();
                         },
@@ -6792,6 +6853,7 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         error : function(xhr, status) {
                             console.log('Disculpe, existió un problema envio');
                             $scope.formDataEstadoResultadosIngreso = [];
+                            $scope.totalI = 0.00;
                             $scope.$apply();
                         },
              
@@ -6827,6 +6889,22 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                             $scope.formDataEstadoResultadosEgreso = data;
                             dimensionE = data.length;
                             //console.log($scope.formDataBalanceGeneral);
+
+                            var total = 0;
+        
+                            //console.log("no null");
+                            for(var i = 0; i < dimensionE; i++){
+                                if ($scope.formDataEstadoResultadosEgreso == "" || $scope.formDataEstadoResultadosEgreso == null) {
+                                    //console.log("vacio ");
+                                    total += 0;
+                                }else{
+                                    var item = $scope.formDataEstadoResultadosEgreso[i].saldo_lm;
+                                    //console.log("debe bs valor: "+item);
+                                    total += parseFloat(item);
+                                }
+                                
+                            }
+                            $scope.totalE = parseFloat(total).toFixed(2)
                             $scope.$apply();
                         },
                         // código a ejecutar si la petición falla;
@@ -6835,6 +6913,7 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         error : function(xhr, status) {
                             console.log('Disculpe, existió un problema envio');
                             $scope.formDataEstadoResultadosEgreso = [];
+                            $scope.totalE = 0.00;
                             $scope.$apply();
                         },
              
@@ -6844,58 +6923,26 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
                         }
                 });
 
+
     }
 
-
-    $scope.suma_ingreso = function(){
-        var total = 0;
-        //console.log(dimensionI);
-            //console.log("no null");
-            for(var i = 0; i < dimensionI; i++){
-                var item = $scope.formDataEstadoResultadosIngreso[i].saldo_lm;
-                //console.log(item);
-                if (item == "" || item == null) {
-                    //console.log("vacio ");
-                    total += 0;
-                }else{
-                    //console.log("debe bs valor: "+item);
-                    total += parseFloat(item);
-                }
-                
-            }
-            return parseFloat(total).toFixed(2);
-        
-                
-    }
-    $scope.suma_egreso = function(){
-        var total = 0;
-        
-            //console.log("no null");
-            for(var i = 0; i < dimensionE; i++){
-                var item = $scope.formDataEstadoResultadosEgreso[i].saldo_lm;
-                if (item == "" || item == null) {
-                    //console.log("vacio ");
-                    total += 0;
-                }else{
-                    //console.log("debe bs valor: "+item);
-                    total += parseFloat(item);
-                }
-                
-            }
-            return parseFloat(total).toFixed(2);
-        
-                
-    }
 
     $scope.resultadoEstadoFuncion = function(valueIngreso, valueEgreso){
-        var resultado = parseFloat(valueIngreso - valueEgreso).toFixed(2);
-
+        var resultado = 0;
+        resultado = parseFloat(valueIngreso - valueEgreso).toFixed(2);
+        console.log(resultado);
         if(resultado < 0){
             resultado = parseFloat(resultado * (-1.00)).toFixed(2);
             $(".perdida_periodo").html(resultado);
+            $(".utilidad_periodo").html("");
         }
         if(resultado > 0){
             $(".utilidad_periodo").html(resultado);
+            $(".perdida_periodo").html("");
+        }
+        if(resultado == 0){
+            $(".utilidad_periodo").html("");
+            $(".perdida_periodo").html("");
         }
         return resultado;         
     }
