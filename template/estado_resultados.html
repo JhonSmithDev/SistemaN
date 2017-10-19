@@ -1,0 +1,85 @@
+<div class="col-md-12 text-right"><button id="boton_print" class="btn btn-primary-white boton_PANTALLA_1" ng-click="imprimir()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></div>
+<div class="col-md-12">
+	<div class="col-md-12 letter-big letter-blue text-center margin-20 padding-20"> Estado de Resultados</div>
+
+
+	
+	<div class="col-md-6 text-center">
+	    <div class="col-md-6 text-center">Periódo contable: </div>
+	    <div class="col-md-6 text-center"><select class="form-control" ng-options="option.gestion_ccontable for option in formDataInterfazEstadoresultados track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select></div>
+  	</div>
+
+
+  	<div class="col-md-12">
+  		<table>
+  			<thead>
+  				<tr>
+  					<th colspan="3">Estado de resultados</th>
+  				</tr>
+  				<tr>
+  					<th colspan="3">
+  						(Expresado en Bolivianos)
+  					</th>
+  				</tr>
+  			</thead>
+  			<tbody>
+          <tr>
+            <td><b>INGRESO</b></td>
+            <td></td>
+            <td></td>
+          </tr>
+  				<tr ng-repeat="item in formDataEstadoResultadosIngreso">
+  					<td class="padding-left-10">{{item.nom_cuenta}}</td>
+  					<td></td>
+  					<td>{{item.saldo_lm}}</td>
+  				</tr>
+          <tr>
+            <td><b>TOTAL</b></td>
+            <td></td>
+            <td><b>{{suma_ingreso()}}</b></td>
+          </tr>
+          <tr>
+            <td>.</td>
+            <td></td>
+            <td></td>
+          </tr>
+
+
+          <tr>
+            <td><b>EGRESO</b></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr ng-repeat="item in formDataEstadoResultadosEgreso">
+            <td class="padding-left-10">{{item.nom_cuenta}}</td>
+            <td>{{item.saldo_lm}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><b>TOTAL</b></td>
+            <td><b>{{suma_egreso()}}</b></td>
+            <td></td>
+          </tr>
+          <tr class="hide">
+            <td>{{resultadoEstadoFuncion(suma_egreso(), suma_ingreso())}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+
+           <tr>
+            <td><b>UTILIDAD DE PERIODO</b></td>
+            <td><b class="utilidad_periodo"></b></td>
+            <td></td>
+          </tr>
+
+           <tr>
+            <td><b>PERDIDA DE PERIODO</b></td>
+            <td></td>
+            <td><b class="perdida_periodo"></b></td>
+          </tr>
+
+
+  			</tbody>
+  		</table>
+  	</div>
+</div>

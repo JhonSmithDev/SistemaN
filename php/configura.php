@@ -93,6 +93,11 @@
 				        			'controller'=> "balanceGeneralCtrl"
 				    );
 
+				    $outp[] = array('url'=> "/estado_resultados",
+				        			'template'=> "../template/estado_resultados.html",
+				        			'controller'=> "estadoResultadoCtrl"
+				    );
+
 					break;
 				case '2':// rol contador
 					$outp[] = array('url'=> "/",
@@ -165,6 +170,12 @@
 				        			'template'=> "../template/balanceGeneral.html",
 				        			'controller'=> "balanceGeneralCtrl"
 				    );
+
+				    $outp[] = array('url'=> "/estado_resultados",
+				        			'template'=> "../template/estado_resultados.html",
+				        			'controller'=> "estadoResultadoCtrl"
+				    );
+
 					break;
 				case '3':
 					$outp[] = array('url'=> "/",
@@ -201,6 +212,11 @@
 				        			'template'=> "../template/balanceGeneral.html",
 				        			'controller'=> "balanceGeneralCtrl"
 				    );
+
+				    $outp[] = array('url'=> "/estado_resultados",
+				        			'template'=> "../template/estado_resultados.html",
+				        			'controller'=> "estadoResultadoCtrl"
+				    );
 					break;
 				case '4':
 					$outp[] = array('url'=> "/",
@@ -221,6 +237,11 @@
 				    $outp[] = array('url'=> "/egresos",
 				        			'template'=> "../template/egresos.html",
 				        			'controller'=> "egresosCtrl"
+				    );
+
+				    $outp[] = array('url'=> "/estado_resultados",
+				        			'template'=> "../template/estado_resultados.html",
+				        			'controller'=> "estadoResultadoCtrl"
 				    );
 					break;
 				
