@@ -6932,8 +6932,9 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
         resultado = parseFloat(valueIngreso - valueEgreso).toFixed(2);
         console.log(resultado);
         if(resultado < 0){
-            resultado = parseFloat(resultado * (-1.00)).toFixed(2);
-            $(".perdida_periodo").html(resultado);
+            console.log("entro negativo");
+            mostrar = parseFloat(resultado * (-1.00)).toFixed(2);
+            $(".perdida_periodo").html(mostrar);
             $(".utilidad_periodo").html("");
         }
         if(resultado > 0){
