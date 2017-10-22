@@ -14,6 +14,7 @@
 		public function getTable($table){
 			$result = $this->_db->query("SELECT * FROM ".$table." WHERE  show_by = '1'");
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
+
 			return $retorna;
 			$result->close();
 		}//End function getTable
@@ -68,23 +69,23 @@
 			//print_r($outp_select);
 			$result->close();
 			*/
-
 			$outp[] = array('name'=> "tc_fecha",
 							'label'=> "TIPO CAMBIO FECHA",
-							'tipo'=> "text",
+							'tipo'=> "text-fecha",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");
+			
 
 			$outp[] = array('name'=> "tc_compra",
 							'label'=> "TIPO CAMBIO COMPRA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'value'=> "");
 
 			$outp[] = array('name'=> "tc_venta",
 							'label'=> "TIPO CAMBIO VENTA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'value'=> "");
 
@@ -103,6 +104,8 @@
 							'tipo'=> "text-block",
 							'class'=> "hide",
 							'value'=> "1");
+
+			
 
 			//print_r($outp);
 
@@ -214,22 +217,27 @@
 			$result_select->close();
 			$result_selectId->close();
 			*/
+
+			//cambiar orden de fecha  yyyy-mm-dd   ->  d/m/y
+			$fehca_array = explode("-",$retorna_main[0]['tc_fecha']);
+			$fecha_aux = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0];
 			$outp[] = array('name'=> "tc_fecha",
 							'label'=> "TIPO CAMBIO FECHA",
-							'tipo'=> "text",
+							'tipo'=> "text-fecha",
 							'class'=> "",
 							'valueSelect'=> "",
-							'value'=> "".$retorna_main[0]['tc_fecha']."");
+							'value'=> "".$fecha_aux."");
+
 
 			$outp[] = array('name'=> "tc_compra",
 							'label'=> "TIPO CAMBIO COMPRA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'value'=> "".$retorna_main[0]['tc_compra']."");
 
 			$outp[] = array('name'=> "tc_venta",
 							'label'=> "TIPO CAMBIO VENTA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'value'=> "".$retorna_main[0]['tc_venta']."");
 

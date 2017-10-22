@@ -1928,6 +1928,17 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
     $scope.id_modal = "";
     var url = '../php/tipocambio.php';
 
+
+    //fecha
+    $(".fecha_ctrl").removeClass("hide");
+    $( ".fecha_modal" ).datepicker({
+        //configura lo que debe mostrarse en la ventana de fecha
+        monthNames: [ "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ],
+        dayNames: [ "Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado" ],
+        dayNamesMin: [ "Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa" ],
+        dateFormat: "d/m/yy"
+    });
+
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
     $scope.datoElimina = "";
@@ -2246,11 +2257,19 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
         $("#myModalForm").modal("hide");
         $scope.formModal = []; 
     }
-    $scope.actualizaGrid = function(run,id){
+    $scope.actualizaGrid = function(run){
         $("#myModalForm").modal('hide'); 
         var user = sessionStorage.getItem("user");
-        console.log( $scope.formModal + "esto es lo que agrega");
-        console.log( run + "run");
+        //console.log(formModal + "esto es lo que agrega");
+        
+        //console.log( $scope.formModal[0].value + "esto es lo que agrega");
+
+        //REORGANIZA FECHA PARA BASE DE DATOS
+        var fecha_aux = $scope.formModal[0].value.split("/");
+        var fecha_form = fecha_aux[2]+"/"+fecha_aux[1]+"/"+fecha_aux[0];
+        $scope.formModal[0].value = fecha_form;
+        //console.log( run + "run");
+        //console.log( $scope.formModal + "esto es lo que agrega");
         $scope.formModal = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE

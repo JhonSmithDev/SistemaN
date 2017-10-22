@@ -76,7 +76,7 @@
 
 			$outp[] = array('name'=> "nit_empresa",
 							'label'=> "NIT DE EMPRESA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");
@@ -223,7 +223,7 @@
 
 			$outp[] = array('name'=> "nit_empresa",
 							'label'=> "NIT DE EMPRESA",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "".$retorna_main[0]['nit_empresa']."");

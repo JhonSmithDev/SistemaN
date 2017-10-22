@@ -71,7 +71,7 @@
 
 			$outp[] = array('name'=> "gestion_ccontable",
 							'label'=> "GESTIÓN CONTABLE",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");
@@ -210,7 +210,7 @@
 			*/
 			$outp[] = array('name'=> "gestion_ccontable",
 							'label'=> "GESTIÓN CONTABLE",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "".$retorna_main[0]['gestion_ccontable']."");

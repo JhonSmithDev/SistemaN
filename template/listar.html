@@ -49,6 +49,13 @@
       <!-- Modal body-->
       <div class="modal-body col-md-12">
 
+        <!--FECHA SOLO SE ACTIVA desde el controlador -->
+        <div class='col-md-12 hide fecha_ctrl'><div class='col-md-12'>
+          <div class="col-md-6"><label for="{{formModal[0].name}}">{{formModal[0].label}}</label></div>
+            <!--<p>{{datePicker || "00/00/0000"}}</p>-->
+            <div class="col-md-6"><input class="clsDatePicker form-control fecha_modal" type="text"  placeholder="Presione"  readonly="readonly" ng-model="formModal[0].value" /></div>
+          </div></div>
+
         <div class="col-md-12" ng-repeat="item in formModal track by $index">
           <form>
 
@@ -57,6 +64,12 @@
                 <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                 <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' readonly="readonly"></div>
               </div>
+
+              <div ng-switch-when="text-number" class="col-md-12">
+                <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
+                <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value' numeric-only></div>
+              </div>
+
               <div ng-switch-when="text" class="col-md-12">
                 <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                 <div class="col-md-6"><input type="text" class="form-control {{item.class}}" name="{{item.name}}" ng-model='item.value'></div>
