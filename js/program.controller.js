@@ -8098,6 +8098,7 @@ app.controller("comprobanteTraspasoCtrl", function($scope, $http) {
         if (dimension != 0) {
             
             for(var i = 0; i < dimension; i++){
+                // en caso de que exista valor debe
                 if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
                     v1 = 0.00;
                 }else{
@@ -8115,6 +8116,27 @@ app.controller("comprobanteTraspasoCtrl", function($scope, $http) {
                 }else{
                     //console.log("debe bs valor: "+item);
                     total += parseFloat(item);
+                    cont ++;
+                }
+
+                // en caso de que exista valor haber
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].haber_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].haber_us;
+                }
+                var item_1 = v1 / v2;
+                console.log(item_1 +" en "+ i);
+                if (isNaN(item_1) || item_1 == "" || item_1 == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item_1);
                     cont ++;
                 }
                 
@@ -8370,6 +8392,7 @@ app.controller("comprobanteIngresoCtrl", function($scope, $http) {
         if (dimension != 0) {
             
             for(var i = 0; i < dimension; i++){
+                // en caso de que exista valor debe
                 if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
                     v1 = 0.00;
                 }else{
@@ -8387,6 +8410,27 @@ app.controller("comprobanteIngresoCtrl", function($scope, $http) {
                 }else{
                     //console.log("debe bs valor: "+item);
                     total += parseFloat(item);
+                    cont ++;
+                }
+
+                // en caso de que exista valor haber
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].haber_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].haber_us;
+                }
+                var item_1 = v1 / v2;
+                console.log(item_1 +" en "+ i);
+                if (isNaN(item_1) || item_1 == "" || item_1 == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item_1);
                     cont ++;
                 }
                 
@@ -8642,6 +8686,8 @@ app.controller("comprobanteEgresoCtrl", function($scope, $http) {
         if (dimension != 0) {
             
             for(var i = 0; i < dimension; i++){
+
+                // en caso de que exista valor debe
                 if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
                     v1 = 0.00;
                 }else{
@@ -8659,6 +8705,27 @@ app.controller("comprobanteEgresoCtrl", function($scope, $http) {
                 }else{
                     //console.log("debe bs valor: "+item);
                     total += parseFloat(item);
+                    cont ++;
+                }
+
+                // en caso de que exista valor haber
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].haber_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].haber_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].haber_us;
+                }
+                var item_1 = v1 / v2;
+                console.log(item_1 +" en "+ i);
+                if (isNaN(item_1) || item_1 == "" || item_1 == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item_1);
                     cont ++;
                 }
                 
