@@ -89,7 +89,7 @@
 
 			$outp[] = array('name'=> "idGrupoUsu",
 							'label'=> "ID GRUPO USUARIO",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");

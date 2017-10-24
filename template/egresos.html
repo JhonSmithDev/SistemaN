@@ -3,7 +3,12 @@
 
 <div class="col-md-12">
 	<div class="col-md-12 text-center letter-big letter-blue ">{{titulo}}</div>
-	<div class="col-md-12 text-center margin-20">PERIODO FISCAL<input type="text" name="" ng-model= "formDataInterfazPrimera.gestion" class="text-center" ></div>
+	<div class="col-md-12 text-center margin-20">
+		<div class="col-md-6 text-center">PERIÓDO FISCAL</div>
+	    <div class="col-md-6 text-center">
+        	<select class="form-control background-select" ng-options="option.gestion_ccontable for option in formDataInterfazCicloContable track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select>
+      	</div>
+	</div>
 
 
 	<div class="col-md-12 table-responsive">
@@ -34,7 +39,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="item in formDataInterfaz">
+				<tr ng-repeat="item in formDataInterfazTabla">
 					<td class="border-1">{{item.d}}</td>
 					<td class="border-1">{{item.m}}</td>
 					<td class="border-1">{{item.a}}</td>

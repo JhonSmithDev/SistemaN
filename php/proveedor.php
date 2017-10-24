@@ -76,7 +76,7 @@
 
 			$outp[] = array('name'=> "cod_prov",
 							'label'=> "CÓDIGO PROVEEDOR",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");
@@ -259,7 +259,7 @@
 
 			$outp[] = array('name'=> "cod_prov",
 							'label'=> "CÓDIGO PROVEEDOR",
-							'tipo'=> "text",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "".$retorna_main[0]['cod_prov']."");

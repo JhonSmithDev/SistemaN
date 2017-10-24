@@ -4,7 +4,7 @@
 	
   <div class="col-md-3 text-center margin-bottom-10 {{hide_buttom}}"><button type="button" class="btn btn-primary" ng-click="action(null,1)">ADICIONAR {{titulo}}</button>
   </div>
-  <div class="col-md-3 text-right">Buscar <input type="text" name="" class="" ng-model="filterOptions.filterText"></div>
+  <div class="col-md-3 text-right"><input type="text" name="" class="form-control" ng-model="filterOptions.filterText" placeholder="Buscar... "></div>
 </div>
 <div class="col-xs-12 col-md-12 gridStyle text-center margin-20" ng-grid="gridOptions"></div>
 
@@ -78,7 +78,7 @@
               <div ng-switch-when="select" class="col-md-12">
                 <div class="col-md-6"><label for="{{item.name}}">{{item.label}}</label></div>
                 <div class="col-md-6">
-                  <select class="form-control {{item.class}}" ng-options="option.value for option in item.value track by option.id" ng-model="item.valueSelect" ng-change="hasChanged(item.valueSelect)"></select>
+                  <select class="form-control background-select {{item.class}}" ng-options="option.value for option in item.value track by option.id" ng-model="item.valueSelect" ng-change="hasChanged(item.valueSelect)"></select>
                 </div>
               </div>
              <div ng-switch-when="select-block" class="col-md-12">
@@ -106,6 +106,30 @@
         <button type="button" class="btn btn-primary" ng-click="actualizaGrid(run)">{{titulo_accion}}</button>
 
         <button type="button" class="btn btn-danger" ng-click="cancelar()">CANCELAR</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal GENERICO MENSAJE-->
+<div id="myModalFormMensaje" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content col-md-12">
+      <!-- Modal header-->
+      <div class="modal-header col-md-12">
+        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+        <h4 class="modal-title">{{titulo_mensaje}}</h4>
+      </div>
+      <!-- Modal body-->
+      <div class="modal-body col-md-12">
+        {{mensaje_modal}}
+       </div> 
+      <!-- Modal footer-->
+      <div class="modal-footer col-md-12">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">CERRAR</button>
       </div>
     </div>
 

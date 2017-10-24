@@ -16,19 +16,19 @@
 	<div class="col-md-2">Nro. de comprobante:  <br><input type="text" name="numero_comprobante" class="form-control text-center" readonly="readonly" ng-model="formDataInterfaz[1].valueSigla"></div>
   <div class="col-md-2">
     Moneda de cambio:  <br>
-    <select class="form-control" ng-options="option.value for option in formDataInterfaz[2].value track by option.id" ng-model="formDataInterfaz[2].valueSelect" ng-change="hasChangedMoneda()"></select>
+    <select class="form-control background-select" ng-options="option.value for option in formDataInterfaz[2].value track by option.id" ng-model="formDataInterfaz[2].valueSelect" ng-change="hasChangedMoneda()"></select>
   </div>
 
 
 	<div class="col-md-2">Doc. contable: <br> 
-    <select id="focus-ini" class="form-control" ng-options="option.value for option in formDataInterfaz[3].value track by option.id" ng-model="formDataInterfaz[3].valueSelect" ng-change="hasChangedDocContable()"></select>
+    <select id="focus-ini" class="form-control background-select" ng-options="option.value for option in formDataInterfaz[3].value track by option.id" ng-model="formDataInterfaz[3].valueSelect" ng-change="hasChangedDocContable()"></select>
 	</div>
 	<div class="col-md-2">Fecha: <br> 
 	<div class='' >
   					<!--<p>{{datePicker || "00/00/0000"}}</p>-->
   					<input class="form-control fecha_comprobante text-right" type="text" ng-model="formDataInterfaz[4].value" placeholder="Presione"  readonly="readonly" ng-value="fechaUsuario" />
 				</div></div>
-	<div class="col-md-4">Tipo Cambio(venta): 
+	<div class="col-md-4">Tipo Cambio (venta): 
     
     <br> 
 
@@ -38,7 +38,7 @@
           <i class="glyphicon glyphicon-plus"></i>
         </button>
       </div>
-      <select class="form-control" ng-options="option.value for option in formDataInterfaz[5].value track by option.id" ng-model="formDataInterfaz[5].valueSelect" ng-change="hasChangedTipoCambio()"></select> <span class="input-group-addon background-white-text">Bs.</span>
+      <select class="form-control background-select" ng-options="option.value for option in formDataInterfaz[5].value track by option.id" ng-model="formDataInterfaz[5].valueSelect" ng-change="hasChangedTipoCambio()"></select> <span class="input-group-addon background-white-text">Bs.</span>
     </div>
 
     <div id="adicionarTipoCambio_2" class="input-group hide">
@@ -47,9 +47,9 @@
           <i class="glyphicon glyphicon-ok"></i>
         </button>
       </div>
-      <input type="number" name="" ng-model="valorTipoCambio" class="form-control text-right" placeholder="Escriba nuevo valor en Bs. " numeric-only>
+      <input type="text" name="" ng-model="valorTipoCambio" class="form-control text-right" placeholder="Escriba nuevo valor en Bs. " numeric-only>
       <div class="input-group-btn">
-        <button class="btn btn-danger" type="submit" ng-click="cancelarAdicionarTipoCambio()" title="Cancela nuevo tipo dde cambio">
+        <button class="btn btn-danger" type="submit" ng-click="cancelarAdicionarTipoCambio()" title="Cancela nuevo tipo de cambio">
           <i class="glyphicon glyphicon-remove"></i>
         </button>
       </div>
@@ -72,7 +72,7 @@
 	<div class="col-md-2">Nro. Recibo: <br> <input type="text" name="numero_recibo" class="form-control text-center" ng-model="formDataInterfaz[9].value" numeric-only></div>
   <div class="col-md-2">
     Tipo de Pago:  <br>
-    <select class="form-control" ng-options="option.value for option in formDataInterfaz[10].value track by option.id" ng-model="formDataInterfaz[10].valueSelect" ng-change="hasChangedTipoPago()"></select>
+    <select class="form-control background-select" ng-options="option.value for option in formDataInterfaz[10].value track by option.id" ng-model="formDataInterfaz[10].valueSelect" ng-change="hasChangedTipoPago()"></select>
   </div>
 	<div class="col-md-12">Glosa: <br> <input type="text" name="" class="form-control" ng-model="formDataInterfaz[11].value"></div>
 	</form>
@@ -286,7 +286,7 @@
                     <div ng-switch-when="select" class="col-md-12 {{item.class}}">
                         <div class="col-md-6"><label for="{{item.for}}">{{item.label}}</label></div>
                         <div class="col-md-6">
-                          <select class="form-control {{item.clas}}" ng-options="option.descripcion_categoria for option in item.value track by option.categoria_producto" ng-model="item.valueselect" ng-change="hasChanged(item.valueselect)"></select>
+                          <select class="form-control background-select {{item.clas}}" ng-options="option.descripcion_categoria for option in item.value track by option.categoria_producto" ng-model="item.valueselect" ng-change="hasChanged(item.valueselect)"></select>
                                 
                         </div><br>  
                     </div>

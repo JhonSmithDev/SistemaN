@@ -6,8 +6,11 @@
 	
 	<div class="col-md-6 text-center">
 	    <div class="col-md-6 text-center">Periódo contable: </div>
-	    <div class="col-md-6 text-center"><select class="form-control" ng-options="option.gestion_ccontable for option in formDataInterfazEstadoresultados track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select></div>
-  	</div>
+	    <div class="col-md-6 text-center">
+
+        <select class="form-control background-select" ng-options="option.gestion_ccontable for option in formDataInterfazEstadoresultados track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select>
+      </div>
+  </div>
 
 
   	<div class="col-md-12">

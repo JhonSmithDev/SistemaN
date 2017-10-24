@@ -10,10 +10,20 @@
 			parent:: __construct();
 		}
 
-		//funcion para mostrar todos los registros de una tabla
-		public function getTable(){
+		//funcion para cargar los siglos contables
+		public function getCicloCotable(){
 			// creamos el array $retorna con los datos de la tabla lcompras
-			$result = $this->_db->query("SELECT * FROM lventas WHERE  show_by= '1'");
+			$result = $this->_db->query("SELECT * FROM ciclocontable WHERE show_by = '1' ORDER BY idCicloContable DESC");
+			$retorna = $result->fetch_all(MYSQL_ASSOC);
+
+			return $retorna;
+		}
+
+		//funcion para mostrar todos los registros de una tabla
+		public function getTable($_idCicloContable){
+			// creamos el array $retorna con los datos de la tabla lcompras
+			$result = $this->_db->query("SELECT cc.idCicloContable, cc.gestion_ccontable, cc.obs_ccontable, cc.Empresa_idEmpresa, lb.idLibroDiario, lb.Comprobante_idComprobante, ing.idIngreso, ing.Comprobante_idComprobante, lv.idLventas, lv.fecha_factv, lv.nro_factv, lv.nro_autorizacionv, lv.cod_controlv, lv.importe_factv, lv.importe_ICEv, lv.importe_excentov, lv.importe_netov, lv.df, lv.Ingreso_idIngreso, lv.Cliente_idCliente, lv.Ingreso_idIngreso  FROM ciclocontable cc, librodiario lb, ingreso ing, lventas lv WHERE cc.idCicloContable = lb.CicloContable_idCicloContable and ing.Comprobante_idComprobante = lb.Comprobante_idComprobante and lv.Ingreso_idIngreso = ing.idIngreso and cc.idCicloContable = '".$_idCicloContable."' and lv.show_by = '1'");
+
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 
 
@@ -52,10 +62,10 @@
 		}//End function getTable
 
 		//funcion para mostrar todos los registros de una tabla
-		public function getDataUsuarioEmpresa($_idUsuario){
+		public function getDataUsuarioEmpresa($_idUsuario, $_idCicloContable){
 
 			//hallar ciclo contable
-			$result = $this->_db->query("SELECT * FROM ciclocontable WHERE show_by= '1' ORDER BY idCicloContable DESC LIMIT 1");
+			$result = $this->_db->query("SELECT * FROM ciclocontable WHERE show_by= '1' and idCicloContable = '".$_idCicloContable."'");
 			$retorna_gestion = $result->fetch_all(MYSQL_ASSOC);
 
 			//hallar empresa que pertenece el ciclo contable
@@ -90,18 +100,23 @@
 	$nom_idTable = "	idLventas";
 
 	switch ($_POST['run']) {
-		case '0':// listar
-			$outp = $object->getTable();
+		case '0':// listar 
+			$outp = $object->getCicloCotable();
 			//envia json a amgularjs 
 			echo json_encode($outp);
 			break;
 		case '1':// listar primera parte
-			$outp = $object->getDataUsuarioEmpresa($_POST['idUsuario']);
+			$outp = $object->getTable($_POST['idCicloContable']);
 			//envia json a amgularjs 
 			echo json_encode($outp);
 			break;
 		
-		
+		case '2':// listar primera parte
+			$outp = $object->getDataUsuarioEmpresa($_POST['idUsuario'], $_POST['idCicloContable']);
+			//envia json a amgularjs 
+			echo json_encode($outp);
+			break;
+
 		default:
 			array('mensaje'=> "Error tipo RUN");
 			echo json_encode($outp);

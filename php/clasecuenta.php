@@ -3,7 +3,7 @@
 	/**
 	* BY: Rolando Angel Montenegro Carranza
 	*/
-	class cliente extends model{
+	class clasecuenta extends model{
 		//private $table
 
 		public function __construct(){
@@ -12,7 +12,7 @@
 
 		//funcion para mostrar todos los registros de una tabla
 		public function getTable($table){
-			$result = $this->_db->query("SELECT * FROM ".$table." WHERE  show_by= '1'");
+			$result = $this->_db->query("SELECT * FROM ".$table."");
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 			return $retorna;
 			$result->close();
@@ -74,68 +74,32 @@
 			$result->close();
 			*/
 
-			$outp[] = array('name'=> "cod_cliente",
-							'label'=> "CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "cod_ccuenta",
+							'label'=> "CÓDIGO CLASE CUENTA",
 							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
 							'value'=> "");
 
-			$outp[] = array('name'=> "tipo_codcliente",
-							'label'=> "TIPO CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "nom_ccuenta",
+							'label'=> "NOMBRE CLASE CUENTA",
 							'tipo'=> "text",
 							'class'=> "",
 							'value'=> "");
 
-			$outp[] = array('name'=> "nom_cliente",
-							'label'=> "NOMBRE CLIENTE",
-							'tipo'=> "text",
+			$outp[] = array('name'=> "digito_ccuenta",
+							'label'=> "DÍGITO CLASE CUENTA",
+							'tipo'=> "text-number",
 							'class'=> "",
 							'value'=> "");
 
-			$outp[] = array('name'=> "dir_cliente",
-							'label'=> "DIRECCIÓN DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "");
-
-			$outp[] = array('name'=> "telef_cliente",
-							'label'=> "TELÉFONO DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "");
-
-			$outp[] = array('name'=> "fax_cliente",
-							'label'=> "FAX DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "");
-
-			$outp[] = array('name'=> "cel_cliente",
-							'label'=> "CELULAR DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "");
-
-			$outp[] = array('name'=> "pais_cliente",
-							'label'=> "PAÍS DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "");
-
-			$outp[] = array('name'=> "ciudad_cliente",
-							'label'=> "CIUDAD DEL CLIENTE",
+			$outp[] = array('name'=> "antecesor_ccuenta",
+							'label'=> "ANTECESOR CLASE CUENTA",
 							'tipo'=> "text",
 							'class'=> "",
 							'value'=> "");
 
 			
-			//bandera para controlar la eliminacion
-			$outp[] = array('name'=> "show_by",
-							'label'=> "",
-							'tipo'=> "text-block",
-							'class'=> "hide",
-							'value'=> "1");
 
 			//print_r($outp);
 
@@ -149,7 +113,7 @@
 			
 			//CAASO LLAVE FORANEA
 			//tabla principal
-			$result_main = $this->_db->query("SELECT * FROM ".$table." WHERE show_by = '1' and ".$nom_idTable." = '".$id."'");
+			$result_main = $this->_db->query("SELECT * FROM ".$table." WHERE ".$nom_idTable." = '".$id."'");
 			$retorna_main = $result_main->fetch_all(MYSQL_ASSOC);
 			$result_main->close();
 			/*
@@ -250,67 +214,39 @@
 			$result_select->close();
 			$result_selectId->close();
 			*/
-			$outp[] = array('name'=> "idCliente",
-							'label'=> "NIT DE EMPRESA",
+			$outp[] = array('name'=> "idClaseCuenta",
+							'label'=> "ID CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
 							'valueSelect'=> "",
-							'value'=> "".$retorna_main[0]['idCliente']."");
+							'value'=> "".$retorna_main[0]['idClaseCuenta']."");
 
-			$outp[] = array('name'=> "cod_cliente",
-							'label'=> "CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "cod_ccuenta",
+							'label'=> "CÓDIGO CLASE CUENTA",
 							'tipo'=> "text-number",
 							'class'=> "",
 							'valueSelect'=> "",
-							'value'=> "".$retorna_main[0]['cod_cliente']."");
+							'value'=> "".$retorna_main[0]['cod_ccuenta']."");
 
-			$outp[] = array('name'=> "tipo_codcliente",
-							'label'=> "TIPO CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "nom_ccuenta",
+							'label'=> "NOMBRE CLASE CUENTA",
 							'tipo'=> "text",
 							'class'=> "",
-							'value'=> "".$retorna_main[0]['tipo_codcliente']."");
+							'value'=> "".$retorna_main[0]['nom_ccuenta']."");
 
-			$outp[] = array('name'=> "nom_cliente",
-							'label'=> "NOMBRE CLIENTE",
+			$outp[] = array('name'=> "digito_ccuenta",
+							'label'=> "DÍGITO CLASE CUENTA",
+							'tipo'=> "text-number",
+							'class'=> "",
+							'value'=> "".$retorna_main[0]['digito_ccuenta']."");
+
+			$outp[] = array('name'=> "antecesor_ccuenta",
+							'label'=> "ANTECESOR CLASE CUENTA",
 							'tipo'=> "text",
 							'class'=> "",
-							'value'=> "".$retorna_main[0]['nom_cliente']."");
+							'value'=> "".$retorna_main[0]['antecesor_ccuenta']."");
 
-			$outp[] = array('name'=> "dir_cliente",
-							'label'=> "DIRECCIÓN DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['dir_cliente']."");
-
-			$outp[] = array('name'=> "telef_cliente",
-							'label'=> "TELÉFONO DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['telef_cliente']."");
-
-			$outp[] = array('name'=> "fax_cliente",
-							'label'=> "FAX DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['fax_cliente']."");
-
-			$outp[] = array('name'=> "cel_cliente",
-							'label'=> "CELULAR DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['cel_cliente']."");
-
-			$outp[] = array('name'=> "pais_cliente",
-							'label'=> "PAÍS DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['pais_cliente']."");
-
-			$outp[] = array('name'=> "ciudad_cliente",
-							'label'=> "CIUDAD DEL CLIENTE",
-							'tipo'=> "text",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['ciudad_cliente']."");
+			
 
 			
 
@@ -427,67 +363,37 @@
 			$result_select->close();
 			$result_selectId->close();
 			*/
-			$outp[] = array('name'=> "idCliente",
-							'label'=> "NIT DE EMPRESA",
+			$outp[] = array('name'=> "idClaseCuenta",
+							'label'=> "ID CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
 							'valueSelect'=> "",
-							'value'=> "".$retorna_main[0]['idCliente']."");
+							'value'=> "".$retorna_main[0]['idClaseCuenta'].""); 
 
-			$outp[] = array('name'=> "cod_cliente",
-							'label'=> "CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "cod_ccuenta",
+							'label'=> "CÓDIGO CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
 							'valueSelect'=> "",
-							'value'=> "".$retorna_main[0]['cod_cliente']."");
+							'value'=> "".$retorna_main[0]['cod_ccuenta']."");
 
-			$outp[] = array('name'=> "tipo_codcliente",
-							'label'=> "TIPO CÓDIGO CLIENTE",
+			$outp[] = array('name'=> "nom_ccuenta",
+							'label'=> "NOMBRE CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
-							'value'=> "".$retorna_main[0]['tipo_codcliente']."");
+							'value'=> "".$retorna_main[0]['nom_ccuenta']."");
 
-			$outp[] = array('name'=> "nom_cliente",
-							'label'=> "NOMBRE CLIENTE",
+			$outp[] = array('name'=> "digito_ccuenta",
+							'label'=> "DÍGITO CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
-							'value'=> "".$retorna_main[0]['nom_cliente']."");
+							'value'=> "".$retorna_main[0]['digito_ccuenta']."");
 
-			$outp[] = array('name'=> "dir_cliente",
-							'label'=> "DIRECCIÓN DEL CLIENTE",
+			$outp[] = array('name'=> "antecesor_ccuenta",
+							'label'=> "ANTECESOR CLASE CUENTA",
 							'tipo'=> "text-block",
 							'class'=> "",
-							'value'=> "".$retorna_main[0]['dir_cliente']."");
-
-			$outp[] = array('name'=> "telef_cliente",
-							'label'=> "TELÉFONO DEL CLIENTE",
-							'tipo'=> "text-block",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['telef_cliente']."");
-
-			$outp[] = array('name'=> "fax_cliente",
-							'label'=> "FAX DEL CLIENTE",
-							'tipo'=> "text-block",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['fax_cliente']."");
-
-			$outp[] = array('name'=> "cel_cliente",
-							'label'=> "CELULAR DEL CLIENTE",
-							'tipo'=> "text-block",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['cel_cliente']."");
-
-			$outp[] = array('name'=> "pais_cliente",
-							'label'=> "PAÍS DEL CLIENTE",
-							'tipo'=> "text-block",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['pais_cliente']."");
-
-			$outp[] = array('name'=> "ciudad_cliente",
-							'label'=> "CIUDAD DEL CLIENTE",
-							'tipo'=> "text-block",
-							'class'=> "",
-							'value'=> "".$retorna_main[0]['ciudad_cliente']."");
+							'value'=> "".$retorna_main[0]['antecesor_ccuenta']."");
 
 			
 
@@ -608,9 +514,9 @@
 		//funcion para modificar ELIMINAR REGISTRO sin borrar
 		public function deleteTable($table, $nom_id, $id, $user){
 			$outp = array();
-			$set_campo = "show_by = '0' , delete_by = '".$user."'";
+			//$set_campo = "show_by = '0' , delete_by = '".$user."'";
 
-			$query = "UPDATE ".$table." SET ".$set_campo." WHERE ".$nom_id." = '".$id."'";
+			$query = "DELETE FROM ".$table." WHERE ".$nom_id." = '".$id."'";
 			//print_r($query);
 			if (!$this->_db->query($query)) {
 				//en casso de error muestra el problema en consola
@@ -633,9 +539,9 @@
 
 	//main para llamar a las clases
 	//objeto a manipular
-	$object = new cliente();
-	$table = "cliente"; //nombre de la tabla
-	$nom_idTable = "idCliente";
+	$object = new clasecuenta();
+	$table = "clasecuenta"; //nombre de la tabla
+	$nom_idTable = "idClaseCuenta";
 
 	switch ($_POST['run']) {
 		case '0':// listar

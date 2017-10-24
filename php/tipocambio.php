@@ -15,7 +15,24 @@
 			$result = $this->_db->query("SELECT * FROM ".$table." WHERE  show_by = '1'");
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 
-			return $retorna;
+			$outp = array();
+			//formando para el select
+			foreach ($retorna as $clave => $valor) {
+    			
+				//identificamos la fecha
+				$fehca_array = $opcion = explode("-", $valor['tc_fecha']);
+				$fecha_db = $fehca_array[2]."/".$fehca_array[1]."/".$fehca_array[0]; 
+			    $outp[] = array('idtipocambio'=> $valor['idtipocambio'],
+								'tc_fecha'=> $fecha_db,
+								'tc_compra'=> $valor['tc_compra'],
+								'tc_venta'=> $valor['tc_venta'],
+								'Moneda_idMoneda'=> $valor['Moneda_idMoneda'],
+								'show_by'=> $valor['show_by'],
+								);
+
+			}
+
+			return $outp;
 			$result->close();
 		}//End function getTable
 

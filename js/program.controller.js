@@ -55,7 +55,7 @@ app.controller("NavBarListarCtrl", function($scope, $http) {
      
 });
 
-//      LISTAR, AGREGAR, MODIFICAR  CUENTAS
+//      LISTAR, AGREGAR, MODIFICAR  CUENTAS (prototipo NO FUNCIONAL EN SISTEMA ACTUAL)
 
 app.controller("cuentaListarCtrl", function($scope, $http) {
    // $scope.formData = {};
@@ -232,7 +232,7 @@ app.controller("listarCuentaCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -516,7 +516,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -661,9 +661,9 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
                      {field: 'idEmpresa', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idEmpresa,2)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idEmpresa', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idEmpresa,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idEmpresa', displayName: 'CÓDIGO', width:100}, 
-                     {field: 'nit_empresa', displayName: 'NIT', width:150},
-                     {field:'nom_empresa', displayName:'NOMBRE', width: 150}, 
-                     {field:'tipo_empresa', displayName:'TIPO EMPRESA', width:150}
+                     {field: 'nit_empresa', displayName: 'NIT', width:150,cellClass: 'align_left'},
+                     {field:'nom_empresa', displayName:'NOMBRE', width: 150,cellClass: 'align_left'}, 
+                     {field:'tipo_empresa', displayName:'TIPO EMPRESA', width:150,cellClass: 'align_left'}
                      ]
 
     };
@@ -821,7 +821,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -834,7 +834,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -876,7 +876,7 @@ app.controller("listarEmpresaCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -992,7 +992,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -1297,7 +1297,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -1310,7 +1310,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -1352,7 +1352,7 @@ app.controller("listarCicloContableCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -1470,7 +1470,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -1616,7 +1616,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
                      {field: 'idMoneda', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idMoneda,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idMoneda', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tipo_moneda', displayName: 'TIPO MONEDA', width:200},
-                     {field: 'obs_moneda', displayName:'OBSEVACIÓN', width: 150}, 
+                     {field: 'obs_moneda', displayName:'OBSEVACIÓN', width: 150,cellClass: 'align_left'}, 
                      ]
 
     };
@@ -1774,7 +1774,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -1787,7 +1787,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -1829,7 +1829,7 @@ app.controller("listarMonedaCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -1956,7 +1956,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -2270,7 +2270,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
         $scope.formModal[0].value = fecha_form;
         //console.log( run + "run");
         //console.log( $scope.formModal + "esto es lo que agrega");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -2283,7 +2283,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -2325,7 +2325,7 @@ app.controller("listarTipoCambioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -2441,7 +2441,7 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -2586,19 +2586,27 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
                      {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idUsuario,2)"><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idUsuario', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idUsuario,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idUsuario', displayName: 'CÓDIGO', width:100}, 
-                     {field: 'ci_usu', displayName: 'C.I.', width:200},
-                     {field: 'login_usu', displayName:'LOGIN', width: 150},
-                     {field: 'pass_usu', displayName:'PASSWORD', width: 150},
-                     {field: 'apellidos_usu', displayName:'APELLIDO', width: 150},
-                     {field: 'nombres_usu', displayName:'NOMBRE', width: 150},
-                     {field: 'telef_usu', displayName:'TELÉFONO', width: 150},
-                     {field: 'dir_usu', displayName:'DIRECCIÓN', width: 150},
-                     {field: 'correo_usu', displayName:'CORREO', width: 150},
-                     {field: 'cargo_usu', displayName:'CARGO', width: 150}, 
-                     {field: 'GrupoUsu_idGrupoUsu', displayName:'GRUPO USUARIO', width: 150}, 
+                     {field: 'ci_usu', displayName: 'C.I.', width:200,cellClass: 'align_left'},
+                     {field: 'login_usu', displayName:'LOGIN', width: 150,cellClass: 'align_left'},
+                     {field: 'pass_usu', displayName:'PASSWORD', cellTemplate: '<a href="" ng-click="mostrarItem(row.entity.pass_usu)"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>' , width: 150},
+                     {field: 'apellidos_usu', displayName:'APELLIDO', width: 150,cellClass: 'align_left'},
+                     {field: 'nombres_usu', displayName:'NOMBRE', width: 150,cellClass: 'align_left'},
+                     {field: 'telef_usu', displayName:'TELÉFONO', width: 150,cellClass: 'align_left'},
+                     {field: 'dir_usu', displayName:'DIRECCIÓN', width: 150,cellClass: 'align_left'},
+                     {field: 'correo_usu', displayName:'CORREO', width: 150,cellClass: 'align_left'},
+                     {field: 'cargo_usu', displayName:'CARGO', width: 150,cellClass: 'align_left'}, 
+                     {field: 'GrupoUsu_idGrupoUsu', displayName:'GRUPO USUARIO', width: 150}
                      ]
 
     };
+
+    //mostrar psw, despliega un modal para mostrarlo
+    $scope.mostrarItem = function(ValorItem){   
+        //alert(ValorItem);
+        $("#myModalFormMensaje").modal();
+        $scope.titulo_mensaje = "CONTRASEÑA";
+        $scope.mensaje_modal = ValorItem;
+    }
 
     //Funcion para AGREGAR, MODIFICAR Y ELIMINAR
     $scope.action = function(id,run){
@@ -2748,12 +2756,13 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
         $("#myModalForm").modal("hide");
         $scope.formModal = []; 
     }
-    $scope.actualizaGrid = function(run,id){
+    $scope.actualizaGrid = function(run){
         $("#myModalForm").modal('hide'); 
+
         var user = sessionStorage.getItem("user");
-        console.log( $scope.formModal + "esto es lo que agrega");
-        console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        //console.log( $scope.formModal + "esto es lo que agrega");
+        //console.log( run + "run");
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -2766,7 +2775,7 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -2808,7 +2817,7 @@ app.controller("listarUsuarioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -2926,7 +2935,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -3071,7 +3080,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
                      {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idGrupoUsu,2)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idGrupoUsu', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idGrupoUsu,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idGrupoUsu', displayName: 'CÓDIGO', width:100}, 
-                     {field: 'nom_gu', displayName: 'NOMBRE', width:200},
+                     {field: 'nom_gu', displayName: 'NOMBRE', width:200,cellClass: 'align_left'},
                      
                      ]
 
@@ -3229,7 +3238,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -3242,7 +3251,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -3284,7 +3293,7 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -3371,13 +3380,18 @@ app.controller("listarGrupoUsuarioCtrl", function($scope, $http, $location) {
 
 });
 
-//      LISTAR TIPO CLASE CUENTA
+//      LISTAR CLASE CUENTA
 
 app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
     
     // Dato para el titulo interfaz
     $scope.titulo = "CLASE CUENTA";
     var opcion = "claseCuenta";
+    $scope.hide_buttom = '';
+    $scope.formModal=[];
+    $scope.id_modal = "";
+    var url = '../php/clasecuenta.php';
+
 
     //SECCION DE LISTADO, TABLA INTELIGENTE NG-GRID
     //algoritmo para editar las variables de busqueda y filtrado de datos
@@ -3396,7 +3410,7 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -3420,11 +3434,11 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
                 //////////////////////////////////////////////////////////////////////
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : {run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3466,11 +3480,11 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
             } else {
                 $.ajax({
                 // la URL para la petición
-                url : '../php/main.php',
+                url : url,
  
                 // la información a enviar
                 // (también es posible utilizar una cadena de datos)
-                data : {opcion: opcion, run: '0'},
+                data : { run: '0'},
  
                 // especifica si será una petición POST o GET
                 type : 'POST',
@@ -3538,18 +3552,311 @@ app.controller("listarClaseCuentaCtrl", function($scope, $http, $location) {
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="modificar(row.entity.idClaseCuenta)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
-                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="eliminar(row.entity.idClaseCuenta)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
-                     {field: 'idClaseCuenta', displayName: 'ID', width:100}, 
-                     {field: 'cod_ccuenta', displayName: 'CÓDIGO', width:200},
-                     {field: 'nom_ccuenta', displayName: 'NOMBRE', width:200},
-                     {field: 'digito_ccuenta', displayName: 'DIGITO', width:200},
-                     {field: 'antecesor_ccuenta', displayName: 'ANTECESOR', width:200},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idClaseCuenta,2)""><span class="glyphicon glyphicon-pencil edita_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idClaseCuenta', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idClaseCuenta,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
+                     {field: 'idClaseCuenta', displayName: 'ID', width:100,cellClass: 'align_left'}, 
+                     {field: 'cod_ccuenta', displayName: 'CÓDIGO', width:200,cellClass: 'align_left'},
+                     {field: 'nom_ccuenta', displayName: 'NOMBRE', width:200,cellClass: 'align_left'},
+                     {field: 'digito_ccuenta', displayName: 'DIGITO', width:200,cellClass: 'align_left'},
+                     {field: 'antecesor_ccuenta', displayName: 'ANTECESOR', width:200,cellClass: 'align_left'},
 
                      
                      ]
 
     };
+
+    //Funcion para AGREGAR, MODIFICAR Y ELIMINAR
+    $scope.action = function(id,run){
+        $("#myModalForm").modal();
+        $scope.id_modal = id;
+        //seleccion de tipo de evento a realizar Insert, Update , Delete
+        switch(run) {
+            case 1:
+                $scope.titulo_accion = "AGREGAR"; 
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo" 
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log($scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                break;
+            case 2:
+                $scope.titulo_accion = "MODIFICAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            case 3:
+                $scope.titulo_accion = "ELIMINAR";
+                $scope.run = run;
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, tipo: "campo", id: id
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formModal = data;
+                            console.log("Modificar campo: "+$scope.formModal);
+                    
+                            $scope.$apply();
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    }); 
+                break;
+            default:
+            
+        }
+
+        
+    }
+    $scope.cancelar = function(){
+        $("#myModalForm").modal("hide");
+        $scope.formModal = []; 
+    }
+    $scope.actualizaGrid = function(run,id){
+        $("#myModalForm").modal('hide'); 
+        var user = sessionStorage.getItem("user");
+        console.log( $scope.formModal + "esto es lo que agrega");
+        console.log( run + "run");
+        var json_envia = JSON.stringify($scope.formModal);
+
+        //selecciona forma de actualizad si sera INSERT UPDATE DELETE
+        switch(run) {
+            case 1:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                            run: run, 
+                            data : json_envia, 
+                            tipo: "insertar"
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            case 2:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {
+                            run: run, 
+                            data : json_envia, 
+                            tipo: "modificar",
+                            id: $scope.id_modal
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            case 3:
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+             
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : {  
+                            run: run,  
+                            tipo: "eliminar",
+                            id: $scope.id_modal,
+                            user : user
+
+                        },
+             
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+             
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+             
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                            
+                        },
+             
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                        },
+             
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/user_listar';
+                        }
+                    });
+                    //$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+                break;
+            
+            default:
+        }
+        
+    }
 
 });
 
@@ -3583,7 +3890,7 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -3730,8 +4037,8 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                      {field: 'idCliente', displayName: 'ID', width:100},
                      {field: 'cod_cliente', displayName: 'CÓDIGO', width:100}, 
                      {field: 'tipo_codcliente', displayName: 'TIPO CÓDIGO CLIENTE', width:200},
-                     {field: 'nom_cliente', displayName: 'NOMBRE', width:200},
-                     {field: 'dir_cliente', displayName: 'DIRECCIÓN', width:200},
+                     {field: 'nom_cliente', displayName: 'NOMBRE', width:200,cellClass: 'align_left'},
+                     {field: 'dir_cliente', displayName: 'DIRECCIÓN', width:200,cellClass: 'align_left'},
                      {field: 'telef_cliente', displayName: 'TELÉFONO', width:200},
                      {field: 'fax_cliente', displayName: 'FAX', width:200},
                      {field: 'cel_cliente', displayName: 'CELULAR', width:200},
@@ -3895,7 +4202,7 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -3908,7 +4215,7 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -3950,7 +4257,7 @@ app.controller("listarClienteCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -4065,7 +4372,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
 
     // Tamano de los registros a mostrar en la tabla o grid, y con el numero de pagina a comenzar
     $scope.pagingOptions = {
-        pageSize: 20,
+        pageSize: 100,
         currentPage: 1
     };  
 
@@ -4211,8 +4518,8 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                      {field: 'idProveedor', displayName:'', cellTemplate: '<a href="" ng-click="action(row.entity.idProveedor,3)"><span class="glyphicon glyphicon-remove elimina_css" aria-hidden="true"></span></a>',width:30},
                      {field: 'idProveedor', displayName: 'CÓDIGO', width:100}, 
                      {field: 'cod_prov', displayName: 'CÓDIGO PROVEEDOR', width:200},
-                     {field: 'nom_prov', displayName: 'NOMBRE', width:200},
-                     {field: 'dir_prov', displayName: 'DIRECCIÓN', width:200},
+                     {field: 'nom_prov', displayName: 'NOMBRE', width:200,cellClass: 'align_left'},
+                     {field: 'dir_prov', displayName: 'DIRECCIÓN', width:200,cellClass: 'align_left'},
                      {field: 'telef_prov', displayName: 'TELÉFONO', width:200},
                      {field: 'fax_prov', displayName: 'FAX', width:200},
                      {field: 'cel_prov', displayName: 'CELULAR', width:200},
@@ -4376,7 +4683,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
         var user = sessionStorage.getItem("user");
         console.log( $scope.formModal + "esto es lo que agrega");
         console.log( run + "run");
-        $scope.formModal = JSON.stringify($scope.formModal);
+        var json_envia = JSON.stringify($scope.formModal);
 
         //selecciona forma de actualizad si sera INSERT UPDATE DELETE
         switch(run) {
@@ -4389,7 +4696,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : { 
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "insertar"
                         },
              
@@ -4431,7 +4738,7 @@ app.controller("listarProveedorCtrl", function($scope, $http, $location) {
                         // (también es posible utilizar una cadena de datos)
                         data : {
                             run: run, 
-                            data : $scope.formModal, 
+                            data : json_envia, 
                             tipo: "modificar",
                             id: $scope.id_modal
                         },
@@ -5546,7 +5853,7 @@ app.controller("listarLibroMayorCtrl", function($scope, $http) {
 });
 
 
-//      LISTAR COMPRAS IVA
+//      LISTAR LIBRO COMPRAS IVA
 app.controller("comprasIvaCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lcompras.php"; 
@@ -5555,91 +5862,236 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
-    // ajax de llenado de interfaz primer bloque
-        $.ajax({
-                // la URL para la petición
-                url : url,
+    // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+    $.ajax({
+            // la URL para la petición
+            url : url,
      
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "1", idUsuario: idUsuario
-                },
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    run : "0"
+            },
      
-                // especifica si será una petición POST o GET
-                type : 'POST',
+            // especifica si será una petición POST o GET
+            type : 'POST',
      
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
      
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
 
-                    $scope.formDataInterfazPrimera = data;
-                    //dimension = data.length;
+                $scope.formDataInterfazCicloContable = data;
+                $scope.selectGestion = data[0];
+                //dimension = data.length;
 
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+                $scope.$apply();
 
-    // ajax de llenado de interfaz
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "0"
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+                 // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
 
-                    $scope.formDataInterfaz = data;
-                    dimension = data.length;
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
 
-                    $scope.$apply();
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
 
+                            $scope.$apply();
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
 
-                },
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+            },
      
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
      
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+             // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/producto';
+            }
+        });
 
-    
+    //funcion = al cambiar de ciclo contable la tabla se recarga con nuevos datos
+    $scope.hasChangedCicloContable = function(){
+        // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+    }
+
 
     //funcion para sumar los total factura
     $scope.suma_total_factura = function(){
@@ -5651,7 +6103,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
         //console.log($scope.formDataInterfaz.length);
 
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_factura
+            var item = $scope.formDataInterfazTabla[i].total_factura
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5669,7 +6121,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     $scope.suma_total_ice = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_ice
+            var item = $scope.formDataInterfazTabla[i].total_ice
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5687,7 +6139,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     $scope.suma_importe_exento = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_exento
+            var item = $scope.formDataInterfazTabla[i].total_exento
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5705,7 +6157,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     $scope.suma_importe_neto = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].importe_neto
+            var item = $scope.formDataInterfazTabla[i].importe_neto
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5723,7 +6175,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
     $scope.suma_total_iva = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].fiscal
+            var item = $scope.formDataInterfazTabla[i].fiscal
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5740,7 +6192,7 @@ app.controller("comprasIvaCtrl", function($scope, $http) {
 });
 
 
-//      LISTAR VENTAS IVA
+//      LISTAR LIBRO VENTAS IVA
 app.controller("ventasIvaCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lventas.php"; 
@@ -5749,91 +6201,235 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
+    // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+    $.ajax({
+            // la URL para la petición
+            url : url,
+     
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    run : "0"
+            },
+     
+            // especifica si será una petición POST o GET
+            type : 'POST',
+     
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+     
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
 
-    // ajax de llenado de interfaz primer bloque
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "1", idUsuario: idUsuario
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+                $scope.formDataInterfazCicloContable = data;
+                $scope.selectGestion = data[0];
+                //dimension = data.length;
 
-                    $scope.formDataInterfazPrimera = data;
+                $scope.$apply();
 
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+                 // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
 
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
 
-        // ajax de llenado de interfaz
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "0"
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
 
-                    $scope.formDataInterfaz = data;
-                    dimension = data.length;
+                            $scope.$apply();
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
 
-                    $scope.$apply();
-                },
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+            },
      
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
      
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+             // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/producto';
+            }
+        });
 
-    
+    //funcion = al cambiar de ciclo contable la tabla se recarga con nuevos datos
+    $scope.hasChangedCicloContable = function(){
+        // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
 
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+    }
 
 
     //funcion para sumar los total factura
@@ -5846,7 +6442,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
         //console.log($scope.formDataInterfaz.length);
 
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_factura
+            var item = $scope.formDataInterfazTabla[i].total_factura
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5864,7 +6460,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     $scope.suma_total_ice = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_ice
+            var item = $scope.formDataInterfazTabla[i].total_ice
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5882,7 +6478,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     $scope.suma_importe_exento = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_exento
+            var item = $scope.formDataInterfazTabla[i].total_exento
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5900,7 +6496,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     $scope.suma_importe_neto = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].importe_neto
+            var item = $scope.formDataInterfazTabla[i].importe_neto
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5918,7 +6514,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
     $scope.suma_total_iva = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].fiscal
+            var item = $scope.formDataInterfazTabla[i].fiscal
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -5939,94 +6535,241 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
 app.controller("ingresosCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lventas.php"; 
-    $scope.titulo= "REPORTE INGRESOS";
+    $scope.titulo= "LIBRO DE VENTAS IVA";
     var razoSocial = "cliente";
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
-    // ajax de llenado de interfaz
-        $.ajax({
-                // la URL para la petición
-                url : url,
+    // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+    $.ajax({
+            // la URL para la petición
+            url : url,
      
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "0"
-                },
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    run : "0"
+            },
      
-                // especifica si será una petición POST o GET
-                type : 'POST',
+            // especifica si será una petición POST o GET
+            type : 'POST',
      
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
      
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
 
-                    $scope.formDataInterfaz = data;
-                    dimension = data.length;
+                $scope.formDataInterfazCicloContable = data;
+                $scope.selectGestion = data[0];
+                //dimension = data.length;
 
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+                $scope.$apply();
 
-    // ajax de llenado de interfaz primer bloque
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "1", idUsuario: idUsuario
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+                 // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
 
-                    $scope.formDataInterfazPrimera = data;
-                    //dimension = data.length;
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
 
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
 
-    
+                            $scope.$apply();
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+            },
+     
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
+     
+             // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/producto';
+            }
+        });
+
+    //funcion = al cambiar de ciclo contable la tabla se recarga con nuevos datos
+    $scope.hasChangedCicloContable = function(){
+        // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+    }
+
 
     //funcion para sumar los total factura
     $scope.suma_total_factura = function(){
@@ -6038,7 +6781,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
         //console.log($scope.formDataInterfaz.length);
 
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_factura
+            var item = $scope.formDataInterfazTabla[i].total_factura
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6056,7 +6799,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
     $scope.suma_total_ice = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_ice
+            var item = $scope.formDataInterfazTabla[i].total_ice
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6074,7 +6817,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
     $scope.suma_importe_exento = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_exento
+            var item = $scope.formDataInterfazTabla[i].total_exento
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6092,7 +6835,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
     $scope.suma_importe_neto = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].importe_neto
+            var item = $scope.formDataInterfazTabla[i].importe_neto
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6110,7 +6853,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
     $scope.suma_total_iva = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].fiscal
+            var item = $scope.formDataInterfazTabla[i].fiscal
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6131,96 +6874,241 @@ app.controller("ingresosCtrl", function($scope, $http) {
 app.controller("egresosCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lcompras.php"; 
-    $scope.titulo= "REPORTE EGRESOS";
+    $scope.titulo= "LIBRO DE COMPRAS IVA";
     var razoSocial = "proveedor";
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
 
-    // ajax de llenado de interfaz primer bloque
-        $.ajax({
-                // la URL para la petición
-                url : url,
+    // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+    $.ajax({
+            // la URL para la petición
+            url : url,
      
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "1", idUsuario: idUsuario
-                },
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    run : "0"
+            },
      
-                // especifica si será una petición POST o GET
-                type : 'POST',
+            // especifica si será una petición POST o GET
+            type : 'POST',
      
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
      
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
 
-                    $scope.formDataInterfazPrimera = data;
-                    //dimension = data.length;
+                $scope.formDataInterfazCicloContable = data;
+                $scope.selectGestion = data[0];
+                //dimension = data.length;
 
-                    $scope.$apply();
-                },
-     
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
-     
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+                $scope.$apply();
 
-    // ajax de llenado de interfaz
-        $.ajax({
-                // la URL para la petición
-                url : url,
-     
-                // la información a enviar
-                // (también es posible utilizar una cadena de datos)
-                data : { 
-                     run : "0"
-                },
-     
-                // especifica si será una petición POST o GET
-                type : 'POST',
-     
-                // el tipo de información que se espera de respuesta
-                dataType : 'json',
-     
-                // código a ejecutar si la petición es satisfactoria;
-                // la respuesta es pasada como argumento a la función
-                success : function(data) {
+                 // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
 
-                    $scope.formDataInterfaz = data;
-                    dimension = data.length;
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
 
-                    $scope.$apply();
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
 
+                            $scope.$apply();
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
 
-                },
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+            },
      
-                // código a ejecutar si la petición falla;
-                // son pasados como argumentos a la función
-                // el objeto de la petición en crudo y código de estatus de la petición
-                error : function(xhr, status) {
-                    console.log('Disculpe, existió un problema');
-                },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema');
+            },
      
-                    // código a ejecutar sin importar si la petición falló o no
-                complete : function(xhr, status) {
-                    //console.log('Petición realizada');
-                   //location.href='#/producto';
-                }
-            });
+             // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                //location.href='#/producto';
+            }
+        });
 
-    
+    //funcion = al cambiar de ciclo contable la tabla se recarga con nuevos datos
+    $scope.hasChangedCicloContable = function(){
+        // ajax de llenado de interfaz bloque ciclo contable (periodo fiscal)
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "1" , idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                 
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazTabla = data;
+                            
+                            dimension = data.length;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+
+                            $scope.formDataInterfazTabla = [];
+                            
+                            dimension = 0;
+                            //console.log(dimension);
+
+                            $scope.$apply();
+
+                        },
+                 
+                         // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+
+                // ajax de llenado de interfaz cargar datos de ususario
+                $.ajax({
+                        // la URL para la petición
+                        url : url,
+                 
+                        // la información a enviar
+                        // (también es posible utilizar una cadena de datos)
+                        data : { 
+                                run : "2", idUsuario: idUsuario, idCicloContable : $scope.selectGestion.idCicloContable
+                        },
+                 
+                        // especifica si será una petición POST o GET
+                        type : 'POST',
+                 
+                        // el tipo de información que se espera de respuesta
+                        dataType : 'json',
+                
+                        // código a ejecutar si la petición es satisfactoria;
+                        // la respuesta es pasada como argumento a la función
+                        success : function(data) {
+
+                            $scope.formDataInterfazPrimera = data;
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar si la petición falla;
+                        // son pasados como argumentos a la función
+                        // el objeto de la petición en crudo y código de estatus de la petición
+                        error : function(xhr, status) {
+                            console.log('Disculpe, existió un problema');
+                            $scope.formDataInterfazPrimera = [];
+
+                            $scope.$apply();
+                        },
+                 
+                        // código a ejecutar sin importar si la petición falló o no
+                        complete : function(xhr, status) {
+                            //console.log('Petición realizada');
+                            //location.href='#/producto';
+                        }
+                    });
+    }
+
 
     //funcion para sumar los total factura
     $scope.suma_total_factura = function(){
@@ -6232,7 +7120,7 @@ app.controller("egresosCtrl", function($scope, $http) {
         //console.log($scope.formDataInterfaz.length);
 
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_factura
+            var item = $scope.formDataInterfazTabla[i].total_factura
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6250,7 +7138,7 @@ app.controller("egresosCtrl", function($scope, $http) {
     $scope.suma_total_ice = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_ice
+            var item = $scope.formDataInterfazTabla[i].total_ice
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6268,7 +7156,7 @@ app.controller("egresosCtrl", function($scope, $http) {
     $scope.suma_importe_exento = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].total_exento
+            var item = $scope.formDataInterfazTabla[i].total_exento
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6286,7 +7174,7 @@ app.controller("egresosCtrl", function($scope, $http) {
     $scope.suma_importe_neto = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].importe_neto
+            var item = $scope.formDataInterfazTabla[i].importe_neto
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6304,7 +7192,7 @@ app.controller("egresosCtrl", function($scope, $http) {
     $scope.suma_total_iva = function(){
         var total = 0;
         for(var i = 0; i < dimension; i++){
-            var item = $scope.formDataInterfaz[i].fiscal
+            var item = $scope.formDataInterfazTabla[i].fiscal
             if (item == "" || item == null) {
                 //console.log("vacio ");
                 total += 0;
@@ -6321,7 +7209,7 @@ app.controller("egresosCtrl", function($scope, $http) {
 });
 
 
-//  LISTAR BALANCE GENERAL
+//  LISTAR REPORTE BALANCE GENERAL
 app.controller("balanceGeneralCtrl", function($scope, $http) {
     //url de coneccion
     var url = "../php/balanceGeneral.php";     
@@ -6975,7 +7863,7 @@ app.controller("vacioCtrl", function($scope, $http) {
 
 });
 
-//directivas para restringir los inputs
+//directivas para restringir los input's NUMERIC ONLY AND STRING ONLY WHITOUT SIMBOL
 app.directive('numericOnly', function(){
     return {
         restrict : 'A',
@@ -7023,7 +7911,8 @@ app.directive('stringOnly', function(){
     
     return function(input, ccs) {
         if(!ccs || ccs.length === 0){
-            var total = 0;
+            $(".suma_activo").html("0.00");
+            /*var total = 0;
             angular.forEach(input, function(item) {
                 total += parseFloat(item.saldo_lm);
             });
@@ -7031,7 +7920,7 @@ app.directive('stringOnly', function(){
             //console.log("info1: "+total);
             total = parseFloat(total).toFixed(2);
             $(".suma_activo").html(total);
-            return input;
+            return input;*/
         }else{
             var total = 0;
             var out = [];
@@ -7056,7 +7945,8 @@ app.directive('stringOnly', function(){
     //var total = 0;
     return function(input, ccs) {
         if(!ccs || ccs.length === 0){
-            var total = 0;
+            $(".suma_pasivo").html("0.00");
+            /*var total = 0;
             angular.forEach(input, function(item) {
                 total += parseFloat(item.saldo_lm);
             });
@@ -7065,7 +7955,7 @@ app.directive('stringOnly', function(){
             total = parseFloat(total).toFixed(2);
             $(".suma_pasivo").html(total);
             
-            return input;
+            return input;*/
         }else{
             var total = 0;
             var out = [];
@@ -7090,7 +7980,8 @@ app.directive('stringOnly', function(){
     //var total = 0;
     return function(input, ccs) {
         if(!ccs || ccs.length === 0){
-            var total = 0;
+            $(".suma_patrimonio").html("0.00");
+            /*var total = 0;
             angular.forEach(input, function(item) {
                 total += parseFloat(item.saldo_lm);
             });
@@ -7099,7 +7990,7 @@ app.directive('stringOnly', function(){
             total = parseFloat(total).toFixed(2);
             $(".suma_patrimonio").html(total);
             
-            return input;
+            return input;*/
         }else{
             var total = 0;
             var out = [];

@@ -384,6 +384,10 @@ div.fixed-table-scroll-outer {
   color: #064378;
   border: 1px solid #064378;
 }
+.background-white{
+  background: #fff;
+  border-bottom: 1px solid #064378;
+}
 .boder-silver{
   border: 1px solid #ddd;
 }
@@ -404,4 +408,25 @@ div.fixed-table-scroll-outer {
 }
 .background-custom-vacio{
   background:  #0A5593;
+}
+.background-blue-input-group-1{
+  border-top: 1px solid #064378;
+  border-right: 0px solid #fff;
+  border-bottom: 1px solid #064378;
+  border-left: 1px solid #064378;
+
+}
+.background-blue-input-group-2{
+  background: #fff;
+  border-top: 1px solid #064378;
+  border-right: 1px solid #064378;
+  border-bottom: 1px solid #064378;
+  border-left: 0px solid #064378;
+  color: #064378;
+}
+.background-select{
+  background-image: url("images/icono_select.png");
+  background-size: 30px;
+  background-position: 100%;
+  background-repeat: no-repeat;
 }
