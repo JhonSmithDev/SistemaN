@@ -7858,9 +7858,826 @@ app.controller("estadoResultadoCtrl", function($scope, $http) {
 
 });
 
-//     LISTAR  REPORTE EGRESOS SIMILAR A LIBRO COMPRAS
-app.controller("vacioCtrl", function($scope, $http) {
+//     LISTAR  COMPROBANTE - COMPROBANTE DE TRASPASO
+app.controller("comprobanteTraspasoCtrl", function($scope, $http) {
 
+    var url = "../php/comprobante_traspaso.php";
+    var dimension = 0;
+    $scope.titulo_comprobante = "TRASPASO";
+
+    //para recuperar datos de ciclo cotable
+    $.ajax({
+            // la URL para la petición
+            url : url,
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    opcion: 'cc' // carga los datos necesarios como ciclocontable y clase cuenta
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                $scope.formDataCicloContable = data;
+                $scope.selectedCicloContable = data;
+                $scope.$apply();
+            },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema envio');
+                $scope.formDataCicloContable = [];
+                $scope.selectedCicloContable = [];
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                
+            }
+        });
+
+    //funcion para seleccionar el listado de comprobantes
+    $scope.hasChangedCicloContable = function(){
+        $scope.formDataComprobante = [];
+        $scope.selectedComprobante = [];
+        $scope.formDataComprobanteDetalle = [];
+        dimension = 0;
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'co', idCicloContable: $scope.selectedCicloContable.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobante = data;
+                    $scope.selectedComprobante = data;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobante = [];
+                    $scope.selectedComprobante = [];
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para seleccionar el listado de comprobantes detalles DEBE Y HABER
+    $scope.hasChangedComprobante = function(){
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'de', idComprobante: $scope.selectedComprobante.idComprobante// carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobanteDetalle = data;
+                    dimension = data.length;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para total
+    $scope.suma_debe_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_debe_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //calcula el tipo de cambio usado
+    $scope.calculaTipoCambio = function(){
+        var total = 0;
+        var result = 0.00;
+        var cont = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].debe_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].debe_us;
+                }
+                var item = v1 / v2;
+                console.log(item +" en "+ i);
+                if (isNaN(item) || item == "" || item == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                    cont ++;
+                }
+                
+            }
+
+            result = (total / cont);
+            return parseFloat(result).toFixed(2);
+        }
+        
+    }
+
+
+                
+});
+
+//     LISTAR  COMPROBANTE - COMPROBANTE DE INGRESO
+app.controller("comprobanteIngresoCtrl", function($scope, $http) {
+
+    var url = "../php/comprobante_ingreso.php";
+    var dimension = 0;
+    $scope.titulo_comprobante = "INGRESO";
+
+    //para recuperar datos de ciclo cotable
+    $.ajax({
+            // la URL para la petición
+            url : url,
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    opcion: 'cc' // carga los datos necesarios como ciclocontable y clase cuenta
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                $scope.formDataCicloContable = data;
+                $scope.selectedCicloContable = data;
+                $scope.$apply();
+            },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema envio');
+                $scope.formDataCicloContable = [];
+                $scope.selectedCicloContable = [];
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                
+            }
+        });
+
+    //funcion para seleccionar el listado de comprobantes
+    $scope.hasChangedCicloContable = function(){
+        $scope.formDataComprobante = [];
+        $scope.selectedComprobante = [];
+        $scope.formDataComprobanteDetalle = [];
+        dimension = 0;
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'co', idCicloContable: $scope.selectedCicloContable.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobante = data;
+                    $scope.selectedComprobante = data;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobante = [];
+                    $scope.selectedComprobante = [];
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para seleccionar el listado de comprobantes detalles DEBE Y HABER
+    $scope.hasChangedComprobante = function(){
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'de', idComprobante: $scope.selectedComprobante.idComprobante// carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobanteDetalle = data;
+                    dimension = data.length;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para total
+    $scope.suma_debe_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_debe_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //calcula el tipo de cambio usado
+    $scope.calculaTipoCambio = function(){
+        var total = 0;
+        var result = 0.00;
+        var cont = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].debe_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].debe_us;
+                }
+                var item = v1 / v2;
+                console.log(item +" en "+ i);
+                if (isNaN(item) || item == "" || item == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                    cont ++;
+                }
+                
+            }
+
+            result = (total / cont);
+            return parseFloat(result).toFixed(2);
+        }
+        
+    }
+
+
+                
+});
+
+//     LISTAR  COMPROBANTE - COMPROBANTE DE INGRESO
+app.controller("comprobanteEgresoCtrl", function($scope, $http) {
+
+    var url = "../php/comprobante_egreso.php";
+    var dimension = 0;
+    $scope.titulo_comprobante = "EGRESO";
+
+    //para recuperar datos de ciclo cotable
+    $.ajax({
+            // la URL para la petición
+            url : url,
+ 
+            // la información a enviar
+            // (también es posible utilizar una cadena de datos)
+            data : { 
+                    opcion: 'cc' // carga los datos necesarios como ciclocontable y clase cuenta
+            },
+ 
+            // especifica si será una petición POST o GET
+            type : 'POST',
+ 
+            // el tipo de información que se espera de respuesta
+            dataType : 'json',
+ 
+            // código a ejecutar si la petición es satisfactoria;
+            // la respuesta es pasada como argumento a la función
+            success : function(data) {
+                $scope.formDataCicloContable = data;
+                $scope.selectedCicloContable = data;
+                $scope.$apply();
+            },
+            // código a ejecutar si la petición falla;
+            // son pasados como argumentos a la función
+            // el objeto de la petición en crudo y código de estatus de la petición
+            error : function(xhr, status) {
+                console.log('Disculpe, existió un problema envio');
+                $scope.formDataCicloContable = [];
+                $scope.selectedCicloContable = [];
+                $scope.$apply();
+            },
+ 
+            // código a ejecutar sin importar si la petición falló o no
+            complete : function(xhr, status) {
+                //console.log('Petición realizada');
+                
+            }
+        });
+
+    //funcion para seleccionar el listado de comprobantes
+    $scope.hasChangedCicloContable = function(){
+        $scope.formDataComprobante = [];
+        $scope.selectedComprobante = [];
+        $scope.formDataComprobanteDetalle = [];
+        dimension = 0;
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'co', idCicloContable: $scope.selectedCicloContable.idCicloContable // carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobante = data;
+                    $scope.selectedComprobante = data;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobante = [];
+                    $scope.selectedComprobante = [];
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para seleccionar el listado de comprobantes detalles DEBE Y HABER
+    $scope.hasChangedComprobante = function(){
+        //para recuperar datos de ciclo cotable
+        $.ajax({
+                // la URL para la petición
+                url : url,
+     
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : { 
+                        opcion: 'de', idComprobante: $scope.selectedComprobante.idComprobante// carga los datos necesarios como ciclocontable y clase cuenta
+                },
+     
+                // especifica si será una petición POST o GET
+                type : 'POST',
+     
+                // el tipo de información que se espera de respuesta
+                dataType : 'json',
+     
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(data) {
+                    $scope.formDataComprobanteDetalle = data;
+                    dimension = data.length;
+                    $scope.$apply();
+                },
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    console.log('Disculpe, existió un problema envio');
+                    $scope.formDataComprobanteDetalle = [];
+                    dimension = 0;
+                    $scope.$apply();
+                },
+     
+                // código a ejecutar sin importar si la petición falló o no
+                complete : function(xhr, status) {
+                    //console.log('Petición realizada');
+                    
+                }
+            });
+
+    }
+
+    //funcion para total
+    $scope.suma_debe_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_bs = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_bs;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_debe_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].debe_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //funcion para total
+    $scope.suma_haber_us = function(){
+        var total = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                var item = $scope.formDataComprobanteDetalle[i].haber_us;
+                //console.log(item);
+                if (item == "" || item == null) {
+                    //console.log("vacio ");
+                    total += 0;
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                }
+                
+            }
+            
+        }
+        return parseFloat(total).toFixed(2);
+    }
+
+    //calcula el tipo de cambio usado
+    $scope.calculaTipoCambio = function(){
+        var total = 0;
+        var result = 0.00;
+        var cont = 0;
+        if (dimension != 0) {
+            
+            for(var i = 0; i < dimension; i++){
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_bs)) {
+                    v1 = 0.00;
+                }else{
+                    v1 = $scope.formDataComprobanteDetalle[i].debe_bs;
+                }
+                if (isNaN($scope.formDataComprobanteDetalle[i].debe_us)) {
+                    v2 = 0.00;
+                }else{
+                    v2 = $scope.formDataComprobanteDetalle[i].debe_us;
+                }
+                var item = v1 / v2;
+                console.log(item +" en "+ i);
+                if (isNaN(item) || item == "" || item == null) {
+                    //console.log("vacio ");
+                }else{
+                    //console.log("debe bs valor: "+item);
+                    total += parseFloat(item);
+                    cont ++;
+                }
+                
+            }
+
+            result = (total / cont);
+            return parseFloat(result).toFixed(2);
+        }
+        
+    }
+
+
+                
+});
+
+
+//     LISTAR TEMPLATE VACIO
+app.controller("vacioCtrl", function($scope, $http) {
+   
 });
 
 //directivas para restringir los input's NUMERIC ONLY AND STRING ONLY WHITOUT SIMBOL

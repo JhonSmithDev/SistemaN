@@ -1,0 +1,146 @@
+<div class="col-md-12">
+	<div class="col-md-4 letter-big letter-blue">COMPROBANTE DE {{titulo_comprobante}}</div>
+	<div class="col-md-4">
+		<div class="col-md-6">Ciclo Contable: <br> 
+	    	<select class="form-control background-select" ng-options="option.gestion_ccontable for option in formDataCicloContable track by option.idCicloContable" ng-model="selectedCicloContable" ng-change="hasChangedCicloContable()"></select>
+		</div>
+		<div class="col-md-6">Comprobante: <br> 
+	    	<select class="form-control background-select" ng-options="option.sigla_comp for option in formDataComprobante track by option.idComprobante" ng-model="selectedComprobante" ng-change="hasChangedComprobante()"></select>
+		</div>
+	</div>
+	<div class="col-md-4 margin-20"> 
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="background-blue letter-white">Fecha</th>
+					<th class="background-blue letter-white">T/C</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="">{{selectedComprobante.fecha_comp}}</td>
+					<td class="">{{calculaTipoCambio()}}</td>
+				</tr>
+				<tr>
+					<td colspan="2" class="text-center letter-blue letter-big"> {{selectedComprobante.sigla_comp}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+	<div class="col-md-12 margin-20 clear"></div>
+
+
+	<div class="table-container">
+   		<div class="table-container-header">
+      		<table class="table table-striped table-hover table-condensed table-bordered">
+         		<thead>
+            		<tr>
+            			<th class="text-center background-blue letter-white text-center" style="width: 100px; border-bottom: 1px solid #064378;">CÓDIGO</th>
+						<th class="text-center background-blue letter-white text-center" style="width: 250px; border-bottom: 1px solid #064378;">DETALLE</th>
+						<th class="text-center background-blue letter-white text-right" style="width: 300px;border-right: 1px solid #064378; text-align: right;">BOLIVIANOS</th>
+						<th class="text-center background-blue letter-white text-center"></th>
+						<th  class="text-center background-blue letter-white text-right" style="width: 300px;border-right: 1px solid #064378; text-align: right;">DÓLARES</th>
+						<th class="text-center background-blue letter-white text-center"></th>
+            		</tr>
+            		<tr>
+            			<th class="text-center background-blue letter-white text-center" style="width: 100px;"></th>
+            			<th class="text-center background-blue letter-white text-center" style="width: 250px;"></th>
+						<th class="text-center background-blue letter-white text-center" style="width: 150px;">DEBE</th>
+						<th class="text-center background-blue letter-white text-center" style="width: 150px;">HABER</th>
+						<th class="text-center background-blue letter-white text-center" style="width: 150px;">DEBE</th>
+						<th class="text-center background-blue letter-white text-center" style="width: 150px;">HABER</th>
+					</tr>
+         		</thead>
+      		</table>
+   		</div>
+	   	<div class="table-container-body">
+	      <table class="table table-striped table-hover table-condensed table-bordered">
+	         <colgroup>
+	         	<col style="width: 100px;"></col>
+	         	<col style="width: 250px;"></col>
+	         	<col style="width: 150px;"></col>
+	         	<col style="width: 150px;"></col>
+	         	<col style="width: 150px;"></col>
+	         	<col style="width: 150px;"></col>
+	         </colgroup>
+	         <tbody>
+	            <tr ng-repeat="item in formDataComprobanteDetalle track by $index" class="">
+	            	<td style="width: 100px;">{{item.cod_cuenta}} </td>
+	            	<td style="width: 250px;">{{item.nom_cuenta}} </td>
+	            	<td class="text-right" style="width: 150px; text-align: center;">{{item.debe_bs}} </td>
+	            	<td class="text-right" style="width: 150px; text-align: center;">{{item.haber_bs}} </td>
+	            	<td class="text-right" style="width: 150px; text-align: center;">{{item.debe_us}} </td>
+	            	<td class="text-right" style="width: 150px; text-align: center;">{{item.haber_us}} </td>
+	            </tr>
+	         </tbody>
+	      </table>
+	   </div>
+	   <div class="table-container-footer">
+	      <table class="table table-striped table-hover table-condensed table-bordered">
+	         <tfoot>
+	            <tr>
+	            	<th style="width: 100px; text-align: center;"></th>
+	            	<th class="text-center letter-blue" style="width: 250px;">TOTALES</th>
+	            	<th class="text-right" style="width: 150px; text-align: center;">{{suma_debe_bs()}}</th>
+	            	<th class="text-right" style="width: 150px; text-align: center;">{{suma_haber_bs()}}</th>
+	            	<th class="text-right" style="width: 150px; text-align: center;">{{suma_debe_us()}}</th>
+	            	<th class="text-right" style="width: 150px; text-align: center;">{{suma_haber_us()}}</th>
+	            </tr>
+	         </tfoot>
+	      </table>
+	   </div>
+	</div>
+
+
+
+<script type="text/javascript">
+	var $body = $(".table-container-body"),
+    $header = $(".table-container-header"),
+    $footer = $(".table-container-footer");
+
+// Get ScrollBar width(From: http://bootstrap-table.wenzhixin.net.cn/)
+var scrollBarWidth = (function () {
+        var inner = $('<p/>').addClass('fixed-table-scroll-inner'),
+            outer = $('<div/>').addClass('fixed-table-scroll-outer'),
+            w1, w2;
+        outer.append(inner);
+        $('body').append(outer);
+        w1 = inner[0].offsetWidth;
+        outer.css('overflow', 'scroll');
+        w2 = inner[0].offsetWidth;
+        if (w1 === w2) {
+            w2 = outer[0].clientWidth;
+        }
+        outer.remove();
+        return w1 - w2;
+})();
+
+// Scroll horizontal
+$body.on('scroll', function () {
+    $header.scrollLeft($(this).scrollLeft());
+    $footer.scrollLeft($(this).scrollLeft());
+});
+
+// Redraw Header/Footer
+var redraw = function() {
+    var tds = $body.find("> table > tbody > tr:first-child > td");
+    tds.each(function (i) {
+        var width = $(this).innerWidth(),
+            lastPadding = (tds.length -1 == i ? scrollBarWidth : 0);
+        lastHeader = $header.find("th:eq("+i+")").innerWidth(width + lastPadding);
+        lastFooter = $footer.find("th:eq("+i+")").innerWidth(width + lastPadding);
+    });
+};
+
+// Selection
+$body.find("> table > tbody > tr > td").click(function(e) {
+    $body.find("> table > tbody > tr").removeClass("info");
+    $(e.target).parent().addClass('info');
+});
+
+// Listen to Resize Window
+$(window).resize(redraw);
+redraw();
+</script>

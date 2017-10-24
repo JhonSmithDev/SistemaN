@@ -430,3 +430,15 @@ div.fixed-table-scroll-outer {
   background-position: 100%;
   background-repeat: no-repeat;
 }
+.border-1-bottom-blue{
+  border-bottom: 1px solid #064378;
+}
+.border-1-top-blue{
+  border-top: 1px solid #064378;
+}
+.border-1-left-blue{
+  border-left: 1px solid #064378;
+}
+.border-1-right-blue{
+  border-right: 1px solid #064378;
+}

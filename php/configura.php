@@ -13,6 +13,19 @@
 		//funcion para mostrar la ibterfaz correspondiente segun su rol
 		public function interfaz($_rol){
 			
+			$outp[] = array('url'=> "/comprobante_traspaso",
+				        			'template'=> "../template/comprobante.html",
+				        			'controller'=> "comprobanteTraspasoCtrl"
+				    );
+			$outp[] = array('url'=> "/comprobante_ingreso",
+				        			'template'=> "../template/comprobante.html",
+				        			'controller'=> "comprobanteIngresoCtrl"
+				    );
+			$outp[] = array('url'=> "/comprobante_egreso",
+				        			'template'=> "../template/comprobante.html",
+				        			'controller'=> "comprobanteEgresoCtrl"
+				    );
+
 			switch ($_rol) {
 				case '1': // rol administrador
 					$outp[] = array('url'=> "/",
