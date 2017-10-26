@@ -4900,7 +4900,10 @@ app.controller("libroDiarioCtrl", function($scope, $http) {
 
         $("#boton_save").prop("disabled", true);
         $("#boton_plus").prop("disabled", false);
+        $("#boton_save").removeClass("aparece");
+        $("#boton_save").addClass("desaparece");
         $("#boton_plus").focus();
+
     }
 
     // ADICIONA UN NUEVO LIBRO DIARIO
