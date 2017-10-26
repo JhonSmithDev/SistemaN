@@ -26,7 +26,7 @@
 		//funcion para mostrar todos los registros de una tabla
 		public function getIngreso($CicloContable_idCicloContable){
 			//lista todas las cuentas que existe en la tabla ingreso de la gestion X
-			$result = $this->_db->query("SELECT cl.idClaseCuenta, cl.nom_ccuenta, cu.idCuenta, cu.cod_cuenta, cu.nom_cuenta, cu.tipo_cuenta, cu.ClaseCuenta_idClaseCuenta, ld.idld_detalle, ld.Cuenta_idCuenta, ld.LibroDiario_idLibroDiario, lb.idLibroDiario, lb.CicloContable_idCicloContable, cc.idCicloContable, cc.gestion_ccontable FROM clasecuenta cl, cuenta cu, ld_detalle ld, librodiario lb, ciclocontable cc WHERE cl.idClaseCuenta = cu.ClaseCuenta_idClaseCuenta and ld.Cuenta_idCuenta = cu.idCuenta and ld.LibroDiario_idLibroDiario = lb.idLibroDiario and lb.show_by = 1 and lb.CicloContable_idCicloContable = cc.idCicloContable and cc.idCicloContable = '".$CicloContable_idCicloContable."' and cu.tipo_cuenta = 4   ORDER BY cu.aux_codcuenta");
+			$result = $this->_db->query("SELECT cl.idClaseCuenta, cl.nom_ccuenta, cu.idCuenta, cu.cod_cuenta, cu.nom_cuenta, cu.tipo_cuenta, cu.ClaseCuenta_idClaseCuenta, ld.idld_detalle, ld.Cuenta_idCuenta, ld.LibroDiario_idLibroDiario, lb.idLibroDiario, lb.CicloContable_idCicloContable, cc.idCicloContable, cc.gestion_ccontable FROM clasecuenta cl, cuenta cu, ld_detalle ld, librodiario lb, ciclocontable cc WHERE cl.idClaseCuenta = cu.ClaseCuenta_idClaseCuenta and ld.Cuenta_idCuenta = cu.idCuenta and ld.LibroDiario_idLibroDiario = lb.idLibroDiario and lb.show_by = 1 and lb.CicloContable_idCicloContable = cc.idCicloContable and cc.idCicloContable = '".$CicloContable_idCicloContable."' and cu.tipo_cuenta = 4   GROUP BY cu.idCuenta ORDER BY cu.aux_codcuenta");
 			// carga los datos en un array para ser recorrido
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 
@@ -43,6 +43,7 @@
 								);
 			}
 			
+			//print_r($out);
 			return $out;
 			$result->close();
 		}//End function getTable
@@ -50,7 +51,7 @@
 		//funcion para mostrar todos los registros de una tabla
 		public function getEgreso($CicloContable_idCicloContable){
 			//lista todas las cuentas que existe en la tabla ingreso de la gestion X
-			$result = $this->_db->query("SELECT cl.idClaseCuenta, cl.nom_ccuenta, cu.idCuenta, cu.cod_cuenta, cu.nom_cuenta, cu.tipo_cuenta, cu.ClaseCuenta_idClaseCuenta, ld.idld_detalle, ld.Cuenta_idCuenta, ld.LibroDiario_idLibroDiario, lb.idLibroDiario, lb.CicloContable_idCicloContable, cc.idCicloContable, cc.gestion_ccontable FROM clasecuenta cl, cuenta cu, ld_detalle ld, librodiario lb, ciclocontable cc WHERE cl.idClaseCuenta = cu.ClaseCuenta_idClaseCuenta and ld.Cuenta_idCuenta = cu.idCuenta and ld.LibroDiario_idLibroDiario = lb.idLibroDiario and lb.show_by = 1 and lb.CicloContable_idCicloContable = cc.idCicloContable and cc.idCicloContable = '".$CicloContable_idCicloContable."' and cu.tipo_cuenta = 5   ORDER BY cu.aux_codcuenta");
+			$result = $this->_db->query("SELECT cl.idClaseCuenta, cl.nom_ccuenta, cu.idCuenta, cu.cod_cuenta, cu.nom_cuenta, cu.tipo_cuenta, cu.ClaseCuenta_idClaseCuenta, ld.idld_detalle, ld.Cuenta_idCuenta, ld.LibroDiario_idLibroDiario, lb.idLibroDiario, lb.CicloContable_idCicloContable, cc.idCicloContable, cc.gestion_ccontable FROM clasecuenta cl, cuenta cu, ld_detalle ld, librodiario lb, ciclocontable cc WHERE cl.idClaseCuenta = cu.ClaseCuenta_idClaseCuenta and ld.Cuenta_idCuenta = cu.idCuenta and ld.LibroDiario_idLibroDiario = lb.idLibroDiario and lb.show_by = 1 and lb.CicloContable_idCicloContable = cc.idCicloContable and cc.idCicloContable = '".$CicloContable_idCicloContable."' and cu.tipo_cuenta = 5   GROUP BY cu.idCuenta ORDER BY cu.aux_codcuenta");
 			// carga los datos en un array para ser recorrido
 			$retorna = $result->fetch_all(MYSQL_ASSOC);
 

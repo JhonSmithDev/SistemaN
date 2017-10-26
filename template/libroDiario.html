@@ -2,9 +2,11 @@
 
 <div class="col-md-12 text-right"><button id="boton_plus" class="btn btn-primary-white boton_PANTALLA_1" ng-click="nuevoLibroDiario()" title="Agregar"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></div>
 
-<div class="col-md-12 text-right"><button id="boton_save" class="btn btn-primary-white boton_PANTALLA_2" ng-click="guardarLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
 
-<div class="col-md-12 text-right"><button id="boton_remove" class="btn btn-danger-white boton_PANTALLA_3" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right"><button id="boton_remove" class="btn btn-danger-white boton_PANTALLA_2" ng-click="limpiaribroDiario()" title="Limpiar"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button></div>
+
+<div class="col-md-12 text-right"><button id="boton_save" ng-class="diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value)) != diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value)) && suma_debe_bs(formDataInterfaz[12].value) == suma_haber_bs(formDataInterfaz[12].value) ? 'desaparece' : 'aparece'" class="desaparece btn btn-primary-white boton_PANTALLA_3" ng-click="guardarLibroDiario()" title="Guardar"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button></div>
+
 
 <div class="col-md-12 text-right"><button id="boton_ajuste" ng-class="diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value)) == diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value)) ? 'desaparece' : 'aparece'" class=" desaparece btn btn-danger-white boton_PANTALLA_4" ng-click="agregarAjusteCambio(diferencia_debe_sus(suma_debe_sus(formDataInterfaz[12].value), suma_haber_sus(formDataInterfaz[12].value)), diferencia_haber_sus(suma_haber_sus(formDataInterfaz[12].value), suma_debe_sus(formDataInterfaz[12].value)))" title="Ajustar Cambio de Dolar"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></button></div>
 
