@@ -1,15 +1,15 @@
-<div class="col-md-12 text-right"><button id="boton_print" class="btn btn-primary-white boton_PANTALLA_1" ng-click="imprimir()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></div>
+<div class="col-md-12 text-right content-dont-print"><button id="boton_print" class="btn btn-primary-white boton_PANTALLA_1" onclick="javascript:window.print()" title="Imprimir"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button></div>
 <div class="col-md-12">
-	<div class="col-md-12 letter-big letter-blue text-center margin-20 padding-20"> Balance General</div>
+	<div class="col-md-12 letter-big letter-blue text-center margin-20 padding-20 content-dont-print"> Balance General</div>
 
 
 	
-	<div class="col-md-6 text-center">
+	<div class="col-md-6 text-center content-dont-print">
 	    <div class="col-md-6 text-center">Periódo contable: </div>
 	    <div class="col-md-6 text-center"><select class="form-control background-select" ng-options="option.gestion_ccontable for option in formDataInterfazBalanceGeneral[0] track by option.idCicloContable" ng-model="selectGestion" ng-change="hasChangedCicloContable()"></select></div>
   	</div>
 
-  	<div class="col-md-4 col-md-offset-2">
+  	<div class="col-md-4 col-md-offset-2 content-dont-print">
       <form name="myForm">  
   		Crear balance deacuerdo a:  <br>
   		<div class="col-md-12" ng-repeat="cc in formDataInterfazBalanceGeneral[1]"><input type="checkbox" name=""  ng-model="cc.selected"> {{cc.nom_ccuenta}}</div>
@@ -17,22 +17,43 @@
   		
   	</div>
 
+    <div class="col-md-12 border-1-blue margin-20 content-dont-print"></div>
+
+    <!-- Style print-->
+    <style type="text/css">
+      .table_width{
+        width: 100%;
+      }
+      .text_center{
+        text-align: center;
+      }
+      .text_white{
+        color: #fff;
+      }
+      .margin_top_20{
+        margin-top: 20px;
+      }
+    </style>  
 
 
 
   	<div class="col-md-12">
-  		<table>
+  		<table class="table_width margin_top_20">
   			<thead>
   				<tr>
-  					<th colspan="2">Balance General</th>
+  					<th colspan="2" class="text_center">Balance General</th>
   				</tr>
   				<tr>
-  					<th colspan="2">
+  					<th colspan="2" class="text_center">
   						(Expresado en Bolivianos)
   					</th>
   				</tr>
   			</thead>
   			<tbody>
+          <tr>
+            <td class="text_white">.</td>
+            <td></td>
+          </tr>
           <tr>
             <td><b>ACTIVO</b></td>
             <td></td>
@@ -46,7 +67,7 @@
             <td><b class="suma_activo">0.00</b></td>
           </tr>
           <tr>
-            <td>.</td>
+            <td class="text_white">.</td>
             <td></td>
           </tr>
 
@@ -64,7 +85,7 @@
             <td><b class="suma_pasivo">0.00</b></td>
           </tr>
           <tr>
-            <td>.</td>
+            <td class="text_white">.</td>
             <td></td>
           </tr>
 
@@ -82,7 +103,7 @@
             <td><b class="suma_patrimonio">0.00</b></td>
           </tr>
           <tr>
-            <td>.</td>
+            <td class="text_white">.</td>
             <td></td>
           </tr>
 

@@ -6538,7 +6538,7 @@ app.controller("ventasIvaCtrl", function($scope, $http) {
 app.controller("ingresosCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lventas.php"; 
-    $scope.titulo= "LIBRO DE VENTAS IVA";
+    $scope.titulo= "INGRESOS";
     var razoSocial = "cliente";
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");
@@ -6877,7 +6877,7 @@ app.controller("ingresosCtrl", function($scope, $http) {
 app.controller("egresosCtrl", function($scope, $http) {
     //cargar los datos por defecto de compras iva
     var url= "../php/lcompras.php"; 
-    $scope.titulo= "LIBRO DE COMPRAS IVA";
+    $scope.titulo= "EGRESOS";
     var razoSocial = "proveedor";
     var dimension = 0;
     var idUsuario = sessionStorage.getItem("id_user");

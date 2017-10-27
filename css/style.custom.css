@@ -28,6 +28,9 @@
 	padding-left: 20px;
 	padding-right: 20px;
 }
+.border-1-blue{
+  border: 1px solid #064378;
+}
 .border-1{
 	border: 1px solid #064378;
 	padding: 10px;
