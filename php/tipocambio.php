@@ -522,7 +522,7 @@
 		//funcion para modificar ELIMINAR REGISTRO sin borrar
 		public function deleteTable($table, $nom_id, $id, $user){
 			$outp = array();
-			$set_campo = "show_by = '0' , delete_by = '".$user."'";
+			$set_campo = "show_by = '0'";
 
 			$query = "UPDATE ".$table." SET ".$set_campo." WHERE ".$nom_id." = '".$id."'";
 			//print_r($query);
